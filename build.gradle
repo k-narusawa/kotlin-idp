@@ -1,0 +1,51 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
+plugins {
+    id 'org.springframework.boot' version '3.1.0'
+    id 'io.spring.dependency-management' version '1.1.0'
+    id 'org.jetbrains.kotlin.jvm' version '1.8.21'
+    id 'org.jetbrains.kotlin.plugin.spring' version '1.8.21'
+}
+
+group = 'com.knarusawa.demo.idp'
+version = '0.0.1-SNAPSHOT'
+
+java {
+    sourceCompatibility = '17'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-web:3.1.0'
+    implementation 'org.springframework.boot:spring-boot-starter-security:3.1.0'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jdbc:3.1.0'
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf:3.1.0'
+    implementation 'org.webjars:bootstrap:5.3.0'
+    implementation 'com.fasterxml.jackson.module:jackson-module-kotlin:2.15.2'
+    runtimeOnly 'org.jetbrains.kotlin:kotlin-reflect:1.8.22'
+    implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6:3.1.1.RELEASE'
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-authorization-server:3.1.0'
+    implementation 'org.springframework:spring-jdbc:6.0.10'
+    implementation 'com.zaxxer:HikariCP:5.0.1'
+    implementation 'mysql:mysql-connector-java:8.0.33'
+    implementation 'org.flywaydb:flyway-core:9.19.4'
+    implementation 'org.flywaydb:flyway-mysql:9.19.4'
+    implementation 'org.springframework.security:spring-security-cas:6.1.1'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.security:spring-security-test'
+}
+
+tasks.withType(KotlinCompile) {
+    kotlinOptions {
+        freeCompilerArgs += '-Xjsr305=strict'
+        jvmTarget = '17'
+    }
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
+

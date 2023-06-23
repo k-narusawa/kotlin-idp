@@ -1,0 +1,42 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<link rel="stylesheet" th:href="@{/webjars/bootstrap/5.3.0/css/bootstrap.min.css}">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+</head>
+<body>
+<div th:replace="~{common/header :: header_fragment}"></div>
+<div class="container">
+    <h1 class="my-3">ユーザー登録</h1>
+    <hr class="mb-5">
+    <form th:action="@{/user/register}" th:object="${userForm}" method="post">
+        <table class="table table-bordered table-striped table-hover col-md-6">
+            <tr class="form-group">
+                <th class="align-middle">ログインID</th>
+                <td><input type="text" class="form-control" th:field="*{loginId}"></td>
+            </tr>
+            <tr class="form-group">
+                <th class="align-middle">パスワード</th>
+                <td><input type="text" class="form-control" th:field="*{password}"></td>
+            </tr>
+            <tr class="form-group">
+                <th class="align-middle">ロール</th>
+                <td>
+                    <div th:each="role : ${roleItems}">
+                        <input class="form-check-input" type="checkbox" id="role"
+                               th:value="${role.key}"
+                               th:field="*{roles}"/>
+                        <label class="form-check-label" for="role" th:text="${role.value}"/>
+                    </div>
+                </td>
+            </tr>
+        </table>
+        <input type="submit" class="btn btn-primary" th:value="登録"/>
+        <input type="reset" class="btn btn-secondary" th:value="リセット"/>
+    </form>
+</div>
+<script th:src="@{/webjars/jquery/3.4.1/jquery.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/5.3.0/js/bootstrap.min.js}"></script>
+</body>
+</html>

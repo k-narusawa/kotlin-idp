@@ -1,0 +1,21 @@
+<!doctype html>
+<link rel="stylesheet" th:href="@{/webjars/bootstrap/5.3.0/css/bootstrap.min.css}">
+<body>
+<header xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+        th:fragment="header_fragment">
+    <nav class="nav bg-info">
+        <a class="nav-link active" aria-current="page" href="/">HOME</a>
+        <div sec:authorize="hasRole('ADMIN')">
+            <a class="nav-link" href="/clients">Clients</a>
+        </div>
+        <div sec:authorize="hasRole('ADMIN')">
+            <a class="nav-link" href="/users">Users</a>
+        </div>
+        <form class="ms-auto bd-highlight" role="form" id="logout" th:action="@{/logout}" method="post">
+            <a class="nav-link" href="javascript:void(0)" onclick="this.parentNode.submit()">LOGOUT</a>
+        </form>
+    </nav>
+</header>
+<script th:src="@{/webjars/jquery/3.4.1/jquery.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/5.3.0/js/bootstrap.min.js}"></script>
+</body>
