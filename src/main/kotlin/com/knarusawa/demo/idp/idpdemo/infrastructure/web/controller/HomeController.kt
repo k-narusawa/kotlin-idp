@@ -3,17 +3,16 @@ package com.knarusawa.demo.idp.idpdemo.infrastructure.web.controller
 import com.knarusawa.demo.idp.idpdemo.application.dto.ClientForm
 import com.knarusawa.demo.idp.idpdemo.application.dto.UserForm
 import com.knarusawa.demo.idp.idpdemo.application.mapper.ClientMapper
-import com.knarusawa.demo.idp.idpdemo.application.mapper.UserMapper
 import com.knarusawa.demo.idp.idpdemo.application.service.ClientService
 import com.knarusawa.demo.idp.idpdemo.application.service.UserService
 import com.knarusawa.demo.idp.idpdemo.domain.model.user.Role
+import java.security.Principal
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.ModelAttribute
 import org.springframework.web.bind.annotation.PostMapping
-import java.security.Principal
 
 @Controller
 class HomeController(
@@ -27,7 +26,7 @@ class HomeController(
     return "index"
   }
 
-  @GetMapping("/users")
+  @GetMapping("/user/list")
   @PreAuthorize("hasRole('ADMIN')")
   fun getUserList(model: Model, principal: Principal): String {
     val users = userService.getAllUsers()
@@ -46,11 +45,15 @@ class HomeController(
   @PostMapping("/user/register")
   @PreAuthorize("hasRole('ADMIN')")
   fun registerUser(@ModelAttribute userForm: UserForm): String {
-    userService.registerUser(UserMapper.toUser(userForm))
-    return "redirect:/users"
+    userService.registerUser(
+      loginId = userForm.loginId,
+      password = userForm.password,
+      roles = userForm.roles
+    )
+    return "redirect:/user/list"
   }
 
-  @GetMapping("/clients")
+  @GetMapping("/client/list")
   @PreAuthorize("hasRole('ADMIN')")
   fun getClientLIst(model: Model): String {
     val clients = clientService.getClients()
@@ -71,8 +74,14 @@ class HomeController(
         scopes = listOf()
       )
     )
-    model.addAttribute("clientAuthenticationMethods", ClientForm.ClientAuthenticationMethodForm.items())
-    model.addAttribute("clientAuthenticationGrantTypes", ClientForm.AuthorizationGrantTypeForm.items())
+    model.addAttribute(
+      "clientAuthenticationMethods",
+      ClientForm.ClientAuthenticationMethodForm.items()
+    )
+    model.addAttribute(
+      "clientAuthenticationGrantTypes",
+      ClientForm.AuthorizationGrantTypeForm.items()
+    )
     model.addAttribute("oidcScopesForm", ClientForm.OidcScopesForm.items())
     return "client_register"
   }
@@ -83,6 +92,6 @@ class HomeController(
     clientService.registerClient(
       ClientMapper.toClient(clientForm)
     )
-    return "redirect:/clients"
+    return "redirect:/client/list"
   }
 }

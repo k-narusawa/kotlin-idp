@@ -3,11 +3,11 @@ package com.knarusawa.demo.idp.idpdemo.infrastructure.web.controller
 import com.knarusawa.demo.idp.idpdemo.application.dto.UserResponse
 import com.knarusawa.demo.idp.idpdemo.application.mapper.UserMapper
 import com.knarusawa.demo.idp.idpdemo.application.service.UserService
+import java.security.Principal
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
-import java.security.Principal
 
 @RestController
 @RequestMapping("/api/user")

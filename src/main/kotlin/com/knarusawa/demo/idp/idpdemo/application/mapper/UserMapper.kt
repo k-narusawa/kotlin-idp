@@ -1,16 +1,9 @@
 package com.knarusawa.demo.idp.idpdemo.application.mapper
 
-import com.knarusawa.demo.idp.idpdemo.application.dto.UserForm
 import com.knarusawa.demo.idp.idpdemo.application.dto.UserResponse
 import com.knarusawa.demo.idp.idpdemo.domain.model.user.User
 
 object UserMapper {
-  fun toUser(userForm: UserForm) = User.of(
-    loginId = userForm.loginId,
-    password = userForm.password,
-    roles = userForm.roles,
-  )
-
   fun fromUser(user: User) = UserResponse(
     userId = user.userId,
     isLock = user.isLock,

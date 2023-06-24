@@ -2,10 +2,11 @@ package com.knarusawa.demo.idp.idpdemo.infrastructure.db.repository
 
 import com.knarusawa.demo.idp.idpdemo.configuration.db.UserDbJdbcTemplate
 import com.knarusawa.demo.idp.idpdemo.domain.repository.UserRepository
-import com.knarusawa.demo.idp.idpdemo.infrastructure.db.entity.UserEntity
+import com.knarusawa.demo.idp.idpdemo.infrastructure.db.entity.UserRecord
+import java.sql.ResultSet
+import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Repository
-import java.sql.ResultSet
 
 
 @Repository
@@ -14,7 +15,7 @@ class UserRepositoryImpl(
 ) : UserRepository {
   companion object {
     val userRowMapper = RowMapper { rs: ResultSet, _: Int ->
-      UserEntity(
+      UserRecord(
         userId = rs.getString("user_id"),
         loginId = rs.getString("login_id"),
         password = rs.getString("password"),
@@ -28,7 +29,7 @@ class UserRepositoryImpl(
     }
   }
 
-  override fun save(user: UserEntity): UserEntity {
+  override fun save(user: UserRecord): UserRecord {
     val insertQuery =
       "INSERT INTO user (user_id, login_id, password, is_lock, failed_attempts, lock_time, is_disabled) VALUES (?, ?, ?, ?, ?, ?, ?)"
     val insert = userDbJdbcTemplate.update(
@@ -44,18 +45,35 @@ class UserRepositoryImpl(
     return user
   }
 
-  override fun findByLoginId(loginId: String): UserEntity? {
-    return userDbJdbcTemplate.queryForObject("SELECT * FROM user WHERE login_id = ?", userRowMapper, loginId)
+  override fun findByLoginId(loginId: String): UserRecord? {
+    return try {
+      userDbJdbcTemplate.queryForObject(
+        "SELECT * FROM user WHERE login_id = ?",
+        userRowMapper,
+        loginId
+      )
+    } catch (ex: EmptyResultDataAccessException) {
+      null
+    }
+
   }
 
-  override fun findByUserId(userId: String): UserEntity? {
-    return userDbJdbcTemplate.queryForObject("SELECT * FROM user WHERE user_id = ?", userRowMapper, userId)
+  override fun findByUserId(userId: String): UserRecord? {
+    return try {
+      userDbJdbcTemplate.queryForObject(
+        "SELECT * FROM user WHERE user_id = ?",
+        userRowMapper,
+        userId
+      )
+    } catch (ex: EmptyResultDataAccessException) {
+      null
+    }
   }
 
-  override fun findAll(): List<UserEntity> {
+  override fun findAll(): List<UserRecord> {
     val sql = "SELECT * FROM user"
     return userDbJdbcTemplate.query(sql) { rs, _ ->
-      UserEntity(
+      UserRecord(
         userId = rs.getString("user_id"),
         loginId = rs.getString("login_id"),
         password = rs.getString("password"),

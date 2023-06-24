@@ -1,15 +1,15 @@
 package com.knarusawa.demo.idp.idpdemo.domain.model.user
 
 import com.knarusawa.demo.idp.idpdemo.configuration.SecurityConfig
-import com.knarusawa.demo.idp.idpdemo.infrastructure.db.entity.RoleEntity
-import com.knarusawa.demo.idp.idpdemo.infrastructure.db.entity.UserEntity
+import com.knarusawa.demo.idp.idpdemo.infrastructure.db.entity.RoleRecord
+import com.knarusawa.demo.idp.idpdemo.infrastructure.db.entity.UserRecord
 import java.time.LocalDateTime
 import java.util.*
 
 data class User(
   val userId: String,
-  val loginId: String,
-  val password: String,
+  val loginId: LoginId,
+  val password: Password,
   val isLock: Boolean,
   val failedAttempts: Int?,
   val lockTime: LocalDateTime?,
@@ -19,25 +19,25 @@ data class User(
   val updatedAt: LocalDateTime?
 ) {
   companion object {
-    fun of(userEntity: UserEntity, roleEntities: List<RoleEntity>) =
+    fun of(userRecord: UserRecord, roleEntities: List<RoleRecord>) =
       User(
-        userId = userEntity.userId,
-        loginId = userEntity.loginId,
-        password = userEntity.password,
-        isLock = userEntity.isLock,
-        failedAttempts = userEntity.failedAttempts,
-        lockTime = userEntity.lockTime,
-        isDisabled = userEntity.isDisabled,
+        userId = userRecord.userId,
+        loginId = LoginId(value = userRecord.loginId),
+        password = Password(value = userRecord.password),
+        isLock = userRecord.isLock,
+        failedAttempts = userRecord.failedAttempts,
+        lockTime = userRecord.lockTime,
+        isDisabled = userRecord.isDisabled,
         roles = roleEntities.map { Role.fromString(it.role) },
-        createdAt = userEntity.createdAt,
-        updatedAt = userEntity.updatedAt
+        createdAt = userRecord.createdAt,
+        updatedAt = userRecord.updatedAt
       )
 
     fun of(loginId: String, password: String, roles: List<String>) =
       User(
         userId = UUID.randomUUID().toString(),
-        loginId = loginId,
-        password = SecurityConfig().passwordEncoder().encode(password),
+        loginId = LoginId(value = loginId),
+        password = Password(value = SecurityConfig().passwordEncoder().encode(password)),
         isLock = false,
         failedAttempts = null,
         lockTime = null,
@@ -47,4 +47,17 @@ data class User(
         updatedAt = null
       )
   }
+
+  fun updateLoginId(loginId: String) = User(
+    userId = this.userId,
+    loginId = LoginId(value = loginId),
+    password = this.password,
+    isLock = this.isLock,
+    failedAttempts = this.failedAttempts,
+    lockTime = this.lockTime,
+    isDisabled = this.isDisabled,
+    roles = this.roles,
+    createdAt = this.createdAt,
+    updatedAt = this.updatedAt
+  )
 }

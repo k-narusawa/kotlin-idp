@@ -2,7 +2,7 @@ package com.knarusawa.demo.idp.idpdemo.infrastructure.db.entity
 
 import java.time.LocalDateTime
 
-data class UserEntity(
+data class UserRecord(
   val userId: String,
   val loginId: String,
   val password: String,

@@ -2,7 +2,7 @@ package com.knarusawa.demo.idp.idpdemo.infrastructure.db.entity
 
 import java.time.LocalDateTime
 
-data class RoleEntity(
+data class RoleRecord(
   val roleId: Int?,
   val userId: String,
   val role: String,
