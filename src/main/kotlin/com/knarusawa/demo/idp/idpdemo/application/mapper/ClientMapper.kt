@@ -1,7 +1,7 @@
 package com.knarusawa.demo.idp.idpdemo.application.mapper
 
-import com.knarusawa.demo.idp.idpdemo.application.dto.ClientForm
 import com.knarusawa.demo.idp.idpdemo.domain.model.client.Client
+import com.knarusawa.demo.idp.idpdemo.infrastructure.dto.ClientForm
 import java.util.*
 
 object ClientMapper {

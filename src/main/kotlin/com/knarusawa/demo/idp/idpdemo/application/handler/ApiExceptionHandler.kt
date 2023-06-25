@@ -1,8 +1,8 @@
 package com.knarusawa.demo.idp.idpdemo.application.handler
 
-import com.knarusawa.demo.idp.idpdemo.application.dto.ApiErrorResponse
 import com.knarusawa.demo.idp.idpdemo.domain.model.error.AppException
 import com.knarusawa.demo.idp.idpdemo.domain.model.error.ErrorCode
+import com.knarusawa.demo.idp.idpdemo.infrastructure.dto.ApiErrorResponse
 import jakarta.servlet.http.HttpServletRequest
 import org.springframework.boot.logging.LogLevel
 import org.springframework.http.ResponseEntity
@@ -25,7 +25,7 @@ class ApiExceptionHandler {
       ex.errorCode.status
     )
   }
-  
+
   @ExceptionHandler(Exception::class)
   fun handleException(
     ex: Exception,

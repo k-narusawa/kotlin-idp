@@ -1,4 +1,4 @@
-package com.knarusawa.demo.idp.idpdemo.application.dto
+package com.knarusawa.demo.idp.idpdemo.infrastructure.dto
 
 import org.slf4j.LoggerFactory
 import org.springframework.boot.logging.LogLevel

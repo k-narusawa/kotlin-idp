@@ -1,12 +1,13 @@
 package com.knarusawa.demo.idp.idpdemo.infrastructure.web.controller
 
-import com.knarusawa.demo.idp.idpdemo.application.dto.ClientForm
-import com.knarusawa.demo.idp.idpdemo.application.dto.UserForm
 import com.knarusawa.demo.idp.idpdemo.application.mapper.ClientMapper
 import com.knarusawa.demo.idp.idpdemo.application.service.ClientService
 import com.knarusawa.demo.idp.idpdemo.application.service.UserRoleService
 import com.knarusawa.demo.idp.idpdemo.application.service.UserService
+import com.knarusawa.demo.idp.idpdemo.domain.model.user.command.UserRegisterCommand
 import com.knarusawa.demo.idp.idpdemo.domain.model.userRole.Role
+import com.knarusawa.demo.idp.idpdemo.infrastructure.dto.ClientForm
+import com.knarusawa.demo.idp.idpdemo.infrastructure.dto.UserForm
 import java.security.Principal
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.stereotype.Controller
@@ -49,11 +50,12 @@ class HomeController(
   @PostMapping("/user/register")
   @PreAuthorize("hasRole('ADMIN')")
   fun registerUser(@ModelAttribute userForm: UserForm): String {
-    userService.registerUser(
+    val command = UserRegisterCommand(
       loginId = userForm.loginId,
       password = userForm.password,
       roles = userForm.roles
     )
+    userService.registerUser(command)
     return "redirect:/user/list"
   }
 

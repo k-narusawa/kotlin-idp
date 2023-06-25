@@ -1,4 +1,4 @@
-package com.knarusawa.demo.idp.idpdemo.application.dto
+package com.knarusawa.demo.idp.idpdemo.infrastructure.dto
 
 import org.springframework.security.oauth2.core.AuthorizationGrantType
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod

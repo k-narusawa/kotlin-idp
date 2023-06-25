@@ -1,4 +1,4 @@
-package com.knarusawa.demo.idp.idpdemo.application.dto
+package com.knarusawa.demo.idp.idpdemo.infrastructure.dto
 
 import java.time.LocalDateTime
 

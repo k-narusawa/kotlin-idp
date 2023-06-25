@@ -1,4 +1,4 @@
-package com.knarusawa.demo.idp.idpdemo.domain.model.user
+package com.knarusawa.demo.idp.idpdemo.domain.model.user.command
 
 class UserUpdateCommand(
   val userId: String,

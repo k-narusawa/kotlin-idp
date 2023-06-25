@@ -16,7 +16,7 @@ data class User(
   val updatedAt: LocalDateTime?
 ) {
   companion object {
-    fun of(loginId: String, password: String) =
+    fun new(loginId: String, password: String) =
       User(
         userId = UUID.randomUUID().toString(),
         loginId = LoginId(value = loginId),

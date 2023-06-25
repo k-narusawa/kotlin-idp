@@ -1,8 +1,8 @@
 package com.knarusawa.demo.idp.idpdemo.application.mapper
 
-import com.knarusawa.demo.idp.idpdemo.application.dto.UserResponse
 import com.knarusawa.demo.idp.idpdemo.domain.model.user.User
 import com.knarusawa.demo.idp.idpdemo.domain.model.userRole.Role
+import com.knarusawa.demo.idp.idpdemo.infrastructure.dto.UserResponse
 
 object UserMapper {
   fun fromUser(user: User, roles: List<Role>) = UserResponse(

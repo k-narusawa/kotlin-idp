@@ -4,7 +4,8 @@ import com.knarusawa.demo.idp.idpdemo.domain.model.error.AppException
 import com.knarusawa.demo.idp.idpdemo.domain.model.error.ErrorCode
 import com.knarusawa.demo.idp.idpdemo.domain.model.user.LoginId
 import com.knarusawa.demo.idp.idpdemo.domain.model.user.User
-import com.knarusawa.demo.idp.idpdemo.domain.model.user.UserUpdateCommand
+import com.knarusawa.demo.idp.idpdemo.domain.model.user.command.UserRegisterCommand
+import com.knarusawa.demo.idp.idpdemo.domain.model.user.command.UserUpdateCommand
 import com.knarusawa.demo.idp.idpdemo.domain.model.userRole.Role
 import com.knarusawa.demo.idp.idpdemo.domain.model.userRole.UserRole
 import com.knarusawa.demo.idp.idpdemo.domain.repository.UserRepository
@@ -21,21 +22,19 @@ class UserService(
   private val userRoleRepository: UserRoleRepository,
 ) {
   fun registerUser(
-    loginId: String,
-    password: String,
-    roles: List<String>
+    command: UserRegisterCommand
   ) {
-    if (userDomainService.isExistsLoginId(loginId = LoginId(loginId)))
+    if (userDomainService.isExistsLoginId(loginId = LoginId(command.loginId)))
       throw AppException(
         errorCode = ErrorCode.USER_EXISTS,
-        errorMessage = "User already exists. loginId: $loginId"
+        errorMessage = "User already exists. loginId: ${command.loginId}"
       )
-    val user = User.of(
-      loginId = loginId,
-      password = password,
+    val user = User.new(
+      loginId = command.loginId,
+      password = command.password,
     )
     userRepository.save(user)
-    roles.forEach { role ->
+    command.roles.forEach { role ->
       val userRole = UserRole.of(
         userId = user.userId,
         role = Role.fromString(role)
