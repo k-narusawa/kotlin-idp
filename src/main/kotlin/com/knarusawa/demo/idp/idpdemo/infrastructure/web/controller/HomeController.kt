@@ -4,8 +4,9 @@ import com.knarusawa.demo.idp.idpdemo.application.dto.ClientForm
 import com.knarusawa.demo.idp.idpdemo.application.dto.UserForm
 import com.knarusawa.demo.idp.idpdemo.application.mapper.ClientMapper
 import com.knarusawa.demo.idp.idpdemo.application.service.ClientService
+import com.knarusawa.demo.idp.idpdemo.application.service.UserRoleService
 import com.knarusawa.demo.idp.idpdemo.application.service.UserService
-import com.knarusawa.demo.idp.idpdemo.domain.model.user.Role
+import com.knarusawa.demo.idp.idpdemo.domain.model.userRole.Role
 import java.security.Principal
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.stereotype.Controller
@@ -17,12 +18,15 @@ import org.springframework.web.bind.annotation.PostMapping
 @Controller
 class HomeController(
   private val userService: UserService,
+  private val userRoleService: UserRoleService,
   private val clientService: ClientService
 ) {
   @GetMapping("/")
   fun getProfile(model: Model, principal: Principal): String {
     val user = userService.getByUserId(userId = principal.name)
+    val userRole = userRoleService.getUserRole(userId = principal.name)
     model.addAttribute("user", user)
+    model.addAttribute("userRole", userRole)
     return "index"
   }
 

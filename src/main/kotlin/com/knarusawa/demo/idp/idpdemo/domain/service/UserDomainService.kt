@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component
 
 @Component
 class UserDomainService(
-  private val userRepository: UserRepository
+  private val userRepository: UserRepository,
 ) {
   fun isExistsLoginId(loginId: LoginId): Boolean {
     val user = userRepository.findByLoginId(loginId = loginId.toString())

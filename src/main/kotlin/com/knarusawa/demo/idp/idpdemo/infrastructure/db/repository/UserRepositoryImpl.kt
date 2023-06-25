@@ -1,8 +1,11 @@
 package com.knarusawa.demo.idp.idpdemo.infrastructure.db.repository
 
 import com.knarusawa.demo.idp.idpdemo.configuration.db.UserDbJdbcTemplate
+import com.knarusawa.demo.idp.idpdemo.domain.model.error.AppException
+import com.knarusawa.demo.idp.idpdemo.domain.model.error.ErrorCode
+import com.knarusawa.demo.idp.idpdemo.domain.model.user.User
 import com.knarusawa.demo.idp.idpdemo.domain.repository.UserRepository
-import com.knarusawa.demo.idp.idpdemo.infrastructure.db.entity.UserRecord
+import com.knarusawa.demo.idp.idpdemo.infrastructure.db.record.UserRecord
 import java.sql.ResultSet
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.jdbc.core.RowMapper
@@ -29,10 +32,10 @@ class UserRepositoryImpl(
     }
   }
 
-  override fun save(user: UserRecord): UserRecord {
+  override fun save(user: User): User {
     val insertQuery =
       "INSERT INTO user (user_id, login_id, password, is_lock, failed_attempts, lock_time, is_disabled) VALUES (?, ?, ?, ?, ?, ?, ?)"
-    val insert = userDbJdbcTemplate.update(
+    val insertNum = userDbJdbcTemplate.update(
       insertQuery,
       user.userId,
       user.loginId,
@@ -42,37 +45,42 @@ class UserRepositoryImpl(
       user.lockTime,
       user.isDisabled
     )
+    if (insertNum != 1)
+      throw AppException(
+        errorCode = ErrorCode.INTERNAL_SERVER_ERROR,
+        errorMessage = "Internal Server Error"
+      )
     return user
   }
 
-  override fun findByLoginId(loginId: String): UserRecord? {
+  override fun findByLoginId(loginId: String): User? {
     return try {
       userDbJdbcTemplate.queryForObject(
         "SELECT * FROM user WHERE login_id = ?",
         userRowMapper,
         loginId
-      )
+      )?.toUser()
     } catch (ex: EmptyResultDataAccessException) {
       null
     }
 
   }
 
-  override fun findByUserId(userId: String): UserRecord? {
+  override fun findByUserId(userId: String): User? {
     return try {
       userDbJdbcTemplate.queryForObject(
         "SELECT * FROM user WHERE user_id = ?",
         userRowMapper,
         userId
-      )
+      )?.toUser()
     } catch (ex: EmptyResultDataAccessException) {
       null
     }
   }
 
-  override fun findAll(): List<UserRecord> {
+  override fun findAll(): List<User> {
     val sql = "SELECT * FROM user"
-    return userDbJdbcTemplate.query(sql) { rs, _ ->
+    val userRecords = userDbJdbcTemplate.query(sql) { rs, _ ->
       UserRecord(
         userId = rs.getString("user_id"),
         loginId = rs.getString("login_id"),
@@ -85,5 +93,6 @@ class UserRepositoryImpl(
         updatedAt = rs.getTimestamp("updated_at").toLocalDateTime()
       )
     }
+    return userRecords.map { it.toUser() }
   }
 }
