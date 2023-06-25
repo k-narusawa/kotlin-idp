@@ -25,6 +25,11 @@ class UserService(
     password: String,
     roles: List<String>
   ) {
+    if (userDomainService.isExistsLoginId(loginId = LoginId(loginId)))
+      throw AppException(
+        errorCode = ErrorCode.USER_EXISTS,
+        errorMessage = "User already exists. loginId: $loginId"
+      )
     val user = User.of(
       loginId = loginId,
       password = password,
@@ -52,7 +57,6 @@ class UserService(
         errorCode = ErrorCode.USER_NOT_FOUND,
         errorMessage = "User Not Found"
       )
-    val userRole = userRoleRepository.findByUserId(userId = command.userId)
 
     if (command.loginId != null) {
       if (userDomainService.isExistsLoginId(loginId = LoginId(value = command.loginId)))
