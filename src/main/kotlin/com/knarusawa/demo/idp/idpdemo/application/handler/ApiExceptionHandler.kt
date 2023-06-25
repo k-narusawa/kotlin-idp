@@ -18,9 +18,10 @@ class ApiExceptionHandler {
   ): ResponseEntity<ApiErrorResponse> {
     return ResponseEntity(
       ApiErrorResponse.of(
+        exception = ex,
         errorCode = ex.errorCode.name,
-        errorMessage = ex.errorMessage,
-        loglevel = LogLevel.INFO
+        errorMessage = ex.errorCode.message,
+        logLevel = LogLevel.INFO
       ),
       ex.errorCode.status
     )
@@ -33,9 +34,10 @@ class ApiExceptionHandler {
   ): ResponseEntity<ApiErrorResponse> {
     return ResponseEntity(
       ApiErrorResponse.of(
+        exception = ex,
         errorCode = ErrorCode.INTERNAL_SERVER_ERROR.name,
         errorMessage = ErrorCode.INTERNAL_SERVER_ERROR.message,
-        loglevel = LogLevel.ERROR
+        logLevel = LogLevel.ERROR
       ),
       org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR
     )

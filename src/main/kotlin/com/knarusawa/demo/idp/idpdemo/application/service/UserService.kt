@@ -27,7 +27,7 @@ class UserService(
     if (userDomainService.isExistsLoginId(loginId = LoginId(command.loginId)))
       throw AppException(
         errorCode = ErrorCode.USER_EXISTS,
-        errorMessage = "User already exists. loginId: ${command.loginId}"
+        logMessage = "User already exists. loginId: ${command.loginId}"
       )
     val user = User.new(
       loginId = command.loginId,
@@ -46,7 +46,7 @@ class UserService(
   fun getByUserId(userId: String): User {
     return userRepository.findByUserId(userId = userId) ?: throw AppException(
       errorCode = ErrorCode.USER_NOT_FOUND,
-      errorMessage = "User Not Found"
+      logMessage = "User Not Found"
     )
   }
 
@@ -54,12 +54,12 @@ class UserService(
     val user = userRepository.findByUserId(userId = command.userId)
       ?: throw AppException(
         errorCode = ErrorCode.USER_NOT_FOUND,
-        errorMessage = "User Not Found"
+        logMessage = "User Not Found"
       )
 
     if (command.loginId != null) {
       if (userDomainService.isExistsLoginId(loginId = LoginId(value = command.loginId)))
-        throw AppException(errorCode = ErrorCode.BAD_REQUEST, errorMessage = "User Already Exists")
+        throw AppException(errorCode = ErrorCode.BAD_REQUEST, logMessage = "User Already Exists")
       user.updateLoginId(loginId = command.loginId)
     }
 

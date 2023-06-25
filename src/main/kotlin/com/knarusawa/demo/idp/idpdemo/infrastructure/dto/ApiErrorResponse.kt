@@ -10,22 +10,22 @@ data class ApiErrorResponse(
   companion object {
     private val logger = LoggerFactory.getLogger(ApiErrorResponse::class.java)
 
-    fun of(errorCode: String, errorMessage: String, loglevel: LogLevel) =
+    fun of(exception: Exception, errorCode: String, errorMessage: String, logLevel: LogLevel) =
       ApiErrorResponse(
         errorCode = errorCode,
         errorMessage = errorMessage
-      ).also { it.log(loglevel, errorMessage) }
+      ).also { it.log(exception, logLevel, errorMessage) }
   }
 
-  private fun log(loglevel: LogLevel, message: String) {
-    when (loglevel) {
+  private fun log(ex: Exception, logLevel: LogLevel, message: String) {
+    when (logLevel) {
       LogLevel.OFF -> Unit
-      LogLevel.TRACE -> logger.trace(message)
-      LogLevel.DEBUG -> logger.debug(message)
-      LogLevel.INFO -> logger.info(message)
-      LogLevel.WARN -> logger.warn(message)
-      LogLevel.ERROR -> logger.error(message)
-      LogLevel.FATAL -> logger.error(message)
+      LogLevel.TRACE -> logger.trace("$message, ex: ${ex.message}")
+      LogLevel.DEBUG -> logger.debug("$message, ex: ${ex.message}")
+      LogLevel.INFO -> logger.info("$message, ex: ${ex.message}")
+      LogLevel.WARN -> logger.warn("$message, ex: ${ex.message}")
+      LogLevel.ERROR -> logger.error("$message, ex: ${ex.message}")
+      LogLevel.FATAL -> logger.error("$message, ex: ${ex.message}")
     }
   }
 }

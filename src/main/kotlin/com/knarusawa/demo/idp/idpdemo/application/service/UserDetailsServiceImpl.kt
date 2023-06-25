@@ -17,7 +17,7 @@ class UserDetailsServiceImpl(
 
   override fun loadUserByUsername(loginId: String): UserDetails {
     val user = userRepository.findByLoginId(loginId = loginId)
-      ?: throw AppException(errorCode = ErrorCode.BAD_REQUEST, errorMessage = "User Not Found.")
+      ?: throw AppException(errorCode = ErrorCode.BAD_REQUEST, logMessage = "User Not Found.")
     val userRole = userRoleRepository.findByUserId(userId = user.userId)
     return org.springframework.security.core.userdetails.User
       .withUsername(user.userId)

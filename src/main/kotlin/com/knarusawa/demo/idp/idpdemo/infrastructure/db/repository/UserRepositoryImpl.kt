@@ -48,7 +48,7 @@ class UserRepositoryImpl(
     if (insertNum != 1)
       throw AppException(
         errorCode = ErrorCode.INTERNAL_SERVER_ERROR,
-        errorMessage = "Internal Server Error"
+        logMessage = "Internal Server Error"
       )
     return user
   }

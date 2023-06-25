@@ -19,7 +19,7 @@ enum class Role {
         "USER" -> USER
         else -> throw AppException(
           errorCode = ErrorCode.BAD_REQUEST,
-          errorMessage = "Role not found."
+          logMessage = "Role not found."
         )
       }
     }
