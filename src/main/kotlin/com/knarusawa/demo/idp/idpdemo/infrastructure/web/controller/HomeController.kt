@@ -1,8 +1,9 @@
 package com.knarusawa.demo.idp.idpdemo.infrastructure.web.controller
 
 import com.knarusawa.demo.idp.idpdemo.application.mapper.ClientMapper
-import com.knarusawa.demo.idp.idpdemo.application.service.ClientService
 import com.knarusawa.demo.idp.idpdemo.application.service.UserRoleService
+import com.knarusawa.demo.idp.idpdemo.application.service.client.getAll.ClientGetAllService
+import com.knarusawa.demo.idp.idpdemo.application.service.client.register.ClientRegisterService
 import com.knarusawa.demo.idp.idpdemo.application.service.user.getAll.UserGetAllService
 import com.knarusawa.demo.idp.idpdemo.application.service.user.getById.UserGetByUserIdService
 import com.knarusawa.demo.idp.idpdemo.application.service.user.register.UserRegisterCommand
@@ -24,7 +25,8 @@ class HomeController(
     private val userRegisterService: UserRegisterService,
     private val userGetAllService: UserGetAllService,
     private val userRoleService: UserRoleService,
-    private val clientService: ClientService
+    private val clientGetAllService: ClientGetAllService,
+    private val clientRegisterService: ClientRegisterService
 ) {
   @GetMapping("/")
   fun getProfile(model: Model, principal: Principal): String {
@@ -66,7 +68,7 @@ class HomeController(
   @GetMapping("/client/list")
   @PreAuthorize("hasRole('ADMIN')")
   fun getClientLIst(model: Model): String {
-    val clients = clientService.getClients()
+    val clients = clientGetAllService.execute()
     model.addAttribute("clients", clients)
     return "client_list"
   }
@@ -99,7 +101,7 @@ class HomeController(
   @PostMapping("/client/register")
   @PreAuthorize("hasRole('ADMIN')")
   fun registerClient(@ModelAttribute clientForm: ClientForm): String {
-    clientService.registerClient(
+    clientRegisterService.execute(
         ClientMapper.toClient(clientForm)
     )
     return "redirect:/client/list"
