@@ -55,6 +55,37 @@ class UserRepositoryImpl(
     return user
   }
 
+  override fun update(user: User): User {
+    val updateQuery = StringBuilder()
+        .append("UPDATE user SET ")
+        .append("login_id = ?, ")
+        .append("password = ?, ")
+        .append("roles = ?, ")
+        .append("is_lock = ?, ")
+        .append("failed_attempts = ?, ")
+        .append("lock_time = ?, ")
+        .append("is_disabled = ? ")
+        .append("WHERE user_id = ?")
+        .toString()
+    val updateNum = userDbJdbcTemplate.update(
+        updateQuery,
+        user.loginId.toString(),
+        user.password.toString(),
+        user.roles.joinToString(","),
+        user.isLock,
+        user.failedAttempts,
+        user.lockTime,
+        user.isDisabled,
+        user.userId.toString(),
+    )
+    if (updateNum != 1)
+      throw AppException(
+          errorCode = ErrorCode.INTERNAL_SERVER_ERROR,
+          logMessage = "Internal Server Error"
+      )
+    return user
+  }
+
   override fun findByLoginId(loginId: String): User? {
     return try {
       userDbJdbcTemplate.queryForObject(
