@@ -16,16 +16,16 @@ class UserRegisterService(
     private val userDomainService: UserDomainService,
     private val userRepository: UserRepository,
 ) {
-  fun execute(command: UserRegisterCommand) {
-    if (userDomainService.isExistsLoginId(loginId = LoginId(command.loginId)))
+  fun execute(input: UserRegisterInputData) {
+    if (userDomainService.isExistsLoginId(loginId = LoginId(input.loginId)))
       throw AppException(
           errorCode = ErrorCode.USER_EXISTS,
-          logMessage = "User already exists. loginId: ${command.loginId}"
+          logMessage = "User already exists. loginId: ${input.loginId}"
       )
     val user = User.new(
-        loginId = command.loginId,
-        password = command.password,
-        roles = command.roles.map { Role.fromString(it) }
+        loginId = input.loginId,
+        password = input.password,
+        roles = input.roles.map { Role.fromString(it) }
     )
     userRepository.save(user)
   }

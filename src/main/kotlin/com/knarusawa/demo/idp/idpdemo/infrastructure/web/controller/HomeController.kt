@@ -1,11 +1,11 @@
 package com.knarusawa.demo.idp.idpdemo.infrastructure.web.controller
 
-import com.knarusawa.demo.idp.idpdemo.application.mapper.ClientMapper
 import com.knarusawa.demo.idp.idpdemo.application.service.client.getAll.ClientGetAllService
+import com.knarusawa.demo.idp.idpdemo.application.service.client.register.ClientRegisterInputData
 import com.knarusawa.demo.idp.idpdemo.application.service.client.register.ClientRegisterService
 import com.knarusawa.demo.idp.idpdemo.application.service.user.getAll.UserGetAllService
 import com.knarusawa.demo.idp.idpdemo.application.service.user.getById.UserGetByUserIdService
-import com.knarusawa.demo.idp.idpdemo.application.service.user.register.UserRegisterCommand
+import com.knarusawa.demo.idp.idpdemo.application.service.user.register.UserRegisterInputData
 import com.knarusawa.demo.idp.idpdemo.application.service.user.register.UserRegisterService
 import com.knarusawa.demo.idp.idpdemo.domain.model.user.Role
 import com.knarusawa.demo.idp.idpdemo.infrastructure.dto.ClientForm
@@ -52,7 +52,7 @@ class HomeController(
   @PostMapping("/user/register")
   @PreAuthorize("hasRole('ADMIN')")
   fun registerUser(@ModelAttribute userForm: UserForm): String {
-    val command = UserRegisterCommand(
+    val command = UserRegisterInputData(
         loginId = userForm.loginId,
         password = userForm.password,
         roles = userForm.roles
@@ -98,7 +98,14 @@ class HomeController(
   @PreAuthorize("hasRole('ADMIN')")
   fun registerClient(@ModelAttribute clientForm: ClientForm): String {
     clientRegisterService.execute(
-        ClientMapper.toClient(clientForm)
+        input = ClientRegisterInputData(
+            clientId = clientForm.clientId,
+            clientSecret = clientForm.clientSecret,
+            clientAuthenticationMethods = clientForm.clientAuthenticationMethods.map { it.to() },
+            clientAuthenticationGrantTypes = clientForm.clientAuthenticationGrantTypes.map { it.to() },
+            redirectUrls = clientForm.redirectUrls.split(",").map { it.trim() }.filter { it.isNotEmpty() },
+            scopes = clientForm.scopes.map { it.to() }
+        )
     )
     return "redirect:/client/list"
   }
