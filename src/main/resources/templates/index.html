@@ -2,32 +2,32 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.3.0/css/bootstrap.min.css}">
 <head>
-  <meta charset="UTF-8">
-  <title>Home</title>
+    <meta charset="UTF-8">
+    <title>Home</title>
 </head>
 <body>
 <div th:replace="~{common/header :: header_fragment}"></div>
 <div class="container">
-  <h1 class="my-3">Profile</h1>
-  <hr class="mb-5">
-  <table class="table table-striped col-md-6">
-    <tr>
-      <th class="align-middle">会員ID</th>
-      <td class="align-middle" th:text="${user.userId}"></td>
-    </tr>
-    <tr>
-      <th class="align-middle">ログインID</th>
-      <td class="align-middle" th:text="${user.loginId}"></td>
-    </tr>
-    <tr>
-      <th class="align-middle">登録日時</th>
-      <td class="align-middle" th:text="${user.createdAt}"></td>
-    </tr>
-    <tr th:if="${!#lists.isEmpty(userRole)}" th:each="role : ${userRole}">
-      <th class="align-middle">ロール</th>
-      <td class="align-middle" th:text="${role.role}"></td>
-    </tr>
-  </table>
+    <h1 class="my-3">Profile</h1>
+    <hr class="mb-5">
+    <table class="table table-striped col-md-6">
+        <tr>
+            <th class="align-middle">会員ID</th>
+            <td class="align-middle" th:text="${user.userId}"></td>
+        </tr>
+        <tr>
+            <th class="align-middle">ログインID</th>
+            <td class="align-middle" th:text="${user.loginId}"></td>
+        </tr>
+        <tr>
+            <th class="align-middle">登録日時</th>
+            <td class="align-middle" th:text="${user.createdAt}"></td>
+        </tr>
+        <tr th:if="${!#lists.isEmpty(user.roles)}" th:each="role : ${user.roles}">
+            <th class="align-middle">ロール</th>
+            <td class="align-middle" th:text="${role}"></td>
+        </tr>
+    </table>
 </div>
 <script th:src="@{/webjars/jquery/3.4.1/jquery.min.js}"></script>
 <script th:src="@{/webjars/bootstrap/5.3.0/js/bootstrap.min.js}"></script>

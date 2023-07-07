@@ -7,6 +7,7 @@ data class User(
     val userId: UserId,
     val loginId: LoginId,
     val password: Password,
+    val roles: List<Role>,
     val isLock: Boolean,
     val failedAttempts: Int?,
     val lockTime: LocalDateTime?,
@@ -15,11 +16,12 @@ data class User(
     val updatedAt: LocalDateTime?
 ) {
   companion object {
-    fun new(loginId: String, password: String) =
+    fun new(loginId: String, password: String, roles: List<Role>) =
         User(
             userId = UserId.generate(),
             loginId = LoginId(value = loginId),
             password = Password(value = SecurityConfig().passwordEncoder().encode(password)),
+            roles = roles,
             isLock = false,
             failedAttempts = null,
             lockTime = null,
@@ -33,6 +35,7 @@ data class User(
       userId = this.userId,
       loginId = LoginId(value = loginId),
       password = this.password,
+      roles = roles,
       isLock = this.isLock,
       failedAttempts = this.failedAttempts,
       lockTime = this.lockTime,

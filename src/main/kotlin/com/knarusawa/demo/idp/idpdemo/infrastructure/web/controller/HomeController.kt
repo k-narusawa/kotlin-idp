@@ -1,14 +1,13 @@
 package com.knarusawa.demo.idp.idpdemo.infrastructure.web.controller
 
 import com.knarusawa.demo.idp.idpdemo.application.mapper.ClientMapper
-import com.knarusawa.demo.idp.idpdemo.application.service.UserRoleService
 import com.knarusawa.demo.idp.idpdemo.application.service.client.getAll.ClientGetAllService
 import com.knarusawa.demo.idp.idpdemo.application.service.client.register.ClientRegisterService
 import com.knarusawa.demo.idp.idpdemo.application.service.user.getAll.UserGetAllService
 import com.knarusawa.demo.idp.idpdemo.application.service.user.getById.UserGetByUserIdService
 import com.knarusawa.demo.idp.idpdemo.application.service.user.register.UserRegisterCommand
 import com.knarusawa.demo.idp.idpdemo.application.service.user.register.UserRegisterService
-import com.knarusawa.demo.idp.idpdemo.domain.model.userRole.Role
+import com.knarusawa.demo.idp.idpdemo.domain.model.user.Role
 import com.knarusawa.demo.idp.idpdemo.infrastructure.dto.ClientForm
 import com.knarusawa.demo.idp.idpdemo.infrastructure.dto.UserForm
 import org.springframework.security.access.prepost.PreAuthorize
@@ -24,16 +23,13 @@ class HomeController(
     private val userGetByUserIdService: UserGetByUserIdService,
     private val userRegisterService: UserRegisterService,
     private val userGetAllService: UserGetAllService,
-    private val userRoleService: UserRoleService,
     private val clientGetAllService: ClientGetAllService,
     private val clientRegisterService: ClientRegisterService
 ) {
   @GetMapping("/")
   fun getProfile(model: Model, principal: Principal): String {
     val user = userGetByUserIdService.execute(userId = principal.name)
-    val userRole = userRoleService.getUserRole(userId = principal.name)
     model.addAttribute("user", user)
-    model.addAttribute("userRole", userRole)
     return "index"
   }
 
