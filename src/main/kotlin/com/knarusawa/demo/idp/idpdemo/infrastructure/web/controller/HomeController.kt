@@ -4,7 +4,7 @@ import com.knarusawa.demo.idp.idpdemo.application.service.client.getAll.ClientGe
 import com.knarusawa.demo.idp.idpdemo.application.service.client.register.ClientRegisterInputData
 import com.knarusawa.demo.idp.idpdemo.application.service.client.register.ClientRegisterService
 import com.knarusawa.demo.idp.idpdemo.application.service.user.getAll.UserGetAllService
-import com.knarusawa.demo.idp.idpdemo.application.service.user.getById.UserGetByUserIdService
+import com.knarusawa.demo.idp.idpdemo.application.service.user.getByUserId.UserGetByUserIdService
 import com.knarusawa.demo.idp.idpdemo.application.service.user.register.UserRegisterInputData
 import com.knarusawa.demo.idp.idpdemo.application.service.user.register.UserRegisterService
 import com.knarusawa.demo.idp.idpdemo.domain.model.user.Role
@@ -28,7 +28,7 @@ class HomeController(
 ) {
   @GetMapping("/")
   fun getProfile(model: Model, principal: Principal): String {
-    val user = userGetByUserIdService.execute(userId = principal.name)
+    val user = userGetByUserIdService.execute(userId = principal.name).user
     model.addAttribute("user", user)
     return "index"
   }
@@ -36,7 +36,7 @@ class HomeController(
   @GetMapping("/user/list")
   @PreAuthorize("hasRole('ADMIN')")
   fun getUserList(model: Model, principal: Principal): String {
-    val users = userGetAllService.execute()
+    val users = userGetAllService.execute().users
     model.addAttribute("users", users)
     return "user_list"
   }
