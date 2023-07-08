@@ -5,15 +5,15 @@ import com.knarusawa.demo.idp.idpdemo.application.service.user.getById.UserGetBy
 import com.knarusawa.demo.idp.idpdemo.application.service.user.loginIdUpdate.UserLoginIdUpdateInputData
 import com.knarusawa.demo.idp.idpdemo.application.service.user.loginIdUpdate.UserLoginIdUpdateService
 import com.knarusawa.demo.idp.idpdemo.infrastructure.dto.UserResponse
+import java.security.Principal
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
-import java.security.Principal
 
 @RestController
 @RequestMapping("/api/user")
 class UserRestController(
-    private val userGetByUserIdService: UserGetByUserIdService,
-    private val userLoginIdUpdateService: UserLoginIdUpdateService
+  private val userGetByUserIdService: UserGetByUserIdService,
+  private val userLoginIdUpdateService: UserLoginIdUpdateService
 ) {
   @GetMapping
   @PreAuthorize("hasRole('USER')")
@@ -25,13 +25,13 @@ class UserRestController(
 
   @PutMapping
   @PreAuthorize("hasRole('USER')")
-  fun updateUser(principal: Principal, loginId: String): UserResponse {
+  fun updateUserLoginId(principal: Principal, loginId: String): UserResponse {
     val userId = principal.name
     val user = userLoginIdUpdateService.execute(
-        UserLoginIdUpdateInputData(
-            userId = userId,
-            loginId = loginId
-        )
+      UserLoginIdUpdateInputData(
+        userId = userId,
+        loginId = loginId
+      )
     )
     return UserMapper.fromUser(user)
   }
