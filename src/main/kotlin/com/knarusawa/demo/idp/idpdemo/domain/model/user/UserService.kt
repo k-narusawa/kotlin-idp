@@ -1,11 +1,10 @@
-package com.knarusawa.demo.idp.idpdemo.domain.service
+package com.knarusawa.demo.idp.idpdemo.domain.model.user
 
-import com.knarusawa.demo.idp.idpdemo.domain.model.user.LoginId
 import com.knarusawa.demo.idp.idpdemo.domain.repository.user.UserReadModelRepository
 import org.springframework.stereotype.Component
 
 @Component
-class UserDomainService(
+class UserService(
   private val userReadModelRepository: UserReadModelRepository
 ) {
   fun isExistsLoginId(loginId: LoginId): Boolean {
