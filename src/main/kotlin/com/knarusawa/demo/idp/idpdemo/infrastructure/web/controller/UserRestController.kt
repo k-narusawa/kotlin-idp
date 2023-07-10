@@ -1,13 +1,13 @@
 package com.knarusawa.demo.idp.idpdemo.infrastructure.web.controller
 
 import com.knarusawa.demo.idp.idpdemo.application.mapper.UserMapper
-import com.knarusawa.demo.idp.idpdemo.application.service.user.getById.UserGetByUserIdService
+import com.knarusawa.demo.idp.idpdemo.application.service.user.getByUserId.UserGetByUserIdService
 import com.knarusawa.demo.idp.idpdemo.application.service.user.loginIdUpdate.UserLoginIdUpdateInputData
 import com.knarusawa.demo.idp.idpdemo.application.service.user.loginIdUpdate.UserLoginIdUpdateService
 import com.knarusawa.demo.idp.idpdemo.infrastructure.dto.UserResponse
-import java.security.Principal
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
+import java.security.Principal
 
 @RestController
 @RequestMapping("/api/user")
@@ -19,7 +19,7 @@ class UserRestController(
   @PreAuthorize("hasRole('USER')")
   fun getUser(principal: Principal): UserResponse {
     val userId = principal.name
-    val user = userGetByUserIdService.execute(userId = userId)
+    val user = userGetByUserIdService.execute(userId = userId).user
     return UserMapper.fromUser(user)
   }
 
@@ -32,7 +32,7 @@ class UserRestController(
         userId = userId,
         loginId = loginId
       )
-    )
+    ).user
     return UserMapper.fromUser(user)
   }
 }

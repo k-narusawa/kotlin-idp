@@ -3,7 +3,6 @@ package com.knarusawa.demo.idp.idpdemo.application.service.user.loginIdUpdate
 import com.knarusawa.demo.idp.idpdemo.domain.model.error.AppException
 import com.knarusawa.demo.idp.idpdemo.domain.model.error.ErrorCode
 import com.knarusawa.demo.idp.idpdemo.domain.model.user.LoginId
-import com.knarusawa.demo.idp.idpdemo.domain.model.user.UserReadModel
 import com.knarusawa.demo.idp.idpdemo.domain.model.user.UserService
 import com.knarusawa.demo.idp.idpdemo.domain.repository.user.UserReadModelRepository
 import com.knarusawa.demo.idp.idpdemo.domain.repository.user.UserRepository
@@ -17,7 +16,7 @@ class UserLoginIdUpdateService(
   private val userRepository: UserRepository,
   private val userReadModelRepository: UserReadModelRepository
 ) {
-  fun execute(input: UserLoginIdUpdateInputData): UserReadModel {
+  fun execute(input: UserLoginIdUpdateInputData): UserLoginIdUpdateOutputData {
     val user = userRepository.findByUserId(userId = input.userId) ?: throw AppException(
       errorCode = ErrorCode.USER_NOT_FOUND,
       logMessage = "User Not Found"
@@ -41,7 +40,6 @@ class UserLoginIdUpdateService(
         logMessage = "Data inconsistency occurred",
         errorCode = ErrorCode.INTERNAL_SERVER_ERROR
       )
-
-    return newUser
+    return UserLoginIdUpdateOutputData(newUser)
   }
 }
