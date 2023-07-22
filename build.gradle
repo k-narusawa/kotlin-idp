@@ -58,11 +58,11 @@ jib {
         image = 'registry.hub.docker.com/19992240/kotlin-idp'
         tags = ['latest']
     }
-    container(({
+    container {
         jvmFlags = [
                 '-Xms512m',
                 '-Xdebug'
         ]
         ports = ['8080']
-    } as Class<Object>))
+    }
 }
