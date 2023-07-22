@@ -2,8 +2,8 @@ package com.knarusawa.demo.idp.idpdemo.infrastructure.web.controller
 
 import com.knarusawa.demo.idp.idpdemo.application.mapper.UserMapper
 import com.knarusawa.demo.idp.idpdemo.application.service.user.getByUserId.UserGetByUserIdService
-import com.knarusawa.demo.idp.idpdemo.application.service.user.loginIdUpdate.UserLoginIdUpdateInputData
-import com.knarusawa.demo.idp.idpdemo.application.service.user.loginIdUpdate.UserLoginIdUpdateService
+import com.knarusawa.demo.idp.idpdemo.application.service.user.loginIdChange.UserLoginIdChangeInputData
+import com.knarusawa.demo.idp.idpdemo.application.service.user.loginIdChange.UserLoginIdChangeService
 import com.knarusawa.demo.idp.idpdemo.application.service.user.passwordChange.UserPasswordChangeInputData
 import com.knarusawa.demo.idp.idpdemo.application.service.user.passwordChange.UserPasswordChangeService
 import com.knarusawa.demo.idp.idpdemo.infrastructure.dto.UserResponse
@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("/api/user")
 class UserRestController(
   private val userGetByUserIdService: UserGetByUserIdService,
-  private val userLoginIdUpdateService: UserLoginIdUpdateService,
+  private val userLoginIdChangeService: UserLoginIdChangeService,
   private val userPasswordChangeService: UserPasswordChangeService
 ) {
   @GetMapping
@@ -31,8 +31,8 @@ class UserRestController(
   @PreAuthorize("hasRole('USER')")
   fun updateUserLoginId(principal: Principal, loginId: String): UserResponse {
     val userId = principal.name
-    val user = userLoginIdUpdateService.execute(
-      UserLoginIdUpdateInputData(
+    val user = userLoginIdChangeService.execute(
+      UserLoginIdChangeInputData(
         userId = userId,
         loginId = loginId
       )
