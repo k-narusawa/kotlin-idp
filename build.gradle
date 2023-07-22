@@ -55,7 +55,7 @@ jib {
         image = 'openjdk:alpine'
     }
     to {
-        image = 'registry.hub.docker.com/19992240/kotlin-application'
+        image = 'registry.hub.docker.com/19992240/kotlin-idp'
         tags = ['latest']
     }
     container(({
@@ -66,4 +66,3 @@ jib {
         ports = ['8080']
     } as Class<Object>))
 }
-
