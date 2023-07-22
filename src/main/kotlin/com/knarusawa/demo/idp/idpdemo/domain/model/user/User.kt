@@ -37,4 +37,15 @@ data class User(
     lockTime = this.lockTime,
     isDisabled = this.isDisabled,
   )
+
+  fun updatePassword(password: String) = User(
+    userId = this.userId,
+    loginId = this.loginId,
+    password = Password(value = SecurityConfig().passwordEncoder().encode(password)),
+    roles = roles,
+    isLock = this.isLock,
+    failedAttempts = this.failedAttempts,
+    lockTime = this.lockTime,
+    isDisabled = this.isDisabled,
+  )
 }

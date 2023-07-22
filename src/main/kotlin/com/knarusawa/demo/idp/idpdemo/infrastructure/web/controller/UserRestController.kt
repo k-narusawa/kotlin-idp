@@ -4,16 +4,20 @@ import com.knarusawa.demo.idp.idpdemo.application.mapper.UserMapper
 import com.knarusawa.demo.idp.idpdemo.application.service.user.getByUserId.UserGetByUserIdService
 import com.knarusawa.demo.idp.idpdemo.application.service.user.loginIdUpdate.UserLoginIdUpdateInputData
 import com.knarusawa.demo.idp.idpdemo.application.service.user.loginIdUpdate.UserLoginIdUpdateService
+import com.knarusawa.demo.idp.idpdemo.application.service.user.passwordChange.UserPasswordChangeInputData
+import com.knarusawa.demo.idp.idpdemo.application.service.user.passwordChange.UserPasswordChangeService
 import com.knarusawa.demo.idp.idpdemo.infrastructure.dto.UserResponse
+import java.security.Principal
+import org.springframework.http.HttpStatus
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
-import java.security.Principal
 
 @RestController
 @RequestMapping("/api/user")
 class UserRestController(
   private val userGetByUserIdService: UserGetByUserIdService,
-  private val userLoginIdUpdateService: UserLoginIdUpdateService
+  private val userLoginIdUpdateService: UserLoginIdUpdateService,
+  private val userPasswordChangeService: UserPasswordChangeService
 ) {
   @GetMapping
   @PreAuthorize("hasRole('USER')")
@@ -23,7 +27,7 @@ class UserRestController(
     return UserMapper.fromUser(user)
   }
 
-  @PutMapping
+  @PutMapping("/login_id")
   @PreAuthorize("hasRole('USER')")
   fun updateUserLoginId(principal: Principal, loginId: String): UserResponse {
     val userId = principal.name
@@ -34,5 +38,18 @@ class UserRestController(
       )
     ).user
     return UserMapper.fromUser(user)
+  }
+
+  @PutMapping("/password")
+  @PreAuthorize("hasRole('USER')")
+  @ResponseStatus(value = HttpStatus.NO_CONTENT)
+  fun updateUserPassword(principal: Principal, password: String) {
+    val userId = principal.name
+    userPasswordChangeService.execute(
+      UserPasswordChangeInputData(
+        userId = userId,
+        password = password
+      )
+    )
   }
 }
