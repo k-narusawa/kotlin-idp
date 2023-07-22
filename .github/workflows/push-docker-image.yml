@@ -29,5 +29,5 @@ jobs:
       - name: Push Docker Image
         run: |
           ./gradlew jib \
-          -Djib.to.auth.username=${{secrets.DOCKERHUB_USER_NAME}} \
-          -Djib.to.auth.password=${{secrets.DOCKER_HUB_PASSWORD}}
+          -Djib.to.auth.username='${{secrets.DOCKERHUB_USER_NAME}}' \
+          -Djib.to.auth.password='${{secrets.DOCKER_HUB_PASSWORD}}'
