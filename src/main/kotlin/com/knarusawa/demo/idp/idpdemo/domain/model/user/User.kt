@@ -1,20 +1,21 @@
 package com.knarusawa.demo.idp.idpdemo.domain.model.user
 
 import com.knarusawa.demo.idp.idpdemo.configuration.SecurityConfig
+import com.knarusawa.demo.idp.idpdemo.infrastructure.db.record.UserRecord
 import java.time.LocalDateTime
 
-data class User(
+class User private constructor(
   val userId: UserId,
-  val loginId: LoginId,
-  val password: Password,
-  val roles: List<Role>,
-  val isLock: Boolean,
-  val failedAttempts: Int?,
-  val lockTime: LocalDateTime?,
-  val isDisabled: Boolean,
+  var loginId: LoginId,
+  var password: Password,
+  var roles: List<Role>,
+  var isLock: Boolean,
+  var failedAttempts: Int?,
+  var lockTime: LocalDateTime?,
+  var isDisabled: Boolean,
 ) {
   companion object {
-    fun new(loginId: String, password: String, roles: List<Role>) =
+    fun of(loginId: String, password: String, roles: List<Role>) =
       User(
         userId = UserId.generate(),
         loginId = LoginId(value = loginId),
@@ -25,16 +26,25 @@ data class User(
         lockTime = null,
         isDisabled = false,
       )
+
+    fun from(userRecord: UserRecord) =
+      User(
+        userId = UserId(value = userRecord.userId),
+        loginId = LoginId(value = userRecord.loginId),
+        password = Password(value = userRecord.password),
+        roles = userRecord.roles.map { Role.fromString(it) },
+        isLock = userRecord.isLock,
+        failedAttempts = userRecord.failedAttempts,
+        lockTime = userRecord.lockTime,
+        isDisabled = userRecord.isDisabled,
+      )
   }
 
-  fun updateLoginId(loginId: String) = User(
-    userId = this.userId,
-    loginId = LoginId(value = loginId),
-    password = this.password,
-    roles = roles,
-    isLock = this.isLock,
-    failedAttempts = this.failedAttempts,
-    lockTime = this.lockTime,
-    isDisabled = this.isDisabled,
-  )
+  fun updateLoginId(loginId: String) {
+    this.loginId = LoginId(value = loginId)
+  }
+
+  fun updatePassword(password: String) {
+    this.password = Password(value = SecurityConfig().passwordEncoder().encode(password))
+  }
 }

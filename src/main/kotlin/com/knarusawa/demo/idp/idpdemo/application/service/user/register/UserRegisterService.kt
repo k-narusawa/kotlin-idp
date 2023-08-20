@@ -22,7 +22,7 @@ class UserRegisterService(
         errorCode = ErrorCode.USER_EXISTS,
         logMessage = "User already exists. loginId: ${input.loginId}"
       )
-    val user = User.new(
+    val user = User.of(
       loginId = input.loginId,
       password = input.password,
       roles = input.roles.map { Role.fromString(it) }
