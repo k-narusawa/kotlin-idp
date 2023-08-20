@@ -3,15 +3,15 @@ package com.knarusawa.demo.idp.idpdemo.domain.model.user
 import com.knarusawa.demo.idp.idpdemo.configuration.SecurityConfig
 import java.time.LocalDateTime
 
-data class User(
-  val userId: UserId,
-  val loginId: LoginId,
-  val password: Password,
-  val roles: List<Role>,
-  val isLock: Boolean,
-  val failedAttempts: Int?,
-  val lockTime: LocalDateTime?,
-  val isDisabled: Boolean,
+class User(
+  var userId: UserId,
+  var loginId: LoginId,
+  var password: Password,
+  var roles: List<Role>,
+  var isLock: Boolean,
+  var failedAttempts: Int?,
+  var lockTime: LocalDateTime?,
+  var isDisabled: Boolean,
 ) {
   companion object {
     fun new(loginId: String, password: String, roles: List<Role>) =
@@ -27,25 +27,11 @@ data class User(
       )
   }
 
-  fun updateLoginId(loginId: String) = User(
-    userId = this.userId,
-    loginId = LoginId(value = loginId),
-    password = this.password,
-    roles = roles,
-    isLock = this.isLock,
-    failedAttempts = this.failedAttempts,
-    lockTime = this.lockTime,
-    isDisabled = this.isDisabled,
-  )
+  fun updateLoginId(loginId: String) {
+    this.loginId = LoginId(value = loginId)
+  }
 
-  fun updatePassword(password: String) = User(
-    userId = this.userId,
-    loginId = this.loginId,
-    password = Password(value = SecurityConfig().passwordEncoder().encode(password)),
-    roles = roles,
-    isLock = this.isLock,
-    failedAttempts = this.failedAttempts,
-    lockTime = this.lockTime,
-    isDisabled = this.isDisabled,
-  )
+  fun updatePassword(password: String) {
+    this.password = Password(value = SecurityConfig().passwordEncoder().encode(password))
+  }
 }
