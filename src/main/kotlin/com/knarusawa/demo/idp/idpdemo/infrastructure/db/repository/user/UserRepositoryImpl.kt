@@ -95,7 +95,7 @@ class UserRepositoryImpl(
         "SELECT * FROM user WHERE user_id = ?",
         userRowMapper,
         userId
-      )?.toUser()
+      )?.let { User.from(it) }
     } catch (ex: EmptyResultDataAccessException) {
       null
     }

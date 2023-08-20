@@ -1,10 +1,11 @@
 package com.knarusawa.demo.idp.idpdemo.domain.model.user
 
 import com.knarusawa.demo.idp.idpdemo.configuration.SecurityConfig
+import com.knarusawa.demo.idp.idpdemo.infrastructure.db.record.UserRecord
 import java.time.LocalDateTime
 
-class User(
-  var userId: UserId,
+class User private constructor(
+  val userId: UserId,
   var loginId: LoginId,
   var password: Password,
   var roles: List<Role>,
@@ -24,6 +25,18 @@ class User(
         failedAttempts = null,
         lockTime = null,
         isDisabled = false,
+      )
+
+    fun from(userRecord: UserRecord) =
+      User(
+        userId = UserId(value = userRecord.userId),
+        loginId = LoginId(value = userRecord.loginId),
+        password = Password(value = userRecord.password),
+        roles = userRecord.roles.map { Role.fromString(it) },
+        isLock = userRecord.isLock,
+        failedAttempts = userRecord.failedAttempts,
+        lockTime = userRecord.lockTime,
+        isDisabled = userRecord.isDisabled,
       )
   }
 

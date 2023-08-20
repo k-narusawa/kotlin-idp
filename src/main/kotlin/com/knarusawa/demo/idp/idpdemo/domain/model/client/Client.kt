@@ -1,12 +1,13 @@
 package com.knarusawa.demo.idp.idpdemo.domain.model.client
 
 import com.knarusawa.demo.idp.idpdemo.configuration.SecurityConfig
+import java.util.*
 import org.springframework.security.oauth2.core.AuthorizationGrantType
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient
 import org.springframework.security.oauth2.server.authorization.settings.ClientSettings
 
-class Client(
+class Client private constructor(
   val id: String,
   var clientId: String,
   var clientSecret: String,
@@ -29,6 +30,23 @@ class Client(
   }
 
   companion object {
+    fun of(
+      clientId: String,
+      clientSecret: String,
+      clientAuthenticationMethods: List<ClientAuthenticationMethod>,
+      clientAuthenticationGrantTypes: List<AuthorizationGrantType>,
+      redirectUrls: List<String>,
+      scopes: List<String>,
+    ) = Client(
+      id = UUID.randomUUID().toString(),
+      clientId = clientId,
+      clientSecret = clientSecret,
+      clientAuthenticationMethods = clientAuthenticationMethods,
+      clientAuthenticationGrantTypes = clientAuthenticationGrantTypes,
+      redirectUrls = redirectUrls,
+      scopes = scopes,
+    )
+
     fun fromRegisteredClient(registeredClient: RegisteredClient): Client {
       return Client(
         id = registeredClient.id,
