@@ -14,7 +14,7 @@ class User(
   var isDisabled: Boolean,
 ) {
   companion object {
-    fun new(loginId: String, password: String, roles: List<Role>) =
+    fun of(loginId: String, password: String, roles: List<Role>) =
       User(
         userId = UserId.generate(),
         loginId = LoginId(value = loginId),
