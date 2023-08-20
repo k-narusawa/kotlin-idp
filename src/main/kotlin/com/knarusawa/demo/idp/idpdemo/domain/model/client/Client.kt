@@ -6,14 +6,14 @@ import org.springframework.security.oauth2.core.ClientAuthenticationMethod
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient
 import org.springframework.security.oauth2.server.authorization.settings.ClientSettings
 
-data class Client(
+class Client(
   val id: String,
-  val clientId: String,
-  val clientSecret: String,
-  val clientAuthenticationMethods: List<ClientAuthenticationMethod>,
-  val clientAuthenticationGrantTypes: List<AuthorizationGrantType>,
-  val redirectUrls: List<String>,
-  val scopes: List<String>,
+  var clientId: String,
+  var clientSecret: String,
+  var clientAuthenticationMethods: List<ClientAuthenticationMethod>,
+  var clientAuthenticationGrantTypes: List<AuthorizationGrantType>,
+  var redirectUrls: List<String>,
+  var scopes: List<String>,
 ) {
   fun ofRegisteredClient(): RegisteredClient {
     return RegisteredClient
