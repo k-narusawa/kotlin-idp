@@ -28,7 +28,8 @@ class UserLoginIdChangeService(
         logMessage = "User already exists. loginId: ${input.loginId}"
       )
 
-    userRepository.update(user.updateLoginId(loginId = input.loginId))
+    user.updateLoginId(loginId = input.loginId)
+    userRepository.update(user)
 
     val newUser = userReadModelRepository.findByUserId(userId = input.userId) ?: throw AppException(
       logMessage = "User Not Found",
