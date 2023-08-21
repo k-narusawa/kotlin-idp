@@ -9,13 +9,27 @@ import org.springframework.security.oauth2.server.authorization.settings.ClientS
 
 class Client private constructor(
   val id: String,
-  var clientId: String,
-  var clientSecret: String,
-  var clientAuthenticationMethods: List<ClientAuthenticationMethod>,
-  var clientAuthenticationGrantTypes: List<AuthorizationGrantType>,
-  var redirectUrls: List<String>,
-  var scopes: List<String>,
+  clientId: String,
+  clientSecret: String,
+  clientAuthenticationMethods: List<ClientAuthenticationMethod>,
+  clientAuthenticationGrantTypes: List<AuthorizationGrantType>,
+  redirectUrls: List<String>,
+  scopes: List<String>,
 ) {
+
+  var clientId: String = clientId
+    private set
+  var clientSecret: String = clientSecret
+    private set
+  var clientAuthenticationMethods: List<ClientAuthenticationMethod> = clientAuthenticationMethods
+    private set
+  var clientAuthenticationGrantTypes: List<AuthorizationGrantType> = clientAuthenticationGrantTypes
+    private set
+  var redirectUrls: List<String> = redirectUrls
+    private set
+  var scopes: List<String> = scopes
+    private set
+
   fun ofRegisteredClient(): RegisteredClient {
     return RegisteredClient
       .withId(id)

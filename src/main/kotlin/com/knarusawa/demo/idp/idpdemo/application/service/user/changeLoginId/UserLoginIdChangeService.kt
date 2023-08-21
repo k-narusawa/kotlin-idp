@@ -1,4 +1,4 @@
-package com.knarusawa.demo.idp.idpdemo.application.service.user.loginIdChange
+package com.knarusawa.demo.idp.idpdemo.application.service.user.changeLoginId
 
 import com.knarusawa.demo.idp.idpdemo.domain.model.error.AppException
 import com.knarusawa.demo.idp.idpdemo.domain.model.error.ErrorCode
