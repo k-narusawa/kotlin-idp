@@ -6,14 +6,29 @@ import java.time.LocalDateTime
 
 class User private constructor(
   val userId: UserId,
-  var loginId: LoginId,
-  var password: Password,
-  var roles: List<Role>,
-  var isLock: Boolean,
-  var failedAttempts: Int?,
-  var lockTime: LocalDateTime?,
-  var isDisabled: Boolean,
+  loginId: LoginId,
+  password: Password,
+  roles: List<Role>,
+  isLock: Boolean,
+  failedAttempts: Int?,
+  lockTime: LocalDateTime?,
+  isDisabled: Boolean,
 ) {
+  var loginId: LoginId = loginId
+    private set
+  var password: Password = password
+    private set
+  var roles: List<Role> = roles
+    private set
+  var isLock: Boolean = isLock
+    private set
+  var failedAttempts: Int? = failedAttempts
+    private set
+  var lockTime: LocalDateTime? = lockTime
+    private set
+  var isDisabled: Boolean = isDisabled
+    private set
+
   companion object {
     fun of(loginId: String, password: String, roles: List<Role>) =
       User(
