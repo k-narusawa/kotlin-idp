@@ -58,10 +58,11 @@ class User private constructor(
 
   fun updateLoginId(loginId: String) {
     this.loginId = LoginId(value = loginId)
+    registerEvent(UserEvent.UpdateEvent(user = this))
   }
 
   fun updatePassword(password: String) {
     this.password = Password(value = SecurityConfig().passwordEncoder().encode(password))
-    registerEvent(UserEvent.UpdateEvent())
+    registerEvent(UserEvent.UpdateEvent(user = this))
   }
 }
