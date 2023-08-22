@@ -2,6 +2,7 @@ package com.knarusawa.demo.idp.idpdemo.domain.model.user
 
 import com.knarusawa.demo.idp.idpdemo.configuration.SecurityConfig
 import com.knarusawa.demo.idp.idpdemo.infrastructure.db.record.UserRecord
+import org.springframework.data.domain.AbstractAggregateRoot
 import java.time.LocalDateTime
 
 class User private constructor(
@@ -13,7 +14,7 @@ class User private constructor(
   failedAttempts: Int?,
   lockTime: LocalDateTime?,
   isDisabled: Boolean,
-) {
+) : AbstractAggregateRoot<User>() {
   var loginId: LoginId = loginId
     private set
   var password: Password = password
@@ -57,9 +58,11 @@ class User private constructor(
 
   fun updateLoginId(loginId: String) {
     this.loginId = LoginId(value = loginId)
+    registerEvent(UserEvent.UpdateEvent(user = this))
   }
 
   fun updatePassword(password: String) {
     this.password = Password(value = SecurityConfig().passwordEncoder().encode(password))
+    registerEvent(UserEvent.UpdateEvent(user = this))
   }
 }
