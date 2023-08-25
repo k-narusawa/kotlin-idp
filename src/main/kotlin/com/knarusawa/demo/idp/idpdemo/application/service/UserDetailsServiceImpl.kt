@@ -2,7 +2,8 @@ package com.knarusawa.demo.idp.idpdemo.application.service
 
 import com.knarusawa.demo.idp.idpdemo.domain.model.error.AppException
 import com.knarusawa.demo.idp.idpdemo.domain.model.error.ErrorCode
-import com.knarusawa.demo.idp.idpdemo.domain.repository.user.UserReadModelRepository
+import com.knarusawa.demo.idp.idpdemo.domain.model.user.User
+import com.knarusawa.demo.idp.idpdemo.domain.repository.user.UserRepository
 import java.util.*
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
@@ -10,11 +11,13 @@ import org.springframework.stereotype.Service
 
 @Service
 class UserDetailsServiceImpl(
-  private val userReadModelRepository: UserReadModelRepository
+  private val userRepository: UserRepository
 ) : UserDetailsService {
 
   override fun loadUserByUsername(loginId: String): UserDetails {
-    val user = userReadModelRepository.findByLoginId(loginId = loginId)
+    val user = userRepository.findByLoginId(loginId = loginId)?.run {
+      User.from(this)
+    }
       ?: throw AppException(errorCode = ErrorCode.BAD_REQUEST, logMessage = "User Not Found.")
     return org.springframework.security.core.userdetails.User
       .withUsername(user.userId.toString())

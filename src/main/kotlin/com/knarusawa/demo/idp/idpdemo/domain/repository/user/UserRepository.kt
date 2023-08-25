@@ -1,9 +1,13 @@
 package com.knarusawa.demo.idp.idpdemo.domain.repository.user
 
-import com.knarusawa.demo.idp.idpdemo.domain.model.user.User
+import com.knarusawa.demo.idp.idpdemo.infrastructure.db.entity.UserEntity
+import org.springframework.data.jpa.repository.JpaRepository
+import org.springframework.stereotype.Repository
 
-interface UserRepository {
-  fun save(user: User): User
-  fun update(user: User): User
-  fun findByUserId(userId: String): User?
+
+@Repository
+interface UserRepository : JpaRepository<UserEntity, Int> {
+  fun findByUserId(userId: String): UserEntity?
+  fun findByLoginId(loginId: String): UserEntity?
+
 }

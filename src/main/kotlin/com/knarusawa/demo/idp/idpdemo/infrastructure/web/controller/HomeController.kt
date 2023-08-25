@@ -1,10 +1,9 @@
 package com.knarusawa.demo.idp.idpdemo.infrastructure.web.controller
 
+import com.knarusawa.demo.idp.idpdemo.application.service.UserDtoQueryService
 import com.knarusawa.demo.idp.idpdemo.application.service.client.getAll.ClientGetAllService
 import com.knarusawa.demo.idp.idpdemo.application.service.client.register.ClientRegisterInputData
 import com.knarusawa.demo.idp.idpdemo.application.service.client.register.ClientRegisterService
-import com.knarusawa.demo.idp.idpdemo.application.service.user.getAll.UserGetAllService
-import com.knarusawa.demo.idp.idpdemo.application.service.user.getByUserId.UserGetByUserIdService
 import com.knarusawa.demo.idp.idpdemo.application.service.user.register.UserRegisterInputData
 import com.knarusawa.demo.idp.idpdemo.application.service.user.register.UserRegisterService
 import com.knarusawa.demo.idp.idpdemo.domain.model.user.Role
@@ -20,15 +19,14 @@ import org.springframework.web.bind.annotation.PostMapping
 
 @Controller
 class HomeController(
-  private val userGetByUserIdService: UserGetByUserIdService,
   private val userRegisterService: UserRegisterService,
-  private val userGetAllService: UserGetAllService,
+  private val userDtoQueryService: UserDtoQueryService,
   private val clientGetAllService: ClientGetAllService,
   private val clientRegisterService: ClientRegisterService
 ) {
   @GetMapping("/")
   fun getProfile(model: Model, principal: Principal): String {
-    val user = userGetByUserIdService.execute(userId = principal.name).user
+    val user = userDtoQueryService.findByUserId(userId = principal.name)
     model.addAttribute("user", user)
     return "index"
   }
@@ -36,7 +34,7 @@ class HomeController(
   @GetMapping("/user/list")
   @PreAuthorize("hasRole('ADMIN')")
   fun getUserList(model: Model, principal: Principal): String {
-    val users = userGetAllService.execute().users
+    val users = userDtoQueryService.findAll()
     model.addAttribute("users", users)
     return "user_list"
   }

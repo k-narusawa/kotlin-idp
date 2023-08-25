@@ -1,11 +1,12 @@
 package com.knarusawa.demo.idp.idpdemo.infrastructure.web.controller
 
 import com.knarusawa.demo.idp.idpdemo.application.mapper.UserMapper
+import com.knarusawa.demo.idp.idpdemo.application.service.UserDtoQueryService
 import com.knarusawa.demo.idp.idpdemo.application.service.user.changeLoginId.UserLoginIdChangeInputData
 import com.knarusawa.demo.idp.idpdemo.application.service.user.changeLoginId.UserLoginIdChangeService
 import com.knarusawa.demo.idp.idpdemo.application.service.user.changePassword.UserPasswordChangeInputData
 import com.knarusawa.demo.idp.idpdemo.application.service.user.changePassword.UserPasswordChangeService
-import com.knarusawa.demo.idp.idpdemo.application.service.user.getByUserId.UserGetByUserIdService
+import com.knarusawa.demo.idp.idpdemo.infrastructure.dto.UserDto
 import com.knarusawa.demo.idp.idpdemo.infrastructure.dto.UserResponse
 import java.security.Principal
 import org.springframework.http.HttpStatus
@@ -20,16 +21,15 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/api/user")
 class UserRestController(
-  private val userGetByUserIdService: UserGetByUserIdService,
+  private val userDtoQueryService: UserDtoQueryService,
   private val userLoginIdChangeService: UserLoginIdChangeService,
   private val userPasswordChangeService: UserPasswordChangeService
 ) {
   @GetMapping
   @PreAuthorize("hasRole('USER')")
-  fun getUser(principal: Principal): UserResponse {
+  fun getUser(principal: Principal): UserDto {
     val userId = principal.name
-    val user = userGetByUserIdService.execute(userId = userId).user
-    return UserMapper.fromUser(user)
+    return userDtoQueryService.findByUserId(userId = userId)
   }
 
   @PutMapping("/login_id")

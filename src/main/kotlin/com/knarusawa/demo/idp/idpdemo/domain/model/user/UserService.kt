@@ -1,14 +1,14 @@
 package com.knarusawa.demo.idp.idpdemo.domain.model.user
 
-import com.knarusawa.demo.idp.idpdemo.domain.repository.user.UserReadModelRepository
+import com.knarusawa.demo.idp.idpdemo.domain.repository.user.UserRepository
 import org.springframework.stereotype.Component
 
 @Component
 class UserService(
-  private val userReadModelRepository: UserReadModelRepository
+  private val userRepository: UserRepository
 ) {
   fun isExistsLoginId(loginId: LoginId): Boolean {
-    val user = userReadModelRepository.findByLoginId(loginId = loginId.toString())
+    val user = userRepository.findByLoginId(loginId = loginId.toString())
     return (user != null)
   }
 }
