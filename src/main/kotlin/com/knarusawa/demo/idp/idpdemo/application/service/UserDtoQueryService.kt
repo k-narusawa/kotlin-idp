@@ -9,5 +9,5 @@ import org.springframework.stereotype.Repository
 interface UserDtoQueryService : JpaRepository<UserDto, Int> {
   override fun findAll(): List<UserDto>
 
-  fun findByUserId(userId: String): UserDto
+  fun findByUserId(userId: String): UserDto?
 }
