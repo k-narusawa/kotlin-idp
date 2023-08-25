@@ -3,6 +3,7 @@ package com.knarusawa.demo.idp.idpdemo.application.service.user.changeLoginId
 import com.knarusawa.demo.idp.idpdemo.domain.model.error.AppException
 import com.knarusawa.demo.idp.idpdemo.domain.model.error.ErrorCode
 import com.knarusawa.demo.idp.idpdemo.domain.model.user.LoginId
+import com.knarusawa.demo.idp.idpdemo.domain.model.user.User
 import com.knarusawa.demo.idp.idpdemo.domain.model.user.UserService
 import com.knarusawa.demo.idp.idpdemo.domain.repository.user.UserReadModelRepository
 import com.knarusawa.demo.idp.idpdemo.domain.repository.user.UserRepository
@@ -17,7 +18,9 @@ class UserLoginIdChangeService(
   private val userReadModelRepository: UserReadModelRepository
 ) {
   fun execute(input: UserLoginIdChangeInputData): UserLoginIdChangeOutputData {
-    val user = userRepository.findByUserId(userId = input.userId) ?: throw AppException(
+    val user = userRepository.findByUserId(userId = input.userId)?.run {
+      User.from(this)
+    } ?: throw AppException(
       errorCode = ErrorCode.USER_NOT_FOUND,
       logMessage = "User Not Found"
     )
@@ -29,7 +32,7 @@ class UserLoginIdChangeService(
       )
 
     user.updateLoginId(loginId = input.loginId)
-    userRepository.update(user)
+    userRepository.save(user.toEntity())
 
     val newUser = userReadModelRepository.findByUserId(userId = input.userId) ?: throw AppException(
       logMessage = "User Not Found",
