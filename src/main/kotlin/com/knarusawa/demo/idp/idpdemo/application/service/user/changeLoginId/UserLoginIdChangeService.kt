@@ -1,8 +1,9 @@
-package com.knarusawa.demo.idp.idpdemo.application.service.user.loginIdUpdate
+package com.knarusawa.demo.idp.idpdemo.application.service.user.changeLoginId
 
 import com.knarusawa.demo.idp.idpdemo.domain.model.error.AppException
 import com.knarusawa.demo.idp.idpdemo.domain.model.error.ErrorCode
 import com.knarusawa.demo.idp.idpdemo.domain.model.user.LoginId
+import com.knarusawa.demo.idp.idpdemo.domain.model.user.User
 import com.knarusawa.demo.idp.idpdemo.domain.model.user.UserService
 import com.knarusawa.demo.idp.idpdemo.domain.repository.user.UserReadModelRepository
 import com.knarusawa.demo.idp.idpdemo.domain.repository.user.UserRepository
@@ -11,13 +12,15 @@ import org.springframework.transaction.annotation.Transactional
 
 @Service
 @Transactional
-class UserLoginIdUpdateService(
+class UserLoginIdChangeService(
   private val userService: UserService,
   private val userRepository: UserRepository,
   private val userReadModelRepository: UserReadModelRepository
 ) {
-  fun execute(input: UserLoginIdUpdateInputData): UserLoginIdUpdateOutputData {
-    val user = userRepository.findByUserId(userId = input.userId) ?: throw AppException(
+  fun execute(input: UserLoginIdChangeInputData): UserLoginIdChangeOutputData {
+    val user = userRepository.findByUserId(userId = input.userId)?.run {
+      User.from(this)
+    } ?: throw AppException(
       errorCode = ErrorCode.USER_NOT_FOUND,
       logMessage = "User Not Found"
     )
@@ -28,7 +31,8 @@ class UserLoginIdUpdateService(
         logMessage = "User already exists. loginId: ${input.loginId}"
       )
 
-    userRepository.update(user.updateLoginId(loginId = input.loginId))
+    user.updateLoginId(loginId = input.loginId)
+    userRepository.save(user.toEntity())
 
     val newUser = userReadModelRepository.findByUserId(userId = input.userId) ?: throw AppException(
       logMessage = "User Not Found",
@@ -40,6 +44,6 @@ class UserLoginIdUpdateService(
         logMessage = "Data inconsistency occurred",
         errorCode = ErrorCode.INTERNAL_SERVER_ERROR
       )
-    return UserLoginIdUpdateOutputData(newUser)
+    return UserLoginIdChangeOutputData(newUser)
   }
 }
