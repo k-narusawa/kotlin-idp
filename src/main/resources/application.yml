@@ -24,3 +24,5 @@ spring:
     locations:
       - classpath:db/migration/create
       - classpath:db/migration/insert
+  jpa:
+    show-sql: true
