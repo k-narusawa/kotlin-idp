@@ -1,19 +1,35 @@
 package com.knarusawa.demo.idp.idpdemo.domain.model.user
 
 import com.knarusawa.demo.idp.idpdemo.configuration.SecurityConfig
-import com.knarusawa.demo.idp.idpdemo.infrastructure.db.record.UserRecord
+import com.knarusawa.demo.idp.idpdemo.infrastructure.db.entity.UserEntity
 import java.time.LocalDateTime
 
 class User private constructor(
-  val userId: UserId,
-  var loginId: LoginId,
-  var password: Password,
-  var roles: List<Role>,
-  var isLock: Boolean,
-  var failedAttempts: Int?,
-  var lockTime: LocalDateTime?,
-  var isDisabled: Boolean,
+  userId: UserId,
+  loginId: LoginId,
+  password: Password,
+  roles: List<Role>,
+  isLock: Boolean,
+  failedAttempts: Int?,
+  lockTime: LocalDateTime?,
+  isDisabled: Boolean,
 ) {
+  val userId: UserId = userId
+  var loginId: LoginId = loginId
+    private set
+  var password: Password = password
+    private set
+  var roles: List<Role> = roles
+    private set
+  var isLock: Boolean = isLock
+    private set
+  var failedAttempts: Int? = failedAttempts
+    private set
+  var lockTime: LocalDateTime? = lockTime
+    private set
+  var isDisabled: Boolean = isDisabled
+    private set
+
   companion object {
     fun of(loginId: String, password: String, roles: List<Role>) =
       User(
@@ -27,18 +43,28 @@ class User private constructor(
         isDisabled = false,
       )
 
-    fun from(userRecord: UserRecord) =
-      User(
-        userId = UserId(value = userRecord.userId),
-        loginId = LoginId(value = userRecord.loginId),
-        password = Password(value = userRecord.password),
-        roles = userRecord.roles.map { Role.fromString(it) },
-        isLock = userRecord.isLock,
-        failedAttempts = userRecord.failedAttempts,
-        lockTime = userRecord.lockTime,
-        isDisabled = userRecord.isDisabled,
-      )
+    fun from(userEntity: UserEntity) = User(
+      userId = UserId(value = userEntity.userId),
+      loginId = LoginId(value = userEntity.loginId),
+      password = Password(value = userEntity.password),
+      roles = userEntity.roles.split(",").map { Role.fromString(it) },
+      isLock = userEntity.isLock,
+      failedAttempts = userEntity.failedAttempts,
+      lockTime = userEntity.lockTime,
+      isDisabled = userEntity.isDisabled,
+    )
   }
+
+  fun toEntity() = UserEntity(
+    userId = this.userId.toString(),
+    loginId = this.loginId.toString(),
+    password = this.password.toString(),
+    roles = this.roles.joinToString(","),
+    isLock = this.isLock,
+    failedAttempts = this.failedAttempts,
+    lockTime = this.lockTime,
+    isDisabled = this.isDisabled,
+  )
 
   fun updateLoginId(loginId: String) {
     this.loginId = LoginId(value = loginId)

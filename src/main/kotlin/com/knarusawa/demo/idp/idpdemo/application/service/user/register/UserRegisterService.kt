@@ -27,6 +27,6 @@ class UserRegisterService(
       password = input.password,
       roles = input.roles.map { Role.fromString(it) }
     )
-    userRepository.save(user)
+    userRepository.save(user.toEntity())
   }
 }

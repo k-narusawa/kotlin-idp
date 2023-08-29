@@ -1,11 +1,11 @@
 package com.knarusawa.demo.idp.idpdemo.application.mapper
 
-import com.knarusawa.demo.idp.idpdemo.domain.model.user.UserReadModel
+import com.knarusawa.demo.idp.idpdemo.infrastructure.dto.UserDto
 import com.knarusawa.demo.idp.idpdemo.infrastructure.dto.UserResponse
 
 object UserMapper {
-  fun fromUser(user: UserReadModel) = UserResponse(
-    userId = user.userId.toString(),
+  fun fromUser(user: UserDto) = UserResponse(
+    userId = user.userId,
     roles = user.roles.map { it.toString() },
     isLock = user.isLock,
     failedAttempts = user.failedAttempts,

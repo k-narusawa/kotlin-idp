@@ -10,8 +10,8 @@ class ClientRegisterService(
 ) {
   fun execute(input: ClientRegisterInputData) {
     val client = Client.of(
-      clientId = "",
-      clientSecret = "",
+      clientId = input.clientId,
+      clientSecret = input.clientSecret,
       clientAuthenticationMethods = input.clientAuthenticationMethods,
       clientAuthenticationGrantTypes = input.clientAuthenticationGrantTypes,
       redirectUrls = input.redirectUrls,

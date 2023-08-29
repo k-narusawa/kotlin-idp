@@ -1,10 +1,11 @@
-package com.knarusawa.demo.idp.idpdemo.application.service.user.loginIdChange
+package com.knarusawa.demo.idp.idpdemo.application.service.user.changeLoginId
 
+import com.knarusawa.demo.idp.idpdemo.application.service.UserDtoQueryService
 import com.knarusawa.demo.idp.idpdemo.domain.model.error.AppException
 import com.knarusawa.demo.idp.idpdemo.domain.model.error.ErrorCode
 import com.knarusawa.demo.idp.idpdemo.domain.model.user.LoginId
+import com.knarusawa.demo.idp.idpdemo.domain.model.user.User
 import com.knarusawa.demo.idp.idpdemo.domain.model.user.UserService
-import com.knarusawa.demo.idp.idpdemo.domain.repository.user.UserReadModelRepository
 import com.knarusawa.demo.idp.idpdemo.domain.repository.user.UserRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -14,10 +15,12 @@ import org.springframework.transaction.annotation.Transactional
 class UserLoginIdChangeService(
   private val userService: UserService,
   private val userRepository: UserRepository,
-  private val userReadModelRepository: UserReadModelRepository
+  private val userDtoQueryService: UserDtoQueryService
 ) {
   fun execute(input: UserLoginIdChangeInputData): UserLoginIdChangeOutputData {
-    val user = userRepository.findByUserId(userId = input.userId) ?: throw AppException(
+    val user = userRepository.findByUserId(userId = input.userId)?.run {
+      User.from(this)
+    } ?: throw AppException(
       errorCode = ErrorCode.USER_NOT_FOUND,
       logMessage = "User Not Found"
     )
@@ -29,14 +32,15 @@ class UserLoginIdChangeService(
       )
 
     user.updateLoginId(loginId = input.loginId)
-    userRepository.update(user)
+    userRepository.save(user.toEntity())
 
-    val newUser = userReadModelRepository.findByUserId(userId = input.userId) ?: throw AppException(
-      logMessage = "User Not Found",
-      errorCode = ErrorCode.INTERNAL_SERVER_ERROR
-    )
+    val newUser = userDtoQueryService.findByUserId(userId = input.userId)
+      ?: throw AppException(
+        logMessage = "User Not Found",
+        errorCode = ErrorCode.INTERNAL_SERVER_ERROR
+      )
 
-    if (newUser.loginId.toString() != input.loginId)
+    if (newUser.loginId != input.loginId)
       throw AppException(
         logMessage = "Data inconsistency occurred",
         errorCode = ErrorCode.INTERNAL_SERVER_ERROR
