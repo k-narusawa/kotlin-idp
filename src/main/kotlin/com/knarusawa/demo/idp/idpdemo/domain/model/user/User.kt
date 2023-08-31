@@ -76,11 +76,6 @@ class User private constructor(
 
   fun authSuccess() {
     this.failedAttempts = 0
-    val isEnabledUnLocked = this.lockTime?.isBefore(LocalDateTime.now().minusMinutes(30)) ?: false
-    if (this.isLock || isEnabledUnLocked) {
-      this.isLock = false
-      this.lockTime = null
-    }
   }
 
   fun authFailed() {
@@ -88,6 +83,16 @@ class User private constructor(
     if (!this.isLock && this.failedAttempts >= 5) { // TODO: ここのマジックナンバーを環境変数化したい
       this.isLock = true
       this.lockTime = LocalDateTime.now()
+    }
+  }
+
+  fun unlockByTimeElapsed() {
+    val isEnabledUnLocked =
+      this.lockTime?.let { LocalDateTime.now().minusMinutes(30).isAfter(it) } ?: false
+
+    if (this.isLock && isEnabledUnLocked) {
+      this.isLock = false
+      this.lockTime = null
     }
   }
 }
