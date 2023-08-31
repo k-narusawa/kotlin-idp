@@ -1,0 +1,9 @@
+logging:
+  level:
+    org.springframework.security: info
+    jdbc:
+      sqlonly: trace
+    org:
+      springframework:
+        jdbc:
+          core: debug
