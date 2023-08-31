@@ -20,7 +20,7 @@ class GlobalExceptionHandler {
       ApiErrorResponse.of(
         exception = ex,
         errorCode = ex.errorCode.name,
-        errorMessage = ex.errorCode.message,
+        errorMessage = ex.logMessage,
         logLevel = LogLevel.INFO
       ),
       ex.errorCode.status
