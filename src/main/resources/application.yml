@@ -9,9 +9,11 @@ logging:
     org:
       springframework:
         jdbc:
-          core: debug
+          core: info
 
 spring:
+  profiles:
+    active: local
   datasource:
     url: jdbc:mysql://127.0.0.1:3306/user_db
     username: root
