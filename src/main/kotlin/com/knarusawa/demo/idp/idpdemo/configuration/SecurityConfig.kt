@@ -6,12 +6,18 @@ import com.nimbusds.jose.jwk.RSAKey
 import com.nimbusds.jose.jwk.source.ImmutableJWKSet
 import com.nimbusds.jose.jwk.source.JWKSource
 import com.nimbusds.jose.proc.SecurityContext
+import java.security.KeyPair
+import java.security.KeyPairGenerator
+import java.security.interfaces.RSAPrivateKey
+import java.security.interfaces.RSAPublicKey
+import java.util.*
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.core.annotation.Order
 import org.springframework.security.config.Customizer
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configurers.ExceptionHandlingConfigurer
+import org.springframework.security.config.annotation.web.configurers.FormLoginConfigurer
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.oauth2.jwt.JwtDecoder
@@ -24,11 +30,6 @@ import org.springframework.security.oauth2.server.authorization.settings.Authori
 import org.springframework.security.web.SecurityFilterChain
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint
 import org.springframework.security.web.authentication.logout.CookieClearingLogoutHandler
-import java.security.KeyPair
-import java.security.KeyPairGenerator
-import java.security.interfaces.RSAPrivateKey
-import java.security.interfaces.RSAPublicKey
-import java.util.*
 
 
 @Configuration
@@ -83,7 +84,11 @@ class SecurityConfig {
             jwt.decoder(jwtDecoder(jwkSource()))
           }
       }
-      .formLogin(Customizer.withDefaults())
+      .formLogin { form: FormLoginConfigurer<HttpSecurity?> ->
+        form
+          .loginPage("/login")
+          .permitAll()
+      }
       .logout { logout ->
         logout.addLogoutHandler(CookieClearingLogoutHandler("JSESSIONID"))
       }
