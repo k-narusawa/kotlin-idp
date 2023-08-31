@@ -1,7 +1,7 @@
 package com.knarusawa.demo.idp.idpdemo.domain.model.user
 
 import com.knarusawa.demo.idp.idpdemo.configuration.SecurityConfig
-import com.knarusawa.demo.idp.idpdemo.infrastructure.db.entity.UserEntity
+import com.knarusawa.demo.idp.idpdemo.infrastructure.db.record.UserRecord
 import java.time.LocalDateTime
 
 class User private constructor(
@@ -43,19 +43,19 @@ class User private constructor(
         isDisabled = false,
       )
 
-    fun from(userEntity: UserEntity) = User(
-      userId = UserId(value = userEntity.userId),
-      loginId = LoginId(value = userEntity.loginId),
-      password = Password(value = userEntity.password),
-      roles = userEntity.roles.split(",").map { Role.fromString(it) },
-      isLock = userEntity.isLock,
-      failedAttempts = userEntity.failedAttempts,
-      lockTime = userEntity.lockTime,
-      isDisabled = userEntity.isDisabled,
+    fun from(userRecord: UserRecord) = User(
+      userId = UserId(value = userRecord.userId),
+      loginId = LoginId(value = userRecord.loginId),
+      password = Password(value = userRecord.password),
+      roles = userRecord.roles.split(",").map { Role.fromString(it) },
+      isLock = userRecord.isLock,
+      failedAttempts = userRecord.failedAttempts,
+      lockTime = userRecord.lockTime,
+      isDisabled = userRecord.isDisabled,
     )
   }
 
-  fun toEntity() = UserEntity(
+  fun toEntity() = UserRecord(
     userId = this.userId.toString(),
     loginId = this.loginId.toString(),
     password = this.password.toString(),
@@ -66,11 +66,11 @@ class User private constructor(
     isDisabled = this.isDisabled,
   )
 
-  fun updateLoginId(loginId: String) {
+  fun changeLoginId(loginId: String) {
     this.loginId = LoginId(value = loginId)
   }
 
-  fun updatePassword(password: String) {
+  fun changePassword(password: String) {
     this.password = Password(value = SecurityConfig().passwordEncoder().encode(password))
   }
 

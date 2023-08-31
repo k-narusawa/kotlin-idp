@@ -1,4 +1,4 @@
-package com.knarusawa.demo.idp.idpdemo.application.service.user.changePassword
+package com.knarusawa.demo.idp.idpdemo.application.service.changeUserPassword
 
 data class UserPasswordChangeInputData(
   val userId: String,

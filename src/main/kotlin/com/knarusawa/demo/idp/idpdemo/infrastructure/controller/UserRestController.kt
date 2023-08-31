@@ -1,11 +1,11 @@
-package com.knarusawa.demo.idp.idpdemo.infrastructure.web.controller
+package com.knarusawa.demo.idp.idpdemo.infrastructure.controller
 
 import com.knarusawa.demo.idp.idpdemo.application.mapper.UserMapper
 import com.knarusawa.demo.idp.idpdemo.application.service.UserDtoQueryService
-import com.knarusawa.demo.idp.idpdemo.application.service.user.changeLoginId.UserLoginIdChangeInputData
-import com.knarusawa.demo.idp.idpdemo.application.service.user.changeLoginId.UserLoginIdChangeService
-import com.knarusawa.demo.idp.idpdemo.application.service.user.changePassword.UserPasswordChangeInputData
-import com.knarusawa.demo.idp.idpdemo.application.service.user.changePassword.UserPasswordChangeService
+import com.knarusawa.demo.idp.idpdemo.application.service.changeUserLoginId.UserLoginIdChangeInputData
+import com.knarusawa.demo.idp.idpdemo.application.service.changeUserLoginId.UserLoginIdChangeService
+import com.knarusawa.demo.idp.idpdemo.application.service.changeUserPassword.UserPasswordChangeInputData
+import com.knarusawa.demo.idp.idpdemo.application.service.changeUserPassword.UserPasswordChangeService
 import com.knarusawa.demo.idp.idpdemo.domain.model.error.AppException
 import com.knarusawa.demo.idp.idpdemo.domain.model.error.ErrorCode
 import com.knarusawa.demo.idp.idpdemo.infrastructure.dto.UserDto

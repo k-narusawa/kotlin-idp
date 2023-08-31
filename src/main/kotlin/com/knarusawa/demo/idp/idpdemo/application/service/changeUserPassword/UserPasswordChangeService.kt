@@ -1,4 +1,4 @@
-package com.knarusawa.demo.idp.idpdemo.application.service.user.changePassword
+package com.knarusawa.demo.idp.idpdemo.application.service.changeUserPassword
 
 import com.knarusawa.demo.idp.idpdemo.domain.model.error.AppException
 import com.knarusawa.demo.idp.idpdemo.domain.model.error.ErrorCode
@@ -19,7 +19,7 @@ class UserPasswordChangeService(
       errorCode = ErrorCode.USER_NOT_FOUND,
       logMessage = "User Not Found"
     )
-    user.updatePassword(password = input.password)
+    user.changePassword(password = input.password)
     userRepository.save(user.toEntity())
   }
 }

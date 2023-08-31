@@ -1,4 +1,4 @@
-package com.knarusawa.demo.idp.idpdemo.application.service.user.changeLoginId
+package com.knarusawa.demo.idp.idpdemo.application.service.changeUserLoginId
 
 import com.knarusawa.demo.idp.idpdemo.application.service.UserDtoQueryService
 import com.knarusawa.demo.idp.idpdemo.domain.model.error.AppException
@@ -31,7 +31,7 @@ class UserLoginIdChangeService(
         logMessage = "User already exists. loginId: ${input.loginId}"
       )
 
-    user.updateLoginId(loginId = input.loginId)
+    user.changeLoginId(loginId = input.loginId)
     userRepository.save(user.toEntity())
 
     val newUser = userDtoQueryService.findByUserId(userId = input.userId)
