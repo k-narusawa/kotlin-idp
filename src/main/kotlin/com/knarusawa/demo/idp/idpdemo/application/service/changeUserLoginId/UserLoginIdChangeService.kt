@@ -31,7 +31,7 @@ class UserLoginIdChangeService(
         logMessage = "User already exists. loginId: ${input.loginId}"
       )
 
-    user.updateLoginId(loginId = input.loginId)
+    user.changeLoginId(loginId = input.loginId)
     userRepository.save(user.toEntity())
 
     val newUser = userDtoQueryService.findByUserId(userId = input.userId)

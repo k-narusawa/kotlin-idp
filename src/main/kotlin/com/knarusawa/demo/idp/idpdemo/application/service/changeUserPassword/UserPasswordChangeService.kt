@@ -19,7 +19,7 @@ class UserPasswordChangeService(
       errorCode = ErrorCode.USER_NOT_FOUND,
       logMessage = "User Not Found"
     )
-    user.updatePassword(password = input.password)
+    user.changePassword(password = input.password)
     userRepository.save(user.toEntity())
   }
 }

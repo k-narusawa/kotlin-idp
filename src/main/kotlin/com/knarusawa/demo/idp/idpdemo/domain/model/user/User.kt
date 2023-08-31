@@ -66,11 +66,11 @@ class User private constructor(
     isDisabled = this.isDisabled,
   )
 
-  fun updateLoginId(loginId: String) {
+  fun changeLoginId(loginId: String) {
     this.loginId = LoginId(value = loginId)
   }
 
-  fun updatePassword(password: String) {
+  fun changePassword(password: String) {
     this.password = Password(value = SecurityConfig().passwordEncoder().encode(password))
   }
 
