@@ -1,4 +1,4 @@
-package com.knarusawa.demo.idp.idpdemo.application.service.event
+package com.knarusawa.demo.idp.idpdemo.application.event
 
 import com.knarusawa.demo.idp.idpdemo.domain.model.user.User
 import com.knarusawa.demo.idp.idpdemo.domain.repository.user.UserRepository

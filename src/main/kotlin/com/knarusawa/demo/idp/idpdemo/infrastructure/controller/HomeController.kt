@@ -1,11 +1,11 @@
-package com.knarusawa.demo.idp.idpdemo.infrastructure.web.controller
+package com.knarusawa.demo.idp.idpdemo.infrastructure.controller
 
 import com.knarusawa.demo.idp.idpdemo.application.service.UserDtoQueryService
-import com.knarusawa.demo.idp.idpdemo.application.service.client.getAll.ClientGetAllService
-import com.knarusawa.demo.idp.idpdemo.application.service.client.register.ClientRegisterInputData
-import com.knarusawa.demo.idp.idpdemo.application.service.client.register.ClientRegisterService
-import com.knarusawa.demo.idp.idpdemo.application.service.user.register.UserRegisterInputData
-import com.knarusawa.demo.idp.idpdemo.application.service.user.register.UserRegisterService
+import com.knarusawa.demo.idp.idpdemo.application.service.getAllClient.ClientGetAllService
+import com.knarusawa.demo.idp.idpdemo.application.service.registerClient.ClientRegisterInputData
+import com.knarusawa.demo.idp.idpdemo.application.service.registerClient.ClientRegisterService
+import com.knarusawa.demo.idp.idpdemo.application.service.registerUser.UserRegisterInputData
+import com.knarusawa.demo.idp.idpdemo.application.service.registerUser.UserRegisterService
 import com.knarusawa.demo.idp.idpdemo.domain.model.user.Role
 import com.knarusawa.demo.idp.idpdemo.infrastructure.dto.ClientForm
 import com.knarusawa.demo.idp.idpdemo.infrastructure.dto.UserForm

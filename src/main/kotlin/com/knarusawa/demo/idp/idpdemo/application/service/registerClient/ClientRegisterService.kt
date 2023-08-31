@@ -1,4 +1,4 @@
-package com.knarusawa.demo.idp.idpdemo.application.service.client.register
+package com.knarusawa.demo.idp.idpdemo.application.service.registerClient
 
 import com.knarusawa.demo.idp.idpdemo.domain.model.client.Client
 import com.knarusawa.demo.idp.idpdemo.infrastructure.db.repository.ExtendedRegisteredClientRepository
