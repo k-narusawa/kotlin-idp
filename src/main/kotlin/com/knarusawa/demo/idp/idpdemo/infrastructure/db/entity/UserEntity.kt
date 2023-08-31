@@ -26,7 +26,7 @@ data class UserEntity(
   val isLock: Boolean = false,
 
   @Column(name = "failed_attempts")
-  val failedAttempts: Int? = null,
+  val failedAttempts: Int = 0,
 
   @Column(name = "lock_time")
   val lockTime: LocalDateTime? = null,

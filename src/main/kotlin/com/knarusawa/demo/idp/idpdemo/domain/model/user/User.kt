@@ -10,7 +10,7 @@ class User private constructor(
   password: Password,
   roles: List<Role>,
   isLock: Boolean,
-  failedAttempts: Int?,
+  failedAttempts: Int,
   lockTime: LocalDateTime?,
   isDisabled: Boolean,
 ) {
@@ -23,7 +23,7 @@ class User private constructor(
     private set
   var isLock: Boolean = isLock
     private set
-  var failedAttempts: Int? = failedAttempts
+  var failedAttempts: Int = failedAttempts
     private set
   var lockTime: LocalDateTime? = lockTime
     private set
@@ -38,7 +38,7 @@ class User private constructor(
         password = Password(value = SecurityConfig().passwordEncoder().encode(password)),
         roles = roles,
         isLock = false,
-        failedAttempts = null,
+        failedAttempts = 0,
         lockTime = null,
         isDisabled = false,
       )
@@ -72,5 +72,27 @@ class User private constructor(
 
   fun updatePassword(password: String) {
     this.password = Password(value = SecurityConfig().passwordEncoder().encode(password))
+  }
+
+  fun authSuccess() {
+    this.failedAttempts = 0
+  }
+
+  fun authFailed() {
+    this.failedAttempts += 1
+    if (!this.isLock && this.failedAttempts >= 5) { // TODO: ここのマジックナンバーを環境変数化したい
+      this.isLock = true
+      this.lockTime = LocalDateTime.now()
+    }
+  }
+
+  fun unlockByTimeElapsed() {
+    val isEnabledUnLocked =
+      this.lockTime?.let { LocalDateTime.now().minusMinutes(30).isAfter(it) } ?: false
+
+    if (this.isLock && isEnabledUnLocked) {
+      this.isLock = false
+      this.lockTime = null
+    }
   }
 }

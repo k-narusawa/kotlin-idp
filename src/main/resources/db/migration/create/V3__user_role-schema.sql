@@ -4,7 +4,7 @@ CREATE TABLE user (
     password VARCHAR(255) NOT NULL,
     roles VARCHAR(255) NOT NULL,
     is_lock BOOLEAN NOT NULL,
-    failed_attempts INT,
+    failed_attempts INT NOT NULL,
     lock_time DATETIME,
     is_disabled BOOLEAN NOT NULL,
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,

@@ -4,10 +4,10 @@ import com.knarusawa.demo.idp.idpdemo.domain.model.error.AppException
 import com.knarusawa.demo.idp.idpdemo.domain.model.error.ErrorCode
 import com.knarusawa.demo.idp.idpdemo.domain.model.user.User
 import com.knarusawa.demo.idp.idpdemo.domain.repository.user.UserRepository
-import java.util.*
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.stereotype.Service
+import java.util.*
 
 @Service
 class UserDetailsServiceImpl(
@@ -19,6 +19,11 @@ class UserDetailsServiceImpl(
       User.from(this)
     }
       ?: throw AppException(errorCode = ErrorCode.BAD_REQUEST, logMessage = "User Not Found.")
+
+    // ロックされてから30分経過していたらアンロックする
+    user.unlockByTimeElapsed()
+    userRepository.save(user.toEntity())
+
     return org.springframework.security.core.userdetails.User
       .withUsername(user.userId.toString())
       .password(user.password.value)
