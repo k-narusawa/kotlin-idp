@@ -1,4 +1,4 @@
-package com.knarusawa.demo.idp.idpdemo.infrastructure.db.entity
+package com.knarusawa.demo.idp.idpdemo.infrastructure.db.record
 
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
@@ -8,7 +8,7 @@ import java.time.LocalDateTime
 
 @Entity
 @Table(name = "user")
-data class UserEntity(
+data class UserRecord(
   @Id
   @Column(name = "user_id")
   val userId: String = "",
