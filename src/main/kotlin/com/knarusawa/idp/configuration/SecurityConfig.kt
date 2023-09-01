@@ -17,6 +17,7 @@ import org.springframework.core.annotation.Order
 import org.springframework.security.config.Customizer
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configurers.ExceptionHandlingConfigurer
+import org.springframework.security.config.annotation.web.configurers.FormLoginConfigurer
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.oauth2.jwt.JwtDecoder
@@ -83,7 +84,11 @@ class SecurityConfig {
             jwt.decoder(jwtDecoder(jwkSource()))
           }
       }
-      .formLogin(Customizer.withDefaults())
+      .formLogin { form: FormLoginConfigurer<HttpSecurity?> ->
+        form
+          .loginPage("/login")
+          .permitAll()
+      }
       .logout { logout ->
         logout.addLogoutHandler(CookieClearingLogoutHandler("JSESSIONID"))
       }
