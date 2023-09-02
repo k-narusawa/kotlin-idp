@@ -73,11 +73,12 @@ class SecurityConfig {
       .authorizeHttpRequests(
         Customizer { authorize ->
           authorize
+            .requestMatchers("/login").permitAll()
             .requestMatchers("/api/user/*").permitAll()  //細かい制御は@PreAuthorizedで行う
             .requestMatchers("/api/admin/*").permitAll() //細かい制御は@PreAuthorizedで行う
             .requestMatchers("/user/*").permitAll()  //細かい制御は@PreAuthorizedで行う
             .requestMatchers("/admin/*").permitAll() //細かい制御は@PreAuthorizedで行う
-            .requestMatchers("/register").permitAll()
+            .requestMatchers("/register").permitAll() // 会員登録画面
             .requestMatchers("webjars/**", "/css/**", "/js/**", "/img/**").permitAll()
             .anyRequest().authenticated()
         }
@@ -94,7 +95,8 @@ class SecurityConfig {
           .permitAll()
       }
       .logout { logout ->
-        logout.addLogoutHandler(CookieClearingLogoutHandler("JSESSIONID"))
+        logout
+          .addLogoutHandler(CookieClearingLogoutHandler("JSESSIONID"))
       }
     return http.build()
   }

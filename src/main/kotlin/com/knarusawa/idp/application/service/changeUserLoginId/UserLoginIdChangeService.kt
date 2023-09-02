@@ -1,8 +1,8 @@
 package com.knarusawa.idp.application.service.changeUserLoginId
 
 import com.knarusawa.idp.application.service.UserDtoQueryService
-import com.knarusawa.idp.domain.model.error.AppException
 import com.knarusawa.idp.domain.model.error.ErrorCode
+import com.knarusawa.idp.domain.model.error.IdpAppException
 import com.knarusawa.idp.domain.model.user.LoginId
 import com.knarusawa.idp.domain.model.user.User
 import com.knarusawa.idp.domain.model.user.UserService
@@ -20,13 +20,13 @@ class UserLoginIdChangeService(
   fun execute(input: UserLoginIdChangeInputData): UserLoginIdChangeOutputData {
     val user = userRepository.findByUserId(userId = input.userId)?.run {
       User.from(this)
-    } ?: throw AppException(
+    } ?: throw IdpAppException(
       errorCode = ErrorCode.USER_NOT_FOUND,
       logMessage = "User Not Found"
     )
 
     if (userService.isExistsLoginId(loginId = LoginId(input.loginId)))
-      throw AppException(
+      throw IdpAppException(
         errorCode = ErrorCode.USER_EXISTS,
         logMessage = "User already exists. loginId: ${input.loginId}"
       )
@@ -35,13 +35,13 @@ class UserLoginIdChangeService(
     userRepository.save(user.toEntity())
 
     val newUser = userDtoQueryService.findByUserId(userId = input.userId)
-      ?: throw AppException(
+      ?: throw IdpAppException(
         logMessage = "User Not Found",
         errorCode = ErrorCode.INTERNAL_SERVER_ERROR
       )
 
     if (newUser.loginId != input.loginId)
-      throw AppException(
+      throw IdpAppException(
         logMessage = "Data inconsistency occurred",
         errorCode = ErrorCode.INTERNAL_SERVER_ERROR
       )

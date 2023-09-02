@@ -1,6 +1,6 @@
 package com.knarusawa.idp.domain.model.error
 
-class AppException(
+class IdpAppException(
   val errorCode: ErrorCode,
   val logMessage: String
 ) : RuntimeException()

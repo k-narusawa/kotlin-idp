@@ -5,8 +5,8 @@ import com.knarusawa.idp.application.service.changeUserLoginId.UserLoginIdChange
 import com.knarusawa.idp.application.service.changeUserLoginId.UserLoginIdChangeService
 import com.knarusawa.idp.application.service.changeUserPassword.UserPasswordChangeInputData
 import com.knarusawa.idp.application.service.changeUserPassword.UserPasswordChangeService
-import com.knarusawa.idp.domain.model.error.AppException
 import com.knarusawa.idp.domain.model.error.ErrorCode
+import com.knarusawa.idp.domain.model.error.IdpAppException
 import com.knarusawa.idp.infrastructure.dto.ChangeUserLoginIdForm
 import com.knarusawa.idp.infrastructure.dto.ChangeUserPasswordForm
 import java.security.Principal
@@ -32,7 +32,7 @@ class UserController(
     principal: Principal
   ): String {
     val user = userDtoQueryService.findByUserId(userId = principal.name)
-      ?: throw AppException(errorCode = ErrorCode.USER_NOT_FOUND, logMessage = "UserNot Found.")
+      ?: throw IdpAppException(errorCode = ErrorCode.USER_NOT_FOUND, logMessage = "UserNot Found.")
 
     model.addAttribute("currentLoginId", user.loginId)
     return "user_login_id_change"
