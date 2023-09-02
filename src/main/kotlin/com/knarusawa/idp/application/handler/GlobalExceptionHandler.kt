@@ -1,7 +1,7 @@
 package com.knarusawa.idp.application.handler
 
-import com.knarusawa.idp.domain.model.error.AppException
 import com.knarusawa.idp.domain.model.error.ErrorCode
+import com.knarusawa.idp.domain.model.error.IdpAppException
 import com.knarusawa.idp.infrastructure.dto.ApiErrorResponse
 import jakarta.servlet.http.HttpServletRequest
 import org.springframework.boot.logging.LogLevel
@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.RestControllerAdvice
 
 @RestControllerAdvice
 class GlobalExceptionHandler {
-  @ExceptionHandler(AppException::class)
+  @ExceptionHandler(IdpAppException::class)
   fun handleAppException(
-    ex: AppException,
+    ex: IdpAppException,
     request: HttpServletRequest
   ): ResponseEntity<ApiErrorResponse> {
     return ResponseEntity(

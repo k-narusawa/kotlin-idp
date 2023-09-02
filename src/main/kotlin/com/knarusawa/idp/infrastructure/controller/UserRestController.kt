@@ -6,8 +6,8 @@ import com.knarusawa.idp.application.service.changeUserLoginId.UserLoginIdChange
 import com.knarusawa.idp.application.service.changeUserLoginId.UserLoginIdChangeService
 import com.knarusawa.idp.application.service.changeUserPassword.UserPasswordChangeInputData
 import com.knarusawa.idp.application.service.changeUserPassword.UserPasswordChangeService
-import com.knarusawa.idp.domain.model.error.AppException
 import com.knarusawa.idp.domain.model.error.ErrorCode
+import com.knarusawa.idp.domain.model.error.IdpAppException
 import com.knarusawa.idp.infrastructure.dto.UserDto
 import com.knarusawa.idp.infrastructure.dto.UserResponse
 import java.security.Principal
@@ -32,7 +32,7 @@ class UserRestController(
   fun getUser(principal: Principal): UserDto {
     val userId = principal.name
     return userDtoQueryService.findByUserId(userId = userId)
-      ?: throw AppException(
+      ?: throw IdpAppException(
         errorCode = ErrorCode.USER_NOT_FOUND,
         logMessage = "User Not Found."
       )

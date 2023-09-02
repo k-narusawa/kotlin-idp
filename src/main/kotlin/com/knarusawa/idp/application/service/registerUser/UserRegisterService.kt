@@ -1,7 +1,7 @@
 package com.knarusawa.idp.application.service.registerUser
 
-import com.knarusawa.idp.domain.model.error.AppException
 import com.knarusawa.idp.domain.model.error.ErrorCode
+import com.knarusawa.idp.domain.model.error.IdpAppException
 import com.knarusawa.idp.domain.model.user.LoginId
 import com.knarusawa.idp.domain.model.user.Role
 import com.knarusawa.idp.domain.model.user.User
@@ -18,7 +18,7 @@ class UserRegisterService(
 ) {
   fun execute(input: UserRegisterInputData) {
     if (userService.isExistsLoginId(loginId = LoginId(input.loginId)))
-      throw AppException(
+      throw IdpAppException(
         errorCode = ErrorCode.USER_EXISTS,
         logMessage = "User already exists. loginId: ${input.loginId}"
       )

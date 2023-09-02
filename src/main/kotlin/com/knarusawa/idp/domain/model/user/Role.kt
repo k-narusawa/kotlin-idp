@@ -1,7 +1,7 @@
 package com.knarusawa.idp.domain.model.user
 
-import com.knarusawa.idp.domain.model.error.AppException
 import com.knarusawa.idp.domain.model.error.ErrorCode
+import com.knarusawa.idp.domain.model.error.IdpAppException
 
 enum class Role {
   ADMIN,
@@ -17,7 +17,7 @@ enum class Role {
       return when (role) {
         "ADMIN" -> ADMIN
         "USER" -> USER
-        else -> throw AppException(
+        else -> throw IdpAppException(
           errorCode = ErrorCode.BAD_REQUEST,
           logMessage = "Role not found."
         )
