@@ -26,6 +26,10 @@
         </button>
         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
           <li>
+            <a sec:authorize="hasRole('USER')" class="dropdown-item" href="/">会員情報</a>
+          </li>
+          <li>
+          <li>
             <a sec:authorize="hasRole('ADMIN')" class="dropdown-item" href="/user/list">会員一覧</a>
           </li>
           <li>
