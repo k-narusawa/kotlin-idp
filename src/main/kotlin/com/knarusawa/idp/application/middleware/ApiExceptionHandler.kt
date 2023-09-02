@@ -1,4 +1,4 @@
-package com.knarusawa.idp.application.handler
+package com.knarusawa.idp.application.middleware
 
 import com.knarusawa.idp.domain.model.error.ErrorCode
 import com.knarusawa.idp.domain.model.error.IdpAppException
@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
 
 @RestControllerAdvice
-class GlobalExceptionHandler {
+class ApiExceptionHandler {
   @ExceptionHandler(IdpAppException::class)
-  fun handleAppException(
+  fun handleIdpAppException(
     ex: IdpAppException,
     request: HttpServletRequest
   ): ResponseEntity<ApiErrorResponse> {
