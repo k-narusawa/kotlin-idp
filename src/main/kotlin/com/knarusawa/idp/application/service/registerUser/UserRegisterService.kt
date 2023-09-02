@@ -25,7 +25,7 @@ class UserRegisterService(
     val user = User.of(
       loginId = input.loginId,
       password = input.password,
-      roles = input.roles.map { Role.fromString(it) }
+      roles = listOf(Role.USER)
     )
     userRepository.save(user.toEntity())
   }

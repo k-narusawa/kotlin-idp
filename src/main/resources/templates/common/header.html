@@ -1,22 +1,49 @@
 <!doctype html>
-<link rel="stylesheet" th:href="@{/webjars/bootstrap/5.3.0/css/bootstrap.min.css}">
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.3.0/css/bootstrap.min.css}">
+  <style>
+    .dropdown-menu {
+      background-color: #343a40;  <!-- 背景色を変更 -->
+    }
+  </style>
+</head>
 <body>
-<header xmlns:th="http://www.thymeleaf.org"
-        xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
-        th:fragment="header_fragment">
-  <nav class="nav bg-info">
-    <a class="nav-link active" aria-current="page" href="/">HOME</a>
-    <div sec:authorize="hasRole('ADMIN')">
-      <a class="nav-link" href="/client/list">Clients</a>
+<header th:fragment="header_fragment">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark py-3">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="/">HOME</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+              data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown"
+              aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="dropdown dropstart">  <!-- dropstartを追加 -->
+        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1"
+                data-bs-toggle="dropdown" aria-expanded="false">
+          <img th:src="@{/image/default-user.png}" alt="User Icon"
+               style="width: 24px; height: 24px;">
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+          <li>
+            <a sec:authorize="hasRole('ADMIN')" class="dropdown-item" href="/user/list">会員一覧</a>
+          </li>
+          <li>
+            <a sec:authorize="hasRole('ADMIN')" class="dropdown-item"
+               href="/client/list">クライアント一覧</a>
+          </li>
+          <li>
+            <form class="form-inline" role="form" id="logout" th:action="@{/logout}" method="post">
+              <button class="dropdown-item" type="submit" style="color: red;">ログアウト</button>
+            </form>
+          </li>
+        </ul>
+      </div>
     </div>
-    <div sec:authorize="hasRole('ADMIN')">
-      <a class="nav-link" href="/user/list">Users</a>
-    </div>
-    <form class="ms-auto bd-highlight" role="form" id="logout" th:action="@{/logout}" method="post">
-      <a class="nav-link" href="javascript:void(0)" onclick="this.parentNode.submit()">LOGOUT</a>
-    </form>
   </nav>
 </header>
 <script th:src="@{/webjars/jquery/3.4.1/jquery.min.js}"></script>
+<script th:src="@{/webjars/popper.js/2.9.3/umd/popper.min.js}"></script>
 <script th:src="@{/webjars/bootstrap/5.3.0/js/bootstrap.min.js}"></script>
 </body>
+</html>

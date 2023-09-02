@@ -74,7 +74,11 @@ class SecurityConfig {
         Customizer { authorize ->
           authorize
             .requestMatchers("/api/user/*").permitAll()  //細かい制御は@PreAuthorizedで行う
-            .requestMatchers("/api/admin*").permitAll() //細かい制御は@PreAuthorizedで行う
+            .requestMatchers("/api/admin/*").permitAll() //細かい制御は@PreAuthorizedで行う
+            .requestMatchers("/user/*").permitAll()  //細かい制御は@PreAuthorizedで行う
+            .requestMatchers("/admin/*").permitAll() //細かい制御は@PreAuthorizedで行う
+            .requestMatchers("/register").permitAll()
+            .requestMatchers("webjars/**", "/css/**", "/js/**", "/img/**").permitAll()
             .anyRequest().authenticated()
         }
       )

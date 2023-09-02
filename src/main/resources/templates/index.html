@@ -1,35 +1,48 @@
-<!doctype html>
-<html xmlns:th="http://www.thymeleaf.org">
-<link rel="stylesheet" th:href="@{/webjars/bootstrap/5.3.0/css/bootstrap.min.css}">
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Home</title>
+  <meta charset="UTF-8">
+  <title>会員情報</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css"
+        rel="stylesheet">
+  <style>
+    .card {
+        width: 600px;
+    }
+    .center-content {
+        display: flex;
+        justify-content: center;
+    }
+  </style>
 </head>
 <body>
-<div th:replace="~{common/header :: header_fragment}"></div>
+<div th:insert="common/header :: header_fragment"></div>
 <div class="container">
-    <h1 class="my-3">Profile</h1>
-    <hr class="mb-5">
-    <table class="table table-striped col-md-6">
-        <tr>
-            <th class="align-middle">会員ID</th>
-            <td class="align-middle" th:text="${user.userId}"></td>
-        </tr>
-        <tr>
-            <th class="align-middle">ログインID</th>
-            <td class="align-middle" th:text="${user.loginId}"></td>
-        </tr>
-        <tr>
-            <th class="align-middle">登録日時</th>
-            <td class="align-middle" th:text="${user.createdAt}"></td>
-        </tr>
-        <tr th:if="${!#lists.isEmpty(user.roles)}" th:each="role : ${user.roles}">
-            <th class="align-middle">ロール</th>
-            <td class="align-middle" th:text="${role}"></td>
-        </tr>
-    </table>
+  <div class="center-content">
+    <h3 class="mt-5">会員情報</h3>
+  </div>
+  <div class="center-content">
+    <div class="card">
+      <div class="card-body">
+        <dl class="row">
+          <dt class="col-sm-3">ログインID:</dt>
+          <dd class="col-sm-7" th:text="${user.loginId}"></dd>
+          <dd class="col-sm-2">
+            <a href="/edit-login-id" class="btn btn-sm btn-outline-primary">変更</a>
+          </dd>
+
+          <dt class="col-sm-3">パスワード:</dt>
+          <dd class="col-sm-7">••••••••</dd>
+          <dd class="col-sm-2">
+            <a href="/edit-password" class="btn btn-sm btn-outline-primary">変更</a>
+          </dd>
+        </dl>
+      </div>
+    </div>
+  </div>
 </div>
 <script th:src="@{/webjars/jquery/3.4.1/jquery.min.js}"></script>
+<script th:src="@{/webjars/popper.js/2.9.3/umd/popper.min.js}"></script>
 <script th:src="@{/webjars/bootstrap/5.3.0/js/bootstrap.min.js}"></script>
 </body>
 </html>

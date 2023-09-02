@@ -4,11 +4,7 @@ import com.knarusawa.idp.application.service.UserDtoQueryService
 import com.knarusawa.idp.application.service.getAllClient.ClientGetAllService
 import com.knarusawa.idp.application.service.registerClient.ClientRegisterInputData
 import com.knarusawa.idp.application.service.registerClient.ClientRegisterService
-import com.knarusawa.idp.application.service.registerUser.UserRegisterInputData
-import com.knarusawa.idp.application.service.registerUser.UserRegisterService
-import com.knarusawa.idp.domain.model.user.Role
 import com.knarusawa.idp.infrastructure.dto.ClientForm
-import com.knarusawa.idp.infrastructure.dto.UserForm
 import java.security.Principal
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.stereotype.Controller
@@ -19,7 +15,6 @@ import org.springframework.web.bind.annotation.PostMapping
 
 @Controller
 class HomeController(
-  private val userRegisterService: UserRegisterService,
   private val userDtoQueryService: UserDtoQueryService,
   private val clientGetAllService: ClientGetAllService,
   private val clientRegisterService: ClientRegisterService
@@ -42,26 +37,6 @@ class HomeController(
     val users = userDtoQueryService.findAll()
     model.addAttribute("users", users)
     return "user_list"
-  }
-
-  @GetMapping("/user/register")
-  @PreAuthorize("hasRole('ADMIN')")
-  fun registerUser(model: Model): String {
-    model.addAttribute("userForm", UserForm("", "", listOf()))
-    model.addAttribute("roleItems", Role.items())
-    return "user_register"
-  }
-
-  @PostMapping("/user/register")
-  @PreAuthorize("hasRole('ADMIN')")
-  fun registerUser(@ModelAttribute userForm: UserForm): String {
-    val command = UserRegisterInputData(
-      loginId = userForm.loginId,
-      password = userForm.password,
-      roles = userForm.roles
-    )
-    userRegisterService.execute(command)
-    return "redirect:/user/list"
   }
 
   @GetMapping("/client/list")

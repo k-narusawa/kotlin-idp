@@ -1,36 +1,42 @@
 <!doctype html>
 <html xmlns:th="http://www.thymeleaf.org">
-<link rel="stylesheet" th:href="@{/webjars/bootstrap/5.3.0/css/bootstrap.min.css}">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.3.0/css/bootstrap.min.css}">
+  <style>
+    .main-container {
+        margin-top: 40px;
+    }
+  </style>
 </head>
 <body>
-<div th:replace="~{common/header :: header_fragment}"></div>
-<div class="container">
-    <h1 class="my-3">ユーザー一覧</h1>
-    <hr class="mb-5">
-    <table class="table table-striped">
-        <thead class="table-primary">
+<div th:insert="common/header :: header_fragment"></div>
+<div class="container main-container">
+  <h1 class="my-5 text-center">会員一覧</h1>
+  <div class="card">
+    <div class="card-body">
+      <table class="table table-hover">
+        <thead class="table-light">
         <tr>
-            <th scope="col">ユーザーID</th>
-            <th scope="col">ログインID</th>
-            <th scope="col">登録日時</th>
+          <th scope="col">会員ID</th>
+          <th scope="col">ログインID</th>
+          <th scope="col">登録日時</th>
         </tr>
         </thead>
         <tbody>
         <tr th:if="${!#lists.isEmpty(users)}" th:each="user : ${users}">
-            <td th:text="${user.userId}"/>
-            <td th:text="${user.loginId}"/>
-            <td th:text="${user.createdAt}"/>
+          <td th:text="${user.userId}"></td>
+          <td th:text="${user.loginId}"></td>
+          <td th:text="${user.createdAt}"></td>
         </tr>
         </tbody>
-    </table>
-    <div class="float-end">
-        <a th:href="@{/user/register}" class="btn btn-primary">新規登録</a>
+      </table>
     </div>
+  </div>
 </div>
 <script th:src="@{/webjars/jquery/3.4.1/jquery.min.js}"></script>
+<script th:src="@{/webjars/popper.js/2.9.3/umd/popper.min.js}"></script>
 <script th:src="@{/webjars/bootstrap/5.3.0/js/bootstrap.min.js}"></script>
 </body>
 </html>
