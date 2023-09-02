@@ -19,11 +19,6 @@ class HomeController(
   private val clientGetAllService: ClientGetAllService,
   private val clientRegisterService: ClientRegisterService
 ) {
-  @GetMapping("/login")
-  fun login(): String {
-    return "login"
-  }
-
   @GetMapping("/")
   fun getProfile(model: Model, principal: Principal): String {
     val user = userDtoQueryService.findByUserId(userId = principal.name)
