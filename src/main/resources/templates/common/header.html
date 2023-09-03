@@ -30,11 +30,12 @@
           </li>
           <li>
           <li>
-            <a sec:authorize="hasRole('ADMIN')" class="dropdown-item" href="/user/list">会員一覧</a>
+            <a sec:authorize="hasRole('ADMIN')" class="dropdown-item"
+               href="/admin/user/list">会員一覧</a>
           </li>
           <li>
             <a sec:authorize="hasRole('ADMIN')" class="dropdown-item"
-               href="/client/list">クライアント一覧</a>
+               href="/admin/client/list">クライアント一覧</a>
           </li>
           <li>
             <form class="form-inline" id="logout" th:action="@{/logout}" method="post">
