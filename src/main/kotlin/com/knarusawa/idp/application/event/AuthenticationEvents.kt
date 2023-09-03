@@ -34,7 +34,7 @@ class AuthenticationEvents(
         activityType = ActivityType.LOGIN_SUCCESS,
         activityData = ActivityData(value = null)
       )
-      userActivityRepository.save(activity.toRecord())
+      userActivityRepository.save(activity)
     }
     logger.debug("ログイン成功 userId: $userId")
   }
@@ -51,7 +51,7 @@ class AuthenticationEvents(
         activityType = ActivityType.LOGIN_FAILED,
         activityData = ActivityData(value = null)
       )
-      userActivityRepository.save(activity.toRecord())
+      userActivityRepository.save(activity)
     }
     logger.debug("ログイン失敗 loginId: $loginId")
   }

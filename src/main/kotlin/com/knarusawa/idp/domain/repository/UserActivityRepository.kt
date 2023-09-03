@@ -1,10 +1,7 @@
 package com.knarusawa.idp.domain.repository
 
-import com.knarusawa.idp.infrastructure.db.record.UserActivityRecord
-import org.springframework.data.jpa.repository.JpaRepository
-import org.springframework.stereotype.Repository
+import com.knarusawa.idp.domain.model.user_activity.UserActivity
 
-@Repository
-interface UserActivityRepository : JpaRepository<UserActivityRecord, Int> {
-  fun findByUserId(userId: String): List<UserActivityRecord>
+interface UserActivityRepository {
+  fun save(userActivity: UserActivity)
 }
