@@ -1,6 +1,6 @@
 package com.knarusawa.idp.domain.model.user
 
-import com.knarusawa.idp.domain.repository.user.UserRepository
+import com.knarusawa.idp.domain.repository.UserRepository
 import com.knarusawa.idp.infrastructure.db.record.UserRecord
 import io.mockk.MockKAnnotations
 import io.mockk.every

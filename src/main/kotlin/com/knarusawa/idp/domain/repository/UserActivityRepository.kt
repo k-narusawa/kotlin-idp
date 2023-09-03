@@ -1,4 +1,4 @@
-package com.knarusawa.idp.domain.repository.userActivity
+package com.knarusawa.idp.domain.repository
 
 import com.knarusawa.idp.infrastructure.db.record.UserActivityRecord
 import org.springframework.data.jpa.repository.JpaRepository

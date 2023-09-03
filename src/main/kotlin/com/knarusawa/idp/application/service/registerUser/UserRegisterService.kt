@@ -6,7 +6,7 @@ import com.knarusawa.idp.domain.model.user.LoginId
 import com.knarusawa.idp.domain.model.user.Role
 import com.knarusawa.idp.domain.model.user.User
 import com.knarusawa.idp.domain.model.user.UserService
-import com.knarusawa.idp.domain.repository.user.UserRepository
+import com.knarusawa.idp.domain.repository.UserRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -27,6 +27,6 @@ class UserRegisterService(
       password = input.password,
       roles = listOf(Role.USER)
     )
-    userRepository.save(user.toEntity())
+    userRepository.save(user)
   }
 }
