@@ -2,7 +2,6 @@ package com.knarusawa.idp.infrastructure.adapter.controllers
 
 import com.knarusawa.idp.application.service.registerUser.UserRegisterInputData
 import com.knarusawa.idp.application.service.registerUser.UserRegisterService
-import com.knarusawa.idp.domain.model.user.Role
 import com.knarusawa.idp.infrastructure.dto.UserForm
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
@@ -16,8 +15,7 @@ class RegisterUserController(
 ) {
   @GetMapping("/register")
   fun registerUser(model: Model): String {
-    model.addAttribute("userForm", UserForm("", ""))
-    model.addAttribute("roleItems", Role.items())
+    model.addAttribute("userForm", UserForm("", "", ""))
     return "user_register"
   }
 
@@ -26,6 +24,7 @@ class RegisterUserController(
     val command = UserRegisterInputData(
       loginId = userForm.loginId,
       password = userForm.password,
+      eMail = userForm.eMail
     )
     userRegisterService.execute(command)
     return "redirect:/"
