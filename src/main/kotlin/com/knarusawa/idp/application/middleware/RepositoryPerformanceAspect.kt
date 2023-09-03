@@ -1,4 +1,4 @@
-package com.knarusawa.idp.infrastructure
+package com.knarusawa.idp.application.middleware
 
 import org.aspectj.lang.ProceedingJoinPoint
 import org.aspectj.lang.annotation.Around
