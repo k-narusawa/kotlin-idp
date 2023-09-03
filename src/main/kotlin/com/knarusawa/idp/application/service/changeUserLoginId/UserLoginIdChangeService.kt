@@ -4,9 +4,8 @@ import com.knarusawa.idp.application.service.UserDtoQueryService
 import com.knarusawa.idp.domain.model.error.ErrorCode
 import com.knarusawa.idp.domain.model.error.IdpAppException
 import com.knarusawa.idp.domain.model.user.LoginId
-import com.knarusawa.idp.domain.model.user.User
 import com.knarusawa.idp.domain.model.user.UserService
-import com.knarusawa.idp.domain.repository.user.UserRepository
+import com.knarusawa.idp.domain.repository.UserRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -18,12 +17,11 @@ class UserLoginIdChangeService(
   private val userDtoQueryService: UserDtoQueryService
 ) {
   fun execute(input: UserLoginIdChangeInputData): UserLoginIdChangeOutputData {
-    val user = userRepository.findByUserId(userId = input.userId)?.run {
-      User.from(this)
-    } ?: throw IdpAppException(
-      errorCode = ErrorCode.USER_NOT_FOUND,
-      logMessage = "User Not Found"
-    )
+    val user = userRepository.findByUserId(userId = input.userId)
+      ?: throw IdpAppException(
+        errorCode = ErrorCode.USER_NOT_FOUND,
+        logMessage = "User Not Found"
+      )
 
     if (userService.isExistsLoginId(loginId = LoginId(input.loginId)))
       throw IdpAppException(
@@ -32,7 +30,7 @@ class UserLoginIdChangeService(
       )
 
     user.changeLoginId(loginId = input.loginId)
-    userRepository.save(user.toEntity())
+    userRepository.save(user)
 
     val newUser = userDtoQueryService.findByUserId(userId = input.userId)
       ?: throw IdpAppException(

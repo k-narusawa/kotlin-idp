@@ -1,6 +1,6 @@
 package com.knarusawa.idp.application.mapper
 
-import com.knarusawa.idp.infrastructure.dto.UserDto
+import com.knarusawa.idp.application.dto.UserDto
 import com.knarusawa.idp.infrastructure.dto.UserResponse
 
 object UserMapper {

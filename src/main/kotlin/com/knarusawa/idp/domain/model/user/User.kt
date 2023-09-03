@@ -55,7 +55,7 @@ class User private constructor(
     )
   }
 
-  fun toEntity() = UserRecord(
+  fun toRecord() = UserRecord(
     userId = this.userId.toString(),
     loginId = this.loginId.toString(),
     password = this.password.toString(),
