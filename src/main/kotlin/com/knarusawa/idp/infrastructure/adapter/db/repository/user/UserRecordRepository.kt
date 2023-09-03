@@ -1,6 +1,6 @@
-package com.knarusawa.idp.infrastructure.db.repository.user
+package com.knarusawa.idp.infrastructure.adapter.db.repository.user
 
-import com.knarusawa.idp.infrastructure.db.record.UserRecord
+import com.knarusawa.idp.infrastructure.adapter.db.record.UserRecord
 import org.springframework.data.jpa.repository.JpaRepository
 
 interface UserRecordRepository : JpaRepository<UserRecord, Int> {

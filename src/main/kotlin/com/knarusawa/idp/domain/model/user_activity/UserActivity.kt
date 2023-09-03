@@ -1,7 +1,7 @@
 package com.knarusawa.idp.domain.model.user_activity
 
 import com.knarusawa.idp.domain.model.user.UserId
-import com.knarusawa.idp.infrastructure.db.record.UserActivityRecord
+import com.knarusawa.idp.infrastructure.adapter.db.record.UserActivityRecord
 import java.time.LocalDateTime
 
 class UserActivity private constructor(

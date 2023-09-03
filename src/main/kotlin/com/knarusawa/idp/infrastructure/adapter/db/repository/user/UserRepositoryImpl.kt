@@ -1,4 +1,4 @@
-package com.knarusawa.idp.infrastructure.db.repository.user
+package com.knarusawa.idp.infrastructure.adapter.db.repository.user
 
 import com.knarusawa.idp.domain.model.user.User
 import com.knarusawa.idp.domain.repository.UserRepository

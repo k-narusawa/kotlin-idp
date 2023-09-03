@@ -1,7 +1,7 @@
 package com.knarusawa.idp.domain.model.user
 
 import com.knarusawa.idp.configuration.SecurityConfig
-import com.knarusawa.idp.infrastructure.db.record.UserRecord
+import com.knarusawa.idp.infrastructure.adapter.db.record.UserRecord
 import java.time.LocalDateTime
 
 class User private constructor(

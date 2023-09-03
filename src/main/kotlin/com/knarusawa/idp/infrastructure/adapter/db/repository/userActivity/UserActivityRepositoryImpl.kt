@@ -1,4 +1,4 @@
-package com.knarusawa.idp.infrastructure.db.repository.userActivity
+package com.knarusawa.idp.infrastructure.adapter.db.repository.userActivity
 
 import com.knarusawa.idp.domain.model.user_activity.UserActivity
 import com.knarusawa.idp.domain.repository.UserActivityRepository

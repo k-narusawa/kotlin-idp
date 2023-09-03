@@ -1,4 +1,4 @@
-package com.knarusawa.idp.infrastructure.controller
+package com.knarusawa.idp.infrastructure.adapter.controllers
 
 import com.knarusawa.idp.application.service.UserActivityDtoQueryService
 import com.knarusawa.idp.application.service.UserDtoQueryService

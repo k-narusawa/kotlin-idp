@@ -1,4 +1,4 @@
-package com.knarusawa.idp.infrastructure.controller
+package com.knarusawa.idp.infrastructure.adapter.controllers
 
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.GetMapping

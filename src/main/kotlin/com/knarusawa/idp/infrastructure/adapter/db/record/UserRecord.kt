@@ -1,4 +1,4 @@
-package com.knarusawa.idp.infrastructure.db.record
+package com.knarusawa.idp.infrastructure.adapter.db.record
 
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
