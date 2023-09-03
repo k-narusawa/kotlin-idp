@@ -1,4 +1,4 @@
-package com.knarusawa.idp.infrastructure.dto
+package com.knarusawa.idp.application.dto
 
 import jakarta.persistence.Column
 import jakarta.persistence.Entity

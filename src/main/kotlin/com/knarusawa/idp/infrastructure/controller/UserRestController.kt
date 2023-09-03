@@ -1,5 +1,6 @@
 package com.knarusawa.idp.infrastructure.controller
 
+import com.knarusawa.idp.application.dto.UserDto
 import com.knarusawa.idp.application.mapper.UserMapper
 import com.knarusawa.idp.application.service.UserDtoQueryService
 import com.knarusawa.idp.application.service.changeUserLoginId.UserLoginIdChangeInputData
@@ -8,7 +9,6 @@ import com.knarusawa.idp.application.service.changeUserPassword.UserPasswordChan
 import com.knarusawa.idp.application.service.changeUserPassword.UserPasswordChangeService
 import com.knarusawa.idp.domain.model.error.ErrorCode
 import com.knarusawa.idp.domain.model.error.IdpAppException
-import com.knarusawa.idp.infrastructure.dto.UserDto
 import com.knarusawa.idp.infrastructure.dto.UserResponse
 import java.security.Principal
 import org.springframework.http.HttpStatus
