@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository
 class UserRepositoryImpl(
   private val userRecordRepository: UserRecordRepository
 ) : UserRepository {
-  override fun save(user: User) {　
+  override fun save(user: User) {
     userRecordRepository.save(user.toRecord())
   }
 
