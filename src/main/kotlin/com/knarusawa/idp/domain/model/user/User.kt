@@ -31,6 +31,9 @@ class User private constructor(
     private set
 
   companion object {
+    private const val MAX_LOGIN_ATTEMPTS = 5
+    private const val AUTO_UNLOCK_DURATION_MIN = 30
+
     fun of(loginId: String, password: String, roles: List<Role>) =
       User(
         userId = UserId.generate(),
@@ -80,7 +83,7 @@ class User private constructor(
 
   fun authFailed() {
     this.failedAttempts += 1
-    if (!this.isLock && this.failedAttempts >= 5) { // TODO: ここのマジックナンバーを環境変数化したい
+    if (!this.isLock && this.failedAttempts >= MAX_LOGIN_ATTEMPTS) {
       this.isLock = true
       this.lockTime = LocalDateTime.now()
     }
@@ -88,7 +91,9 @@ class User private constructor(
 
   fun unlockByTimeElapsed() {
     val isEnabledUnLocked =
-      this.lockTime?.let { LocalDateTime.now().minusMinutes(30).isAfter(it) } ?: false
+      this.lockTime?.let {
+        LocalDateTime.now().minusMinutes(AUTO_UNLOCK_DURATION_MIN.toLong()).isAfter(it)
+      } ?: false
 
     if (this.isLock && isEnabledUnLocked) {
       this.isLock = false
