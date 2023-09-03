@@ -6,12 +6,18 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css"
         rel="stylesheet">
   <style>
-    .card {
-        width: 600px;
-    }
     .center-content {
         display: flex;
         justify-content: center;
+    }
+    .card {
+            width: 600px;
+        }
+    .success-text {
+      color: green;
+    }
+    .fail-text {
+      color: red;
     }
   </style>
 </head>
@@ -37,6 +43,35 @@
             <a href="/user/password/change" class="btn btn-sm btn-outline-primary">変更</a>
           </dd>
         </dl>
+      </div>
+    </div>
+  </div>
+
+  <div class="center-content">
+    <h3 class="mt-5">行動履歴</h3>
+  </div>
+  <div class="center-content mt-3">
+    <div class="card" style="width: 600px;">
+      <div class="card-body">
+        <a href="/user/activities" class="btn btn-sm btn-outline-primary float-end">もっと見る</a>
+        <h5 class="card-title">最近の行動履歴</h5>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item" th:each="activity, iterStat : ${userActivities}"
+              th:if="${iterStat.count <= 3}">
+            <strong>日時: </strong><span
+              th:text="${#temporals.format(activity.timestamp, 'yyyy/MM/dd HH:mm:ss')}"></span>
+            <br>
+            <strong>行動: </strong>
+            <th:block th:switch="${activity.activityType}">
+              <span th:case="LOGIN_SUCCESS" th:text="ログイン成功" class="success-text"></span>
+              <span th:case="LOGIN_FAILED" th:text="ログイン失敗" class="fail-text"></span>
+              <span th:case="LOGOUT" th:text="ログアウト"></span>
+              <span th:case="CHANGE_LOGIN_ID" th:text="ログインID変更"></span>
+              <span th:case="CHANGE_PASSWORD" th:text="パスワード変更"></span>
+              <span th:case=* th:text="その他"></span>
+            </th:block>
+          </li>
+        </ul>
       </div>
     </div>
   </div>

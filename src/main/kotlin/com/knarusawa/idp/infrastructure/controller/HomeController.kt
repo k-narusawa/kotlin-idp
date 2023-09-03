@@ -1,11 +1,14 @@
 package com.knarusawa.idp.infrastructure.controller
 
+import com.knarusawa.idp.application.service.UserActivityDtoQueryService
 import com.knarusawa.idp.application.service.UserDtoQueryService
 import com.knarusawa.idp.application.service.getAllClient.ClientGetAllService
 import com.knarusawa.idp.application.service.registerClient.ClientRegisterInputData
 import com.knarusawa.idp.application.service.registerClient.ClientRegisterService
 import com.knarusawa.idp.infrastructure.dto.ClientForm
 import java.security.Principal
+import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Sort
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
@@ -16,13 +19,19 @@ import org.springframework.web.bind.annotation.PostMapping
 @Controller
 class HomeController(
   private val userDtoQueryService: UserDtoQueryService,
+  private val userActivityDtoQueryService: UserActivityDtoQueryService,
   private val clientGetAllService: ClientGetAllService,
   private val clientRegisterService: ClientRegisterService
 ) {
   @GetMapping("/")
   fun getProfile(model: Model, principal: Principal): String {
     val user = userDtoQueryService.findByUserId(userId = principal.name)
+    val userActivities = userActivityDtoQueryService.findByUserId(
+      userId = principal.name,
+      pageable = PageRequest.of(0, 3, Sort.by("timestamp").descending())
+    )
     model.addAttribute("user", user)
+    model.addAttribute("userActivities", userActivities)
     return "index"
   }
 
