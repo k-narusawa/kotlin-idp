@@ -48,6 +48,25 @@
   </div>
 
   <div class="center-content">
+    <h3 class="mt-5">通知先</h3>
+  </div>
+  <div class="center-content">
+    <div class="card">
+      <div class="card-body">
+        <dl class="row">
+          <dt class="col-sm-3">メールアドレス:</dt>
+          <dd class="col-sm-7" th:if="${userMail != null}"
+              th:text="${userMail.email}"></dd>
+          <dd class="col-sm-7" th:if="${userMail == null}">未設定（登録してください）</dd>
+          <dd class="col-sm-2">
+            <a href="/user/mail_address/change" class="btn btn-sm btn-outline-primary">変更</a>
+          </dd>
+        </dl>
+      </div>
+    </div>
+  </div>
+
+  <div class="center-content">
     <h3 class="mt-5">行動履歴</h3>
   </div>
   <div class="center-content mt-3">
