@@ -2,8 +2,6 @@ package com.knarusawa.idp.infrastructure.controller
 
 import com.knarusawa.idp.application.dto.UserDto
 import com.knarusawa.idp.application.service.UserDtoQueryService
-import com.knarusawa.idp.application.service.changeUserLoginId.UserLoginIdChangeService
-import com.knarusawa.idp.application.service.changeUserPassword.UserPasswordChangeService
 import com.knarusawa.idp.domain.model.error.ErrorCode
 import com.knarusawa.idp.domain.model.error.IdpAppException
 import java.security.Principal
@@ -16,8 +14,6 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("/api/user")
 class UserRestController(
   private val userDtoQueryService: UserDtoQueryService,
-  private val userLoginIdChangeService: UserLoginIdChangeService,
-  private val userPasswordChangeService: UserPasswordChangeService
 ) {
   @GetMapping
   @PreAuthorize("hasRole('USER')")
