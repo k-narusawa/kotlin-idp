@@ -6,11 +6,13 @@ import com.knarusawa.idp.application.service.changeUserLoginId.UserLoginIdChange
 import com.knarusawa.idp.application.service.changeUserLoginId.UserLoginIdChangeService
 import com.knarusawa.idp.application.service.changeUserPassword.UserPasswordChangeInputData
 import com.knarusawa.idp.application.service.changeUserPassword.UserPasswordChangeService
+import com.knarusawa.idp.application.service.registerUserMail.UserRegisterMailInputData
+import com.knarusawa.idp.application.service.registerUserMail.UserRegisterMailService
 import com.knarusawa.idp.domain.model.error.ErrorCode
 import com.knarusawa.idp.domain.model.error.IdpAppException
 import com.knarusawa.idp.infrastructure.dto.ChangeUserLoginIdForm
 import com.knarusawa.idp.infrastructure.dto.ChangeUserPasswordForm
-import java.security.Principal
+import com.knarusawa.idp.infrastructure.dto.RegisterUserMailForm
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
 import org.springframework.security.access.prepost.PreAuthorize
@@ -21,6 +23,7 @@ import org.springframework.web.bind.annotation.ModelAttribute
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
+import java.security.Principal
 
 @Controller
 @RequestMapping("user")
@@ -29,7 +32,8 @@ class UserController(
   private val userDtoQueryService: UserDtoQueryService,
   private val userActivityDtoQueryService: UserActivityDtoQueryService,
   private val userLoginIdChangeService: UserLoginIdChangeService,
-  private val userPasswordChangeService: UserPasswordChangeService
+  private val userPasswordChangeService: UserPasswordChangeService,
+  private val userRegisterMailService: UserRegisterMailService,
 ) {
   @GetMapping("/activities")
   fun getProfile(
@@ -91,6 +95,24 @@ class UserController(
       password = changeUserPasswordForm.confirmPassword,
     )
     userPasswordChangeService.execute(input = inputData)
+    return "redirect:/"
+  }
+
+  @GetMapping("/mail/register")
+  fun registerMail(): String {
+    return "user_mail_register"
+  }
+
+  @PostMapping("/mail/register")
+  fun registerMail(
+    @ModelAttribute registerUserMailForm: RegisterUserMailForm,
+    principal: Principal
+  ): String {
+    val inputData = UserRegisterMailInputData(
+      userId = principal.name,
+      email = registerUserMailForm.email,
+    )
+    userRegisterMailService.execute(inputData = inputData)
     return "redirect:/"
   }
 }

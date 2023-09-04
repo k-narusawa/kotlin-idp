@@ -6,7 +6,7 @@ import com.knarusawa.idp.infrastructure.adapter.db.record.UserMailRecord
 class UserMail private constructor(
   val userId: UserId,
   var eMail: EMail,
-  val isVerified: Boolean
+  var isVerified: Boolean
 ) {
   companion object {
     fun of(userId: UserId, eMail: String) = UserMail(
@@ -20,5 +20,9 @@ class UserMail private constructor(
       eMail = EMail(value = record.email),
       isVerified = record.isVerified
     )
+  }
+
+  fun verify() {
+    this.isVerified = true
   }
 }
