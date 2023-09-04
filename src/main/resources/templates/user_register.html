@@ -15,12 +15,19 @@
         <div class="card-body">
           <form th:action="@{/register}" method="post">
             <div class="form-group">
-              <label for="loginId">ログインID</label>
+              <label for="loginId">ログインID <span class="text-danger">*</span></label>
               <input type="text" class="form-control" id="loginId" name="loginId" required>
+              <div class="invalid-feedback">ログインIDは必須項目です。</div>
             </div>
             <div class="form-group mt-4">
-              <label for="password">パスワード</label>
+              <label for="password">パスワード <span class="text-danger">*</span></label>
               <input type="password" class="form-control" id="password" name="password" required>
+              <div class="invalid-feedback">パスワードは必須項目です。</div>
+            </div>
+            <div class="form-group mt-4">
+              <label for="eMail">通知先メールアドレス</label>
+              <input type="email" class="form-control" id="eMail" name="eMail">
+              <small class="form-text text-muted">※このメールアドレスは必須ではありませんが、パスワードリセットの際に使用されるため、設定することが推奨されます。</small>
             </div>
             <button type="submit" class="btn btn-primary mt-4">登録</button>
           </form>
