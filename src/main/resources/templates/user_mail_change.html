@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.3.0/css/bootstrap.min.css}">
+    <title>通知先メールアドレス変更フォーム</title>
+</head>
+<body>
+<div th:insert="common/header :: header_fragment"></div>
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    通知先メールアドレス変更
+                </div>
+                <div class="card-body">
+                    <form th:action="@{/user/mail/change}" method="post">
+                        <div class="form-group">
+                            <label for="currentEmail">現在の通知先メールアドレス</label>
+                            <input type="text" class="form-control" id="currentEmail" name="currentEmail"
+                                   th:value="${userMail.email}" disabled>
+                        </div>
+                        <div class="form-group mt-4">
+                            <label for="email">新しい通知先メールアドレス <span class="text-danger">*</span></label>
+                            <input type="email" class="form-control" id="email" name="email" required>
+                            <div class="invalid-feedback">新しい通知先メールアドレスは必須項目です。</div>
+                            <small class="form-text text-warning">※メールアドレスを変更すると、送達確認がキャンセルされます。</small>
+                        </div>
+                        <button type="submit" class="btn btn-primary mt-4">変更</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script th:src="@{/webjars/jquery/3.4.1/jquery.min.js}"></script>
+<script th:src="@{/webjars/popper.js/2.9.3/umd/popper.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/5.3.0/js/bootstrap.min.js}"></script>
+</body>
+</html>

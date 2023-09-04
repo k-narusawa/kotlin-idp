@@ -7,4 +7,6 @@ interface UserMailRecordRepository : JpaRepository<UserMailRecord, Int> {
   fun findByUserId(userId: String): UserMailRecord?
 
   fun findByEmail(eMail: String): UserMailRecord?
+
+  fun deleteByUserId(userId: String)
 }

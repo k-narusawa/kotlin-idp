@@ -25,4 +25,8 @@ class UserMailRepositoryImpl(
       ?: return null
     return UserMail.from(record)
   }
+
+  override fun deleteByUserId(userId: String) {
+    userMailRecordRepository.deleteByUserId(userId = userId)
+  }
 }

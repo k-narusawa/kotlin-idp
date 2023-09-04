@@ -22,6 +22,11 @@ class UserMail private constructor(
     )
   }
 
+  fun changeEMail(email: String) {
+    this.eMail = EMail(value = email)
+    this.isVerified = false
+  }
+
   fun verify() {
     this.isVerified = true
   }
