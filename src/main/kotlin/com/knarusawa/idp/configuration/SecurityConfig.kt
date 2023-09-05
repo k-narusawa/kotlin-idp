@@ -1,16 +1,12 @@
 package com.knarusawa.idp.configuration
 
+import com.knarusawa.idp.application.middleware.UsernamePasswordAuthenticationSuccessHandler
 import com.knarusawa.idp.configuration.db.UserDbJdbcTemplate
 import com.nimbusds.jose.jwk.JWKSet
 import com.nimbusds.jose.jwk.RSAKey
 import com.nimbusds.jose.jwk.source.ImmutableJWKSet
 import com.nimbusds.jose.jwk.source.JWKSource
 import com.nimbusds.jose.proc.SecurityContext
-import java.security.KeyPair
-import java.security.KeyPairGenerator
-import java.security.interfaces.RSAPrivateKey
-import java.security.interfaces.RSAPublicKey
-import java.util.*
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.core.annotation.Order
@@ -30,6 +26,11 @@ import org.springframework.security.oauth2.server.authorization.settings.Authori
 import org.springframework.security.web.SecurityFilterChain
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint
 import org.springframework.security.web.authentication.logout.CookieClearingLogoutHandler
+import java.security.KeyPair
+import java.security.KeyPairGenerator
+import java.security.interfaces.RSAPrivateKey
+import java.security.interfaces.RSAPublicKey
+import java.util.*
 
 
 @Configuration
@@ -74,6 +75,7 @@ class SecurityConfig {
         Customizer { authorize ->
           authorize
             .requestMatchers("/login").permitAll()
+            .requestMatchers("/login/mfa").permitAll()
             .requestMatchers("/api/user/*").permitAll()  //細かい制御は@PreAuthorizedで行う
             .requestMatchers("/api/admin/*").permitAll() //細かい制御は@PreAuthorizedで行う
             .requestMatchers("/user/*").permitAll()  //細かい制御は@PreAuthorizedで行う
@@ -91,8 +93,8 @@ class SecurityConfig {
       }
       .formLogin { form: FormLoginConfigurer<HttpSecurity?> ->
         form
-          .loginPage("/login")
-          .permitAll()
+          .loginPage("/login").permitAll()
+          .successHandler(UsernamePasswordAuthenticationSuccessHandler("/login/mfa", "/"))
       }
       .logout { logout ->
         logout
