@@ -10,7 +10,10 @@ class MfaAuthenticationFilter(
   pattern: String,
   httpMethod: String,
 ) : AbstractAuthenticationProcessingFilter(AntPathRequestMatcher(pattern, httpMethod)) {
-  override fun attemptAuthentication(request: HttpServletRequest?, response: HttpServletResponse?): Authentication {
+  override fun attemptAuthentication(
+    request: HttpServletRequest?,
+    response: HttpServletResponse?
+  ): Authentication {
     return authenticationManager.authenticate(null)
   }
 }
