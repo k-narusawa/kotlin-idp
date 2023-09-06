@@ -14,6 +14,7 @@ class UsernamePasswordAuthenticationSuccessHandler(
     response: HttpServletResponse?,
     authentication: Authentication
   ) {
+
     val needFido = true
 
     if (needFido) {

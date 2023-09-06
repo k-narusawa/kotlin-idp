@@ -1,16 +1,23 @@
 package com.knarusawa.idp.configuration
 
+import com.knarusawa.idp.application.middleware.MfaAuthenticationProvider
 import com.knarusawa.idp.application.middleware.UsernamePasswordAuthenticationSuccessHandler
+import com.knarusawa.idp.application.service.UserDetailsServiceImpl
 import com.knarusawa.idp.configuration.db.UserDbJdbcTemplate
+import com.knarusawa.idp.infrastructure.filter.MfaAuthenticationFilter
 import com.nimbusds.jose.jwk.JWKSet
 import com.nimbusds.jose.jwk.RSAKey
 import com.nimbusds.jose.jwk.source.ImmutableJWKSet
 import com.nimbusds.jose.jwk.source.JWKSource
 import com.nimbusds.jose.proc.SecurityContext
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.core.annotation.Order
+import org.springframework.security.authentication.AuthenticationManager
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.Customizer
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configurers.ExceptionHandlingConfigurer
 import org.springframework.security.config.annotation.web.configurers.FormLoginConfigurer
@@ -25,6 +32,8 @@ import org.springframework.security.oauth2.server.authorization.config.annotatio
 import org.springframework.security.oauth2.server.authorization.settings.AuthorizationServerSettings
 import org.springframework.security.web.SecurityFilterChain
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint
+import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler
+import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler
 import org.springframework.security.web.authentication.logout.CookieClearingLogoutHandler
 import java.security.KeyPair
 import java.security.KeyPairGenerator
@@ -35,6 +44,12 @@ import java.util.*
 
 @Configuration
 class SecurityConfig {
+  @Autowired
+  private lateinit var userDetailsServiceImpl: UserDetailsServiceImpl
+
+  @Autowired
+  private lateinit var mfaAuthenticationProvider: MfaAuthenticationProvider
+
   companion object {
     private fun generateRsaKey(): KeyPair {
       val keyPair: KeyPair = try {
@@ -85,6 +100,7 @@ class SecurityConfig {
             .anyRequest().authenticated()
         }
       )
+      .authenticationManager(authManager(http))
       .oauth2ResourceServer { oauth2ResourceServer ->
         oauth2ResourceServer
           .jwt { jwt ->
@@ -93,7 +109,8 @@ class SecurityConfig {
       }
       .formLogin { form: FormLoginConfigurer<HttpSecurity?> ->
         form
-          .loginPage("/login").permitAll()
+          .loginPage("/login")
+          .permitAll()
           .successHandler(UsernamePasswordAuthenticationSuccessHandler("/login/mfa", "/"))
       }
       .logout { logout ->
@@ -101,6 +118,29 @@ class SecurityConfig {
           .addLogoutHandler(CookieClearingLogoutHandler("JSESSIONID"))
       }
     return http.build()
+  }
+
+  @Bean
+  @Order(3)
+  fun mfaAuthSecurityFilterChain(http: HttpSecurity): SecurityFilterChain {
+    http
+      .addFilterAt(createMfaAuthenticationFilter(http), MfaAuthenticationFilter::class.java)
+    return http.build()
+  }
+
+  @Bean
+  fun authManager(http: HttpSecurity): AuthenticationManager {
+    val authenticationManagerBuilder = http.getSharedObject(
+      AuthenticationManagerBuilder::class.java
+    )
+    val daoAuthenticationProvider = DaoAuthenticationProvider().also {
+      it.setUserDetailsService(userDetailsServiceImpl)
+      it.setPasswordEncoder(passwordEncoder())
+    }
+
+    authenticationManagerBuilder.authenticationProvider(daoAuthenticationProvider)
+    authenticationManagerBuilder.authenticationProvider(mfaAuthenticationProvider)
+    return authenticationManagerBuilder.build()
   }
 
   @Bean
@@ -138,4 +178,11 @@ class SecurityConfig {
   @Bean
   fun passwordEncoder(): PasswordEncoder = BCryptPasswordEncoder()
 
+  private fun createMfaAuthenticationFilter(http: HttpSecurity): MfaAuthenticationFilter {
+    return MfaAuthenticationFilter("/login/mfa", "POST").also {
+      it.setAuthenticationManager(authManager(http))
+      it.setAuthenticationSuccessHandler(SimpleUrlAuthenticationSuccessHandler("/"))
+      it.setAuthenticationFailureHandler(SimpleUrlAuthenticationFailureHandler("/login?error"))
+    }
+  }
 }

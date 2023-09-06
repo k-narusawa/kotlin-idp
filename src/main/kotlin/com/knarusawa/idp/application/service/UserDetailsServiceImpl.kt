@@ -1,6 +1,7 @@
 package com.knarusawa.idp.application.service
 
 import com.knarusawa.idp.domain.repository.UserRepository
+import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.core.userdetails.UsernameNotFoundException
@@ -30,7 +31,12 @@ class UserDetailsServiceImpl(
       .roles(*user.roles.map { it.name }.toTypedArray())
       .accountLocked(user.isLock)
       .disabled(user.isDisabled)
-      .authorities(Collections.emptyList()).build()
+      .authorities(
+        listOf(
+          SimpleGrantedAuthority("ROLE_USER"),
+        )
+      )
+      .build()
   }
 
   private fun generateOtpDigit(): String {

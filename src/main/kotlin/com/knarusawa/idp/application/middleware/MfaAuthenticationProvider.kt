@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component
 @Component
 class MfaAuthenticationProvider : AuthenticationProvider {
   override fun authenticate(authentication: Authentication?): Authentication {
+    println("auth: $authentication")
     return authentication!!
   }
 
