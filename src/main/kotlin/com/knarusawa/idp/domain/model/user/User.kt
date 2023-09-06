@@ -9,6 +9,7 @@ class User private constructor(
   loginId: LoginId,
   password: Password,
   roles: List<Role>,
+  isUsingMfa: Boolean,
   isLock: Boolean,
   failedAttempts: Int,
   lockTime: LocalDateTime?,
@@ -20,6 +21,8 @@ class User private constructor(
   var password: Password = password
     private set
   var roles: List<Role> = roles
+    private set
+  var isUsingMfa: Boolean = isUsingMfa
     private set
   var isLock: Boolean = isLock
     private set
@@ -40,6 +43,7 @@ class User private constructor(
         loginId = LoginId(value = loginId),
         password = Password(value = SecurityConfig().passwordEncoder().encode(password)),
         roles = roles,
+        isUsingMfa = false,
         isLock = false,
         failedAttempts = 0,
         lockTime = null,
@@ -51,6 +55,7 @@ class User private constructor(
       loginId = LoginId(value = userRecord.loginId),
       password = Password(value = userRecord.password),
       roles = userRecord.roles.split(",").map { Role.fromString(it) },
+      isUsingMfa = userRecord.isUsingMfa,
       isLock = userRecord.isLock,
       failedAttempts = userRecord.failedAttempts,
       lockTime = userRecord.lockTime,
