@@ -9,6 +9,14 @@ import org.springframework.web.filter.OncePerRequestFilter
 
 @Component
 class RequestFilter : OncePerRequestFilter() {
+  companion object {
+    val excludeUrlRegexList = listOf(
+      Regex(".*webjars.*"),
+      Regex(".*csv.*"),
+      Regex(".*\\.png"),
+    )
+  }
+
   override fun doFilterInternal(
     request: HttpServletRequest,
     response: HttpServletResponse,
@@ -22,5 +30,10 @@ class RequestFilter : OncePerRequestFilter() {
       val end = System.currentTimeMillis()
       logger.info("METHOD: ${request.method}, REQUEST_URL: ${request.requestURI}, RESPONSE_TIME: ${end - start}ms")
     }
+  }
+
+  override fun shouldNotFilter(request: HttpServletRequest): Boolean {
+    val path = request.requestURI
+    return excludeUrlRegexList.any { path.matches(it) }
   }
 }

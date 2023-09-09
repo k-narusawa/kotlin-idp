@@ -7,6 +7,7 @@ import org.springframework.security.authentication.AuthenticationEventPublisher
 import org.springframework.security.authentication.DefaultAuthenticationEventPublisher
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 
+
 @Configuration
 class WebConfig : WebMvcConfigurer {
   @Bean
