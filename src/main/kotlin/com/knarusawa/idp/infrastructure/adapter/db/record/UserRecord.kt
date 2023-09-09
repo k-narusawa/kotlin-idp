@@ -22,6 +22,9 @@ data class UserRecord(
   @Column(name = "roles")
   val roles: String = "",
 
+  @Column(name = "is_using_mfa")
+  val isUsingMfa: Boolean = false,
+
   @Column(name = "is_lock")
   val isLock: Boolean = false,
 
