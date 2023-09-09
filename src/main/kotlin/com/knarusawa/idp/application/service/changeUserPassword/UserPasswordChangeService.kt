@@ -15,9 +15,9 @@ class UserPasswordChangeService(
     val user = userRepository.findByUserId(userId = input.userId)
       ?: throw IdpAppException(
         errorCode = ErrorCode.USER_NOT_FOUND,
-        logMessage = "User Not Found"
+        logMessage = "会員が見つかりませんでした。"
       )
-    
+
     user.changePassword(password = input.password)
     userRepository.save(user)
   }

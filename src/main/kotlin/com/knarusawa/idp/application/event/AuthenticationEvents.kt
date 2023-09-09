@@ -1,11 +1,12 @@
 package com.knarusawa.idp.application.event
 
 import com.knarusawa.idp.domain.model.user.UserId
-import com.knarusawa.idp.domain.model.user_activity.ActivityData
-import com.knarusawa.idp.domain.model.user_activity.ActivityType
-import com.knarusawa.idp.domain.model.user_activity.UserActivity
+import com.knarusawa.idp.domain.model.userActivity.ActivityData
+import com.knarusawa.idp.domain.model.userActivity.ActivityType
+import com.knarusawa.idp.domain.model.userActivity.UserActivity
 import com.knarusawa.idp.domain.repository.UserActivityRepository
 import com.knarusawa.idp.domain.repository.UserRepository
+import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.context.event.EventListener
 import org.springframework.security.authentication.event.AbstractAuthenticationFailureEvent
@@ -18,8 +19,8 @@ class AuthenticationEvents(
   private val userActivityRepository: UserActivityRepository
 ) {
   companion object {
-    val logger =
-      LoggerFactory.getLogger(com.knarusawa.idp.application.event.AuthenticationEvents::class.java)
+    val logger: Logger =
+      LoggerFactory.getLogger(AuthenticationEvents::class.java)
   }
 
   @EventListener

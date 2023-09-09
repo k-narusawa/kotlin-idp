@@ -1,6 +1,6 @@
 package com.knarusawa.idp.application.middleware
 
-import com.knarusawa.idp.domain.model.AssertionAuthenticationToken
+import com.knarusawa.idp.domain.model.assertion.AssertionAuthenticationToken
 import org.springframework.security.authentication.AuthenticationProvider
 import org.springframework.security.authentication.BadCredentialsException
 import org.springframework.security.core.Authentication
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component
 class MfaAuthenticationProvider : AuthenticationProvider {
   override fun authenticate(authentication: Authentication?): Authentication {
     if (authentication !is AssertionAuthenticationToken) {
-      throw BadCredentialsException("Invalid Assertion.")
+      throw BadCredentialsException("アサーションが不正です")
     }
     return authentication
   }

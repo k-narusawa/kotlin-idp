@@ -1,4 +1,4 @@
-package com.knarusawa.idp.domain.model.user_activity
+package com.knarusawa.idp.domain.model.userActivity
 
 import com.knarusawa.idp.domain.model.user.UserId
 import com.knarusawa.idp.infrastructure.adapter.db.record.UserActivityRecord

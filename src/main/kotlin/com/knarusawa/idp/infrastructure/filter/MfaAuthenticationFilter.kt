@@ -1,6 +1,7 @@
 package com.knarusawa.idp.infrastructure.filter
 
-import com.knarusawa.idp.domain.model.AssertionAuthenticationToken
+import com.knarusawa.idp.domain.model.assertion.AssertionAuthenticationToken
+import com.knarusawa.idp.domain.model.assertion.MfaCredentials
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.security.authentication.AuthenticationServiceException
@@ -20,14 +21,14 @@ class MfaAuthenticationFilter(
     response: HttpServletResponse?
   ): Authentication {
     if (request!!.method != "POST") {
-      throw AuthenticationServiceException("Authentication method not supported: " + request.method)
+      throw AuthenticationServiceException("2段階認証において不正なリクエストです Method:" + request.method)
     }
 
     val otp = getOtp(request)
     verifyOtp(otp = otp)
     val principal = getPrincipal(request)
 
-    val credentials = AssertionAuthenticationToken.MfaCredentials(sessionId = "")
+    val credentials = MfaCredentials(sessionId = "")
 
     val authorities = principal.authorities.map {
       SimpleGrantedAuthority(it.authority)

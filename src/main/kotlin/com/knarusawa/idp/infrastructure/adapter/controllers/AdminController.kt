@@ -1,10 +1,10 @@
 package com.knarusawa.idp.infrastructure.adapter.controllers
 
-import com.knarusawa.idp.application.service.UserDtoQueryService
 import com.knarusawa.idp.application.service.getAllClient.ClientGetAllService
+import com.knarusawa.idp.application.service.query.UserDtoQueryService
 import com.knarusawa.idp.application.service.registerClient.ClientRegisterInputData
 import com.knarusawa.idp.application.service.registerClient.ClientRegisterService
-import com.knarusawa.idp.infrastructure.dto.ClientForm
+import com.knarusawa.idp.infrastructure.dto.form.ClientForm
 import java.security.Principal
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.stereotype.Controller

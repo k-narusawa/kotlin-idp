@@ -1,6 +1,6 @@
 package com.knarusawa.idp.application.service.changeUserLoginId
 
-import com.knarusawa.idp.application.service.UserDtoQueryService
+import com.knarusawa.idp.application.service.query.UserDtoQueryService
 import com.knarusawa.idp.domain.model.error.ErrorCode
 import com.knarusawa.idp.domain.model.error.IdpAppException
 import com.knarusawa.idp.domain.model.user.LoginId
@@ -20,13 +20,13 @@ class UserLoginIdChangeService(
     val user = userRepository.findByUserId(userId = input.userId)
       ?: throw IdpAppException(
         errorCode = ErrorCode.USER_NOT_FOUND,
-        logMessage = "User Not Found"
+        logMessage = "対象の会員が見つかりませんでした"
       )
 
     if (userService.isExistsLoginId(loginId = LoginId(input.loginId)))
       throw IdpAppException(
         errorCode = ErrorCode.USER_EXISTS,
-        logMessage = "User already exists. loginId: ${input.loginId}"
+        logMessage = "すでに会員が存在します。 ログインID: ${input.loginId}"
       )
 
     user.changeLoginId(loginId = input.loginId)
@@ -34,13 +34,13 @@ class UserLoginIdChangeService(
 
     val newUser = userDtoQueryService.findByUserId(userId = input.userId)
       ?: throw IdpAppException(
-        logMessage = "User Not Found",
+        logMessage = "対象の会員が見つかりませんでした",
         errorCode = ErrorCode.INTERNAL_SERVER_ERROR
       )
 
     if (newUser.loginId != input.loginId)
       throw IdpAppException(
-        logMessage = "Data inconsistency occurred",
+        logMessage = "データの不整合が発生しました",
         errorCode = ErrorCode.INTERNAL_SERVER_ERROR
       )
     return UserLoginIdChangeOutputData(newUser)
