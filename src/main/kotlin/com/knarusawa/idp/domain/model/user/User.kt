@@ -68,6 +68,7 @@ class User private constructor(
     loginId = this.loginId.toString(),
     password = this.password.toString(),
     roles = this.roles.joinToString(","),
+    isUsingMfa = this.isUsingMfa,
     isLock = this.isLock,
     failedAttempts = this.failedAttempts,
     lockTime = this.lockTime,

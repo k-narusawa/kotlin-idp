@@ -1,5 +1,6 @@
 package com.knarusawa.idp.application.middleware
 
+import com.knarusawa.idp.domain.model.authority.AuthorityRole
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.security.core.Authentication
@@ -14,10 +15,11 @@ class UsernamePasswordAuthenticationSuccessHandler(
     response: HttpServletResponse?,
     authentication: Authentication
   ) {
+    val isUsingMfa = authentication.authorities?.any {
+      it.authority == AuthorityRole.MFA_MAIL.toString()
+    } ?: false
 
-    val needFido = true
-
-    if (needFido) {
+    if (isUsingMfa) {
       response?.sendRedirect(nextAuthUrl)
     } else {
       super.onAuthenticationSuccess(request, response, authentication)

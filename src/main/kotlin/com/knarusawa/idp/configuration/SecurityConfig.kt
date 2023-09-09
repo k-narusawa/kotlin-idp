@@ -113,6 +113,7 @@ class SecurityConfig {
           .loginPage("/login")
           .permitAll()
           .successHandler(UsernamePasswordAuthenticationSuccessHandler("/login/mfa", "/"))
+          .failureUrl("/login?error")
       }
       .logout { logout ->
         logout

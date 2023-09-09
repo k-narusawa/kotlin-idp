@@ -1,18 +1,18 @@
 package com.knarusawa.idp.application.service
 
+import com.knarusawa.idp.application.event.AuthenticationEvents.Companion.logger
+import com.knarusawa.idp.domain.model.authority.IdpGrantedAuthority
 import com.knarusawa.idp.domain.repository.UserRepository
-import org.springframework.security.core.authority.SimpleGrantedAuthority
+import java.util.*
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.stereotype.Service
-import java.util.*
 
 @Service
 class UserDetailsServiceImpl(
   private val userRepository: UserRepository
 ) : UserDetailsService {
-
   override fun loadUserByUsername(loginId: String): UserDetails {
     val user = userRepository.findByLoginId(loginId = loginId)
       ?: throw UsernameNotFoundException("User Not Found.")
@@ -21,9 +21,16 @@ class UserDetailsServiceImpl(
     user.unlockByTimeElapsed()
     userRepository.save(user)
 
-    val otp = generateOtpDigit()
-    println("otp: $otp")
-    // TODO: OTPを宛先に送る
+    val authorities = when (user.isUsingMfa) {
+      true -> listOf(IdpGrantedAuthority.useMfaMail())
+      false -> listOf(IdpGrantedAuthority.usePassword())
+    }
+
+    if (user.isUsingMfa) {
+      val otp = generateOtpDigit()
+      logger.info("otp: $otp")
+      // TODO: OTPを宛先に送る
+    }
 
     return org.springframework.security.core.userdetails.User
       .withUsername(user.userId.toString())
@@ -31,11 +38,7 @@ class UserDetailsServiceImpl(
       .roles(*user.roles.map { it.name }.toTypedArray())
       .accountLocked(user.isLock)
       .disabled(user.isDisabled)
-      .authorities(
-        listOf(
-          SimpleGrantedAuthority("ROLE_USER"),
-        )
-      )
+      .authorities(authorities)
       .build()
   }
 
