@@ -1,7 +1,7 @@
 package com.knarusawa.idp.application.mapper
 
 import com.knarusawa.idp.application.dto.UserDto
-import com.knarusawa.idp.infrastructure.dto.UserResponse
+import com.knarusawa.idp.infrastructure.dto.response.UserResponse
 
 object UserMapper {
   fun fromUser(user: UserDto) = UserResponse(

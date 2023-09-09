@@ -1,8 +1,8 @@
 package com.knarusawa.idp.infrastructure.adapter.controllers
 
-import com.knarusawa.idp.application.service.UserActivityDtoQueryService
-import com.knarusawa.idp.application.service.UserDtoQueryService
-import com.knarusawa.idp.application.service.UserMailDtoQueryService
+import com.knarusawa.idp.application.service.query.UserActivityDtoQueryService
+import com.knarusawa.idp.application.service.query.UserDtoQueryService
+import com.knarusawa.idp.application.service.query.UserMailDtoQueryService
 import java.security.Principal
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort

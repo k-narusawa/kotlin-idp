@@ -2,7 +2,7 @@ package com.knarusawa.idp.application.middleware
 
 import com.knarusawa.idp.domain.model.error.ErrorCode
 import com.knarusawa.idp.domain.model.error.IdpAppException
-import com.knarusawa.idp.infrastructure.dto.ApiErrorResponse
+import com.knarusawa.idp.infrastructure.dto.response.ApiErrorResponse
 import jakarta.servlet.http.HttpServletRequest
 import org.springframework.boot.logging.LogLevel
 import org.springframework.http.ResponseEntity

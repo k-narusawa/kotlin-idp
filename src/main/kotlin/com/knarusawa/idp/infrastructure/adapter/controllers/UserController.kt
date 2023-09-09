@@ -1,21 +1,22 @@
 package com.knarusawa.idp.infrastructure.adapter.controllers
 
-import com.knarusawa.idp.application.service.UserActivityDtoQueryService
-import com.knarusawa.idp.application.service.UserDtoQueryService
-import com.knarusawa.idp.application.service.UserMailDtoQueryService
 import com.knarusawa.idp.application.service.changeUserLoginId.UserLoginIdChangeInputData
 import com.knarusawa.idp.application.service.changeUserLoginId.UserLoginIdChangeService
 import com.knarusawa.idp.application.service.changeUserMail.UserMailChangeInputData
 import com.knarusawa.idp.application.service.changeUserMail.UserMailChangeService
 import com.knarusawa.idp.application.service.changeUserPassword.UserPasswordChangeInputData
 import com.knarusawa.idp.application.service.changeUserPassword.UserPasswordChangeService
+import com.knarusawa.idp.application.service.query.UserActivityDtoQueryService
+import com.knarusawa.idp.application.service.query.UserDtoQueryService
+import com.knarusawa.idp.application.service.query.UserMailDtoQueryService
 import com.knarusawa.idp.application.service.registerUserMail.UserRegisterMailInputData
 import com.knarusawa.idp.application.service.registerUserMail.UserRegisterMailService
 import com.knarusawa.idp.domain.model.error.ErrorCode
 import com.knarusawa.idp.domain.model.error.IdpAppException
-import com.knarusawa.idp.infrastructure.dto.ChangeUserLoginIdForm
-import com.knarusawa.idp.infrastructure.dto.ChangeUserPasswordForm
-import com.knarusawa.idp.infrastructure.dto.RegisterUserMailForm
+import com.knarusawa.idp.infrastructure.dto.form.ChangeUserLoginIdForm
+import com.knarusawa.idp.infrastructure.dto.form.ChangeUserPasswordForm
+import com.knarusawa.idp.infrastructure.dto.form.RegisterUserMailForm
+import java.security.Principal
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
 import org.springframework.security.access.prepost.PreAuthorize
@@ -26,7 +27,6 @@ import org.springframework.web.bind.annotation.ModelAttribute
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
-import java.security.Principal
 
 @Controller
 @RequestMapping("user")

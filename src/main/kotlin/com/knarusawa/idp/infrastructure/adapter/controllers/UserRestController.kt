@@ -1,7 +1,7 @@
 package com.knarusawa.idp.infrastructure.adapter.controllers
 
 import com.knarusawa.idp.application.dto.UserDto
-import com.knarusawa.idp.application.service.UserDtoQueryService
+import com.knarusawa.idp.application.service.query.UserDtoQueryService
 import com.knarusawa.idp.domain.model.error.ErrorCode
 import com.knarusawa.idp.domain.model.error.IdpAppException
 import java.security.Principal

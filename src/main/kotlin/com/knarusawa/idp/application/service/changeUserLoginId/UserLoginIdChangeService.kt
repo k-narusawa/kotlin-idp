@@ -1,6 +1,6 @@
 package com.knarusawa.idp.application.service.changeUserLoginId
 
-import com.knarusawa.idp.application.service.UserDtoQueryService
+import com.knarusawa.idp.application.service.query.UserDtoQueryService
 import com.knarusawa.idp.domain.model.error.ErrorCode
 import com.knarusawa.idp.domain.model.error.IdpAppException
 import com.knarusawa.idp.domain.model.user.LoginId
