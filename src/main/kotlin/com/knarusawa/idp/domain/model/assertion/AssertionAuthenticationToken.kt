@@ -1,4 +1,4 @@
-package com.knarusawa.idp.domain.model
+package com.knarusawa.idp.domain.model.assertion
 
 import org.springframework.security.authentication.AbstractAuthenticationToken
 import org.springframework.security.core.authority.SimpleGrantedAuthority
@@ -16,8 +16,4 @@ class AssertionAuthenticationToken(
   override fun getCredentials(): Any {
     return credentials
   }
-
-  class MfaCredentials(
-    val sessionId: String,
-  )
 }
