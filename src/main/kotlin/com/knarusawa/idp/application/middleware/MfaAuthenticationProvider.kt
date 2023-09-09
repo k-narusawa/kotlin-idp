@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component
 class MfaAuthenticationProvider : AuthenticationProvider {
   override fun authenticate(authentication: Authentication?): Authentication {
     if (authentication !is AssertionAuthenticationToken) {
-      throw BadCredentialsException("Invalid Assertion.")
+      throw BadCredentialsException("アサーションが不正です")
     }
     return authentication
   }

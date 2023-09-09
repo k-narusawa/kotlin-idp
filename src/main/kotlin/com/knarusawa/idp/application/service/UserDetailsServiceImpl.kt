@@ -15,7 +15,7 @@ class UserDetailsServiceImpl(
 ) : UserDetailsService {
   override fun loadUserByUsername(loginId: String): UserDetails {
     val user = userRepository.findByLoginId(loginId = loginId)
-      ?: throw UsernameNotFoundException("User Not Found.")
+      ?: throw UsernameNotFoundException("認証に失敗しました")
 
     // ロックされてから30分経過していたらアンロックする
     user.unlockByTimeElapsed()
@@ -28,7 +28,7 @@ class UserDetailsServiceImpl(
 
     if (user.isUsingMfa) {
       val otp = generateOtpDigit()
-      logger.info("otp: $otp")
+      logger.info("ワンタイムパスワード: $otp")
       // TODO: OTPを宛先に送る
     }
 

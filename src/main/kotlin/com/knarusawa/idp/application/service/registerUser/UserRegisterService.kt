@@ -26,13 +26,13 @@ class UserRegisterService(
     if (userService.isExistsLoginId(loginId = LoginId(input.loginId)))
       throw IdpAppException(
         errorCode = ErrorCode.USER_EXISTS,
-        logMessage = "User already exists. loginId: ${input.loginId}"
+        logMessage = "会員がすでに存在します。 ログインID: ${input.loginId}"
       )
 
     if (input.eMail.isNotBlank() && !userMailService.isVerifiable(email = EMail(input.eMail))) {
       throw IdpAppException(
         errorCode = ErrorCode.BAD_REQUEST,
-        logMessage = "User Mail is Already Registered."
+        logMessage = "通知先に登録ずみのメールアドレスです。"
       )
     }
 

@@ -21,7 +21,7 @@ class MfaAuthenticationFilter(
     response: HttpServletResponse?
   ): Authentication {
     if (request!!.method != "POST") {
-      throw AuthenticationServiceException("Authentication method not supported: " + request.method)
+      throw AuthenticationServiceException("2段階認証において不正なリクエストです Method:" + request.method)
     }
 
     val otp = getOtp(request)
