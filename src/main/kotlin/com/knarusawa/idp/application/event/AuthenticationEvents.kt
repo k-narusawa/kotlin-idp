@@ -1,9 +1,9 @@
 package com.knarusawa.idp.application.event
 
 import com.knarusawa.idp.domain.model.user.UserId
-import com.knarusawa.idp.domain.model.user_activity.ActivityData
-import com.knarusawa.idp.domain.model.user_activity.ActivityType
-import com.knarusawa.idp.domain.model.user_activity.UserActivity
+import com.knarusawa.idp.domain.model.userActivity.ActivityData
+import com.knarusawa.idp.domain.model.userActivity.ActivityType
+import com.knarusawa.idp.domain.model.userActivity.UserActivity
 import com.knarusawa.idp.domain.repository.UserActivityRepository
 import com.knarusawa.idp.domain.repository.UserRepository
 import org.slf4j.LoggerFactory

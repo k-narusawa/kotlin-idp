@@ -1,4 +1,4 @@
-package com.knarusawa.idp.domain.model.user_activity
+package com.knarusawa.idp.domain.model.userActivity
 
 data class ActivityData(
   val value: String?
