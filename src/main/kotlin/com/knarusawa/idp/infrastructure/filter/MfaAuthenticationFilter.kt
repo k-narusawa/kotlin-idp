@@ -25,10 +25,9 @@ class MfaAuthenticationFilter(
     }
 
     val otp = getOtp(request)
-    verifyOtp(otp = otp)
     val principal = getPrincipal(request)
 
-    val credentials = MfaCredentials(sessionId = "")
+    val credentials = MfaCredentials(code = otp)
 
     val authorities = principal.authorities.map {
       SimpleGrantedAuthority(it.authority)
@@ -47,12 +46,8 @@ class MfaAuthenticationFilter(
    * @return ワンタイムパスワード
    */
   private fun getOtp(request: HttpServletRequest): String {
-    val otp = request.getParameter("code")
-
-    if (otp.isNullOrEmpty()) {
-      throw AuthenticationServiceException("code is invalid.")
-    }
-    return otp
+    return request.getParameter("code")
+      ?: throw AuthenticationServiceException("code is invalid.")
   }
 
   private fun getPrincipal(request: HttpServletRequest): User {
@@ -63,16 +58,5 @@ class MfaAuthenticationFilter(
       throw AuthenticationServiceException("principal is invalid.")
     }
     return principal
-  }
-
-  /**
-   * OTPの検証を行う
-   *
-   * @param otp ワンタイムパスワード
-   */
-  private fun verifyOtp(otp: String) {
-    if (otp != "123456") {
-      throw AuthenticationServiceException("code is invalid.")
-    }
   }
 }

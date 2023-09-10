@@ -9,11 +9,11 @@ class AssertionAuthenticationToken(
   private val credentials: MfaCredentials,
   authorities: Collection<SimpleGrantedAuthority>,
 ) : AbstractAuthenticationToken(authorities) {
-  override fun getPrincipal(): Any {
+  override fun getPrincipal(): User {
     return principal
   }
 
-  override fun getCredentials(): Any {
+  override fun getCredentials(): MfaCredentials {
     return credentials
   }
 }
