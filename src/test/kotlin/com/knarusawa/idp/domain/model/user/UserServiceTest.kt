@@ -1,7 +1,6 @@
 package com.knarusawa.idp.domain.model.user
 
 import com.knarusawa.idp.domain.repository.UserRepository
-import com.knarusawa.idp.infrastructure.adapter.db.record.UserRecord
 import io.mockk.MockKAnnotations
 import io.mockk.every
 import io.mockk.impl.annotations.InjectMockKs
@@ -14,9 +13,10 @@ import org.junit.jupiter.api.Test
 
 class UserServiceTest {
   companion object {
-    val DUMMY_USER_RECORD = UserRecord(
+    val DUMMY_USER_RECORD = User.of(
       loginId = "test",
       password = "password",
+      roles = listOf()
     )
   }
 

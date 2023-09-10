@@ -27,8 +27,9 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa:3.1.0'
     implementation 'org.springframework.data:spring-data-jpa:3.1.0'
     implementation 'org.webjars:bootstrap:5.3.0'
+    implementation 'com.amazonaws:aws-java-sdk-dynamodb:1.12.546'
     implementation 'com.fasterxml.jackson.module:jackson-module-kotlin:2.15.2'
-    runtimeOnly 'org.jetbrains.kotlin:kotlin-reflect:1.8.22'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3'
     implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6:3.1.1.RELEASE'
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-authorization-server:3.1.0'
     implementation 'org.springframework:spring-jdbc:6.0.10'
@@ -38,6 +39,9 @@ dependencies {
     implementation 'org.flywaydb:flyway-mysql:9.19.4'
     implementation 'org.springframework.security:spring-security-cas:6.1.1'
     implementation 'org.webjars:popper.js:2.9.3'
+
+    runtimeOnly 'org.jetbrains.kotlin:kotlin-reflect:1.8.22'
+    
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
     testImplementation 'io.mockk:mockk:1.13.5'
