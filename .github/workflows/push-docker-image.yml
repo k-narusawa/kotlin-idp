@@ -23,6 +23,9 @@ jobs:
           distribution: liberica
           java-version: 17
 
+      - name: Docker Compose Up
+        run: docker compose up -d
+
       - name: Setup Gradle
         uses: gradle/gradle-build-action@v2
 
