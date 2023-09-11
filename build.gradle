@@ -6,6 +6,7 @@ plugins {
     id 'org.jetbrains.kotlin.jvm' version '1.8.21'
     id 'org.jetbrains.kotlin.plugin.spring' version '1.8.21'
     id 'com.google.cloud.tools.jib' version '3.3.2'
+    id 'jacoco'
 }
 
 group = 'com.knarusawa.demo.idp'
@@ -41,7 +42,7 @@ dependencies {
     implementation 'org.webjars:popper.js:2.9.3'
 
     runtimeOnly 'org.jetbrains.kotlin:kotlin-reflect:1.8.22'
-    
+
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
     testImplementation 'io.mockk:mockk:1.13.5'
@@ -72,5 +73,18 @@ jib {
                 '-Xdebug'
         ]
         ports = ['8080']
+    }
+}
+
+test {
+    finalizedBy jacocoTestReport // report is always generated after tests run
+}
+
+jacocoTestReport {
+    dependsOn test // tests are required to run before generating the report
+    reports {
+        xml.required = true
+        csv.required = true
+        html.outputLocation = layout.buildDirectory.dir('jacocoHtml')
     }
 }
