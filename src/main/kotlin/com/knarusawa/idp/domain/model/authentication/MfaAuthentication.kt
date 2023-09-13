@@ -1,31 +1,32 @@
 package com.knarusawa.idp.domain.model.authentication
 
+import java.util.*
 import org.springframework.security.authentication.AbstractAuthenticationToken
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.CredentialsContainer
-import java.util.*
 
 
-class MfaAuthentication(
-  first: Authentication
+class MfaAuthentication private constructor(
+  val authentication: Authentication
 ) : AbstractAuthenticationToken(Collections.emptyList()) {
-  private val first: Authentication
 
-  init {
-    this.first = first
+  companion object {
+    fun of(authentication: Authentication) = MfaAuthentication(
+      authentication = authentication
+    )
   }
 
   override fun getPrincipal(): Any {
-    return first.principal
+    return authentication.principal
   }
 
   override fun getCredentials(): Any {
-    return first.credentials
+    return authentication.credentials
   }
 
   override fun eraseCredentials() {
-    if (first is CredentialsContainer) {
-      (first as CredentialsContainer).eraseCredentials()
+    if (authentication is CredentialsContainer) {
+      (authentication as CredentialsContainer).eraseCredentials()
     }
   }
 
@@ -34,6 +35,6 @@ class MfaAuthentication(
   }
 
   fun getFirst(): Authentication {
-    return first
+    return authentication
   }
 }
