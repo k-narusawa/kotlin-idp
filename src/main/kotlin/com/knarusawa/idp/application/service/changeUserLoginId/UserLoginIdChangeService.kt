@@ -22,7 +22,7 @@ class UserLoginIdChangeService(
   private val userActivityRepository: UserActivityRepository,
   private val userDtoQueryService: UserDtoQueryService
 ) {
-  fun execute(input: UserLoginIdChangeInputData): UserLoginIdChangeOutputData {
+  fun execute(input: UserLoginIdChangeInputData) {
     val user = userRepository.findByUserId(userId = input.userId)
       ?: throw IdpAppException(
         errorCode = ErrorCode.USER_NOT_FOUND,
@@ -51,8 +51,6 @@ class UserLoginIdChangeService(
       )
 
     storeActivity(userId = input.userId)
-
-    return UserLoginIdChangeOutputData(newUser)
   }
 
   private fun storeActivity(userId: String) {
