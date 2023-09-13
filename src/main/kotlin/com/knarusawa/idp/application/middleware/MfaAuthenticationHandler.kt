@@ -46,7 +46,7 @@ class MfaAuthenticationHandler(
     response: HttpServletResponse,
     authentication: Authentication
   ) {
-    SecurityContextHolder.getContext().authentication = MfaAuthentication(authentication)
+    SecurityContextHolder.getContext().authentication = MfaAuthentication.of(authentication)
     successHandler.onAuthenticationSuccess(request, response, authentication)
   }
 
@@ -60,6 +60,6 @@ class MfaAuthenticationHandler(
       "anonymousUser",
       AuthorityUtils.createAuthorityList("ROLE_ANONYMOUS")
     )
-    saveMfaAuthentication(request!!, response!!, MfaAuthentication(anonymous))
+    saveMfaAuthentication(request!!, response!!, MfaAuthentication.of(anonymous))
   }
 }
