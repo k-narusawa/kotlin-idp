@@ -4,7 +4,12 @@ import com.knarusawa.idp.application.service.query.UserDtoQueryService
 import com.knarusawa.idp.domain.model.error.ErrorCode
 import com.knarusawa.idp.domain.model.error.IdpAppException
 import com.knarusawa.idp.domain.model.user.LoginId
+import com.knarusawa.idp.domain.model.user.UserId
 import com.knarusawa.idp.domain.model.user.UserService
+import com.knarusawa.idp.domain.model.userActivity.ActivityData
+import com.knarusawa.idp.domain.model.userActivity.ActivityType
+import com.knarusawa.idp.domain.model.userActivity.UserActivity
+import com.knarusawa.idp.domain.repository.UserActivityRepository
 import com.knarusawa.idp.domain.repository.UserRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -14,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional
 class UserLoginIdChangeService(
   private val userService: UserService,
   private val userRepository: UserRepository,
+  private val userActivityRepository: UserActivityRepository,
   private val userDtoQueryService: UserDtoQueryService
 ) {
   fun execute(input: UserLoginIdChangeInputData): UserLoginIdChangeOutputData {
@@ -43,6 +49,18 @@ class UserLoginIdChangeService(
         logMessage = "データの不整合が発生しました",
         errorCode = ErrorCode.INTERNAL_SERVER_ERROR
       )
+
+    storeActivity(userId = input.userId)
+
     return UserLoginIdChangeOutputData(newUser)
+  }
+
+  private fun storeActivity(userId: String) {
+    val activity = UserActivity.of(
+      userId = UserId(value = userId),
+      activityType = ActivityType.CHANGE_LOGIN_ID,
+      activityData = ActivityData(value = null)
+    )
+    userActivityRepository.save(activity)
   }
 }
