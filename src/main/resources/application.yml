@@ -3,6 +3,7 @@ server:
 
 logging:
   level:
+    root: info
     org.springframework.security: info
     jdbc:
       sqlonly: trace

@@ -1,31 +1,28 @@
 package com.knarusawa.idp.configuration
 
-import com.knarusawa.idp.application.middleware.MfaAuthenticationProvider
-import com.knarusawa.idp.application.middleware.UsernamePasswordAuthenticationSuccessHandler
+import com.knarusawa.idp.application.middleware.MfaAuthenticationHandler
 import com.knarusawa.idp.application.service.UserDetailsServiceImpl
 import com.knarusawa.idp.configuration.db.UserDbJdbcTemplate
-import com.knarusawa.idp.infrastructure.filter.MfaAuthenticationFilter
+import com.knarusawa.idp.domain.model.authentication.MfaAuthentication
 import com.nimbusds.jose.jwk.JWKSet
 import com.nimbusds.jose.jwk.RSAKey
 import com.nimbusds.jose.jwk.source.ImmutableJWKSet
 import com.nimbusds.jose.jwk.source.JWKSource
 import com.nimbusds.jose.proc.SecurityContext
-import java.security.KeyPair
-import java.security.KeyPairGenerator
-import java.security.interfaces.RSAPrivateKey
-import java.security.interfaces.RSAPublicKey
-import java.util.*
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.core.annotation.Order
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider
+import org.springframework.security.authorization.AuthorizationDecision
+import org.springframework.security.authorization.AuthorizationManager
 import org.springframework.security.config.Customizer
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configurers.ExceptionHandlingConfigurer
 import org.springframework.security.config.annotation.web.configurers.FormLoginConfigurer
+import org.springframework.security.core.Authentication
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.oauth2.jwt.JwtDecoder
@@ -36,20 +33,25 @@ import org.springframework.security.oauth2.server.authorization.config.annotatio
 import org.springframework.security.oauth2.server.authorization.config.annotation.web.configurers.OAuth2AuthorizationServerConfigurer
 import org.springframework.security.oauth2.server.authorization.settings.AuthorizationServerSettings
 import org.springframework.security.web.SecurityFilterChain
+import org.springframework.security.web.access.intercept.RequestAuthorizationContext
+import org.springframework.security.web.authentication.AuthenticationFailureHandler
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint
+import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler
-import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
 import org.springframework.security.web.authentication.logout.CookieClearingLogoutHandler
+import java.security.KeyPair
+import java.security.KeyPairGenerator
+import java.security.interfaces.RSAPrivateKey
+import java.security.interfaces.RSAPublicKey
+import java.util.*
+import java.util.function.Supplier
 
 
 @Configuration
 class SecurityConfig {
   @Autowired
   private lateinit var userDetailsServiceImpl: UserDetailsServiceImpl
-
-  @Autowired
-  private lateinit var mfaAuthenticationProvider: MfaAuthenticationProvider
 
   companion object {
     private fun generateRsaKey(): KeyPair {
@@ -91,7 +93,7 @@ class SecurityConfig {
         Customizer { authorize ->
           authorize
             .requestMatchers("/login").permitAll()
-            .requestMatchers("/login/mfa").permitAll()
+            .requestMatchers("/login/mfa").access(mfaAuthorizationManager())
             .requestMatchers("/api/user/*").permitAll()  //細かい制御は@PreAuthorizedで行う
             .requestMatchers("/api/admin/*").permitAll() //細かい制御は@PreAuthorizedで行う
             .requestMatchers("/user/*").permitAll()  //細かい制御は@PreAuthorizedで行う
@@ -112,18 +114,16 @@ class SecurityConfig {
         form
           .loginPage("/login")
           .permitAll()
-          .successHandler(UsernamePasswordAuthenticationSuccessHandler("/login/mfa", "/"))
-          .failureUrl("/login?error")
+          .successHandler(MfaAuthenticationHandler("/login/mfa"))
+          .failureHandler(MfaAuthenticationHandler("/login/mfa"))
+      }
+      .securityContext { context ->
+        context.requireExplicitSave(false)
       }
       .logout { logout ->
         logout
           .addLogoutHandler(CookieClearingLogoutHandler("JSESSIONID"))
       }
-    http
-      .addFilterBefore(
-        createMfaAuthenticationFilter(http),
-        UsernamePasswordAuthenticationFilter::class.java
-      )
     return http.build()
   }
 
@@ -138,7 +138,6 @@ class SecurityConfig {
     }
 
     authenticationManagerBuilder.authenticationProvider(daoAuthenticationProvider)
-    authenticationManagerBuilder.authenticationProvider(mfaAuthenticationProvider)
     return authenticationManagerBuilder.build()
   }
 
@@ -177,11 +176,22 @@ class SecurityConfig {
   @Bean
   fun passwordEncoder(): PasswordEncoder = BCryptPasswordEncoder()
 
-  private fun createMfaAuthenticationFilter(http: HttpSecurity): MfaAuthenticationFilter {
-    return MfaAuthenticationFilter("/login/mfa", "POST").also {
-      it.setAuthenticationManager(authManager(http))
-      it.setAuthenticationSuccessHandler(SimpleUrlAuthenticationSuccessHandler("/"))
-      it.setAuthenticationFailureHandler(SimpleUrlAuthenticationFailureHandler("/login?error"))
+  @Bean
+  fun mfaAuthorizationManager(): AuthorizationManager<RequestAuthorizationContext> {
+    return AuthorizationManager { authentication: Supplier<Authentication?>, _: RequestAuthorizationContext? ->
+      AuthorizationDecision(
+        authentication.get() is MfaAuthentication
+      )
     }
+  }
+
+  @Bean
+  fun successHandler(): AuthenticationSuccessHandler {
+    return SavedRequestAwareAuthenticationSuccessHandler()
+  }
+
+  @Bean
+  fun failureHandler(): AuthenticationFailureHandler {
+    return SimpleUrlAuthenticationFailureHandler("/login?error")
   }
 }
