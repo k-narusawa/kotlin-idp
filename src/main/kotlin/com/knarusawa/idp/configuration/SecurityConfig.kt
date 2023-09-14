@@ -78,6 +78,7 @@ class SecurityConfig {
           .authenticationEntryPoint(
             LoginUrlAuthenticationEntryPoint("/login")
           )
+          .accessDeniedPage("/error/403")
       }
       .oauth2ResourceServer { obj ->
         obj.jwt(Customizer.withDefaults())
@@ -99,6 +100,7 @@ class SecurityConfig {
             .requestMatchers("/user/*").permitAll()  //細かい制御は@PreAuthorizedで行う
             .requestMatchers("/admin/*").permitAll() //細かい制御は@PreAuthorizedで行う
             .requestMatchers("/register").permitAll() // 会員登録画面
+            .requestMatchers("/error/*").permitAll() // エラー画面
             .requestMatchers("webjars/**", "/css/**", "/js/**", "/img/**").permitAll()
             .anyRequest().authenticated()
         }
@@ -123,6 +125,13 @@ class SecurityConfig {
       .logout { logout ->
         logout
           .addLogoutHandler(CookieClearingLogoutHandler("JSESSIONID"))
+      }
+      .exceptionHandling { exceptions: ExceptionHandlingConfigurer<HttpSecurity?> ->
+        exceptions
+          .authenticationEntryPoint(
+            LoginUrlAuthenticationEntryPoint("/login")
+          )
+          .accessDeniedPage("/error/403")
       }
     return http.build()
   }
