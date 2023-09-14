@@ -5,12 +5,12 @@ import com.knarusawa.idp.domain.model.authority.IdpGrantedAuthority
 import com.knarusawa.idp.domain.model.oneTimePassword.OneTimePassword
 import com.knarusawa.idp.domain.repository.OnetimePasswordRepository
 import com.knarusawa.idp.domain.repository.UserRepository
-import java.util.*
 import kotlinx.coroutines.runBlocking
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.stereotype.Service
+import java.util.*
 
 @Service
 class UserDetailsServiceImpl(
@@ -25,12 +25,14 @@ class UserDetailsServiceImpl(
     user.unlockByTimeElapsed()
     userRepository.save(user)
 
-    val authorities = when (user.isUsingMfa) {
+    val isUsingMfa = false
+
+    val authorities = when (isUsingMfa) {
       true -> listOf(IdpGrantedAuthority.useMfaMail())
       false -> listOf(IdpGrantedAuthority.usePassword())
     }
 
-    if (user.isUsingMfa) {
+    if (isUsingMfa) { // TODO: MFA追加したらやる
       val otp = generateOtpDigit()
       logger.info("ワンタイムパスワード: $otp")
       val oneTimePassword = OneTimePassword.of(userId = user.userId, code = otp)
