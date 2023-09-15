@@ -1,6 +1,7 @@
 package com.knarusawa.idp.infrastructure.adapter.controllers
 
-import com.knarusawa.idp.application.service.CheckMfaService
+import com.knarusawa.idp.application.service.verifyOtp.VerifyOtpInput
+import com.knarusawa.idp.application.service.verifyOtp.VerifyOtpService
 import com.knarusawa.idp.domain.model.authentication.MfaAuthentication
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
@@ -17,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam
 class MfaController(
   private val successHandler: AuthenticationSuccessHandler,
   private val failureHandler: AuthenticationFailureHandler,
-  private val checkMfaService: CheckMfaService
+  private val verifyOtpService: VerifyOtpService
 ) {
   @GetMapping("/login/mfa")
   fun mfa(): String {
@@ -33,13 +34,23 @@ class MfaController(
   ) {
     val primaryAuthentication = authentication.getFirst()
 
-    val isVerified = checkMfaService.exec(userId = primaryAuthentication.name, otp = code)
+    val isVerified =
+      verifyOtpService.exec(
+        input = VerifyOtpInput(
+          userId = primaryAuthentication.name,
+          code = code
+        )
+      )
 
     if (isVerified) {
       SecurityContextHolder.getContext().authentication = primaryAuthentication
       successHandler.onAuthenticationSuccess(request, response, authentication)
     } else {
-      failureHandler.onAuthenticationFailure(request, response, BadCredentialsException("MFA検証失敗"))
+      failureHandler.onAuthenticationFailure(
+        request,
+        response,
+        BadCredentialsException("MFA検証失敗")
+      )
     }
   }
 }
