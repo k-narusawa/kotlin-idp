@@ -9,7 +9,7 @@ INSERT INTO `user` (`user_id`,
                     `created_at`,
                     `updated_at`)
 VALUES ('8ad115ea-20da-4785-b708-587584b9fef5',
-        'admin',
+        'admin@example.com',
         '$2a$10$2LQvgMLq3WZJTQxRIYAanu3V7EMnQzj.mP5KsI8ruSDTeL0c92gta',
         'ADMIN,USER',
         0,
