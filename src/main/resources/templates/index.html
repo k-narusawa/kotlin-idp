@@ -45,6 +45,19 @@
                     <dd class="col-sm-2">
                         <a href="/user/password/change" class="btn btn-sm btn-outline-primary">変更</a>
                     </dd>
+                    <dt class="col-sm-3">MFA:</dt>
+                    <th:block th:if="${userMfaDto != null}">
+                        <dd class="col-sm-7" th:text="${userMfaDto.mfaType}"></dd>
+                        <dd class="col-sm-2">
+                            <a href="/user/mfa" class="btn btn-sm btn-outline-primary">変更</a>
+                        </dd>
+                    </th:block>
+                    <th:block th:if="${userMfaDto == null}">
+                        <dd class="col-sm-7">未設定（設定してください）</dd>
+                        <dd class="col-sm-2">
+                            <a href="/user/mfa" class="btn btn-sm btn-outline-primary">設定</a>
+                        </dd>
+                    </th:block>
                 </dl>
             </div>
         </div>

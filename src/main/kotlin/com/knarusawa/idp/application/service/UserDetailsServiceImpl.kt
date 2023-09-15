@@ -5,7 +5,6 @@ import com.knarusawa.idp.domain.model.authority.IdpGrantedAuthority
 import com.knarusawa.idp.domain.model.oneTimePassword.OneTimePassword
 import com.knarusawa.idp.domain.repository.OnetimePasswordRepository
 import com.knarusawa.idp.domain.repository.UserRepository
-import java.util.*
 import kotlinx.coroutines.runBlocking
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
@@ -25,15 +24,16 @@ class UserDetailsServiceImpl(
     user.unlockByTimeElapsed()
     userRepository.save(user)
 
-    val authorities = when (user.isUsingMfa) {
+    val isUsingMfa = false
+
+    val authorities = when (isUsingMfa) {
       true -> listOf(IdpGrantedAuthority.useMfaMail())
       false -> listOf(IdpGrantedAuthority.usePassword())
     }
 
-    if (user.isUsingMfa) {
-      val otp = generateOtpDigit()
-      logger.info("ワンタイムパスワード: $otp")
-      val oneTimePassword = OneTimePassword.of(userId = user.userId, code = otp)
+    if (isUsingMfa) { // TODO: MFA追加したらやる
+      val oneTimePassword = OneTimePassword.of(userId = user.userId)
+      logger.info("ワンタイムパスワード: ${oneTimePassword.code}")
       runBlocking { onetimePasswordRepository.save(oneTimePassword) }
       // TODO: OTPを宛先に送る
     }
@@ -46,14 +46,5 @@ class UserDetailsServiceImpl(
       .disabled(user.isDisabled)
       .authorities(authorities)
       .build()
-  }
-
-  private fun generateOtpDigit(): String {
-    val random = Random()
-    val sb = StringBuilder()
-    for (i in 0..5) {
-      sb.append(random.nextInt(10))
-    }
-    return sb.toString()
   }
 }

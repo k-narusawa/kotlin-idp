@@ -3,7 +3,6 @@ CREATE TABLE user (
     login_id VARCHAR(255) NOT NULL,
     password VARCHAR(255) NOT NULL,
     roles VARCHAR(255) NOT NULL,
-    is_using_mfa BOOLEAN NOT NULL,
     is_lock BOOLEAN NOT NULL,
     failed_attempts INT NOT NULL,
     lock_time DATETIME,
