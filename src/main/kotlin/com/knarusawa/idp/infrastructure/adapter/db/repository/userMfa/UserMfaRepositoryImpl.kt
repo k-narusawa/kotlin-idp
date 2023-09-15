@@ -4,7 +4,9 @@ import com.knarusawa.idp.domain.model.user.UserId
 import com.knarusawa.idp.domain.model.userMfa.UserMfa
 import com.knarusawa.idp.domain.repository.UserMfaRepository
 import com.knarusawa.idp.infrastructure.adapter.db.record.UserMfaRecord
+import org.springframework.stereotype.Repository
 
+@Repository
 class UserMfaRepositoryImpl(
   private val userMfaRecordRepository: UserMfaRecordRepository
 ) : UserMfaRepository {

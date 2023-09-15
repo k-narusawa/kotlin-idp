@@ -11,9 +11,9 @@ class OneTimePassword private constructor(
 ) {
   companion object {
     private const val EXPIRED_MINUTES = 30
-    fun of(userId: UserId, code: String) = OneTimePassword(
+    fun of(userId: UserId) = OneTimePassword(
       userId = userId,
-      code = Code(value = code),
+      code = Code.generate(),
       expired = LocalDateTime.now().plusMinutes(EXPIRED_MINUTES.toLong())
     )
 
@@ -22,6 +22,15 @@ class OneTimePassword private constructor(
       code = Code(value = code),
       expired = LocalDateTime.parse(expired)
     )
+  }
 
+  fun verify(inputCode: Code): Boolean {
+    if (this.expired.isBefore(LocalDateTime.now()))
+      return false
+
+    if (this.code != inputCode)
+      return false
+
+    return true
   }
 }

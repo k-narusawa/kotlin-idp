@@ -1,135 +1,135 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <title>会員情報</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css"
-        rel="stylesheet">
-  <style>
-    .center-content {
-        display: flex;
-        justify-content: center;
-    }
+    <meta charset="UTF-8">
+    <title>会員情報</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+    <style>
+        .center-content {
+            display: flex;
+            justify-content: center;
+        }
 
-    .card {
-        width: 600px;
-    }
+        .card {
+            width: 600px;
+        }
 
-    .success-text {
-        color: green;
-    }
+        .success-text {
+            color: green;
+        }
 
-    .fail-text {
-        color: red;
-    }
-  </style>
+        .fail-text {
+            color: red;
+        }
+    </style>
 </head>
 <body>
 <div th:insert="common/header :: header_fragment"></div>
 <div class="container">
-  <div class="center-content">
-    <h3 class="mt-5">会員情報</h3>
-  </div>
-  <div class="center-content">
-    <div class="card">
-      <div class="card-body">
-        <dl class="row">
-          <dt class="col-sm-3">ログインID:</dt>
-          <dd class="col-sm-7" th:text="${user.loginId}"></dd>
-          <dd class="col-sm-2">
-            <a href="/user/login_id/change" class="btn btn-sm btn-outline-primary">変更</a>
-          </dd>
-
-          <dt class="col-sm-3">パスワード:</dt>
-          <dd class="col-sm-7">••••••••</dd>
-          <dd class="col-sm-2">
-            <a href="/user/password/change" class="btn btn-sm btn-outline-primary">変更</a>
-          </dd>
-          <dt class="col-sm-3">MFA:</dt>
-          <th:block th:if="${userMfaDto != null}">
-            <dd class="col-sm-7" th:text="${userMfaDto.mfaType}"></dd>
-            <dd class="col-sm-2">
-              <a href="/user/mfa/change" class="btn btn-sm btn-outline-primary">変更</a>
-            </dd>
-          </th:block>
-          <th:block th:if="${userMfaDto == null}">
-            <dd class="col-sm-7">未設定（設定してください）</dd>
-            <dd class="col-sm-2">
-              <a href="/user/mfa/register" class="btn btn-sm btn-outline-primary">設定</a>
-            </dd>
-          </th:block>
-        </dl>
-      </div>
+    <div class="center-content">
+        <h3 class="mt-5">会員情報</h3>
     </div>
-  </div>
+    <div class="center-content">
+        <div class="card">
+            <div class="card-body">
+                <dl class="row">
+                    <dt class="col-sm-3">ログインID:</dt>
+                    <dd class="col-sm-7" th:text="${user.loginId}"></dd>
+                    <dd class="col-sm-2">
+                        <a href="/user/login_id/change" class="btn btn-sm btn-outline-primary">変更</a>
+                    </dd>
 
-  <div class="center-content">
-    <h3 class="mt-5">通知先</h3>
-  </div>
-  <div class="center-content">
-    <div class="card">
-      <div class="card-body">
-        <dl class="row">
-          <dt class="col-sm-3">メールアドレス:</dt>
-          <th:block th:if="${userMail == null}">
-            <dd class="col-sm-7" th:if="${userMail == null}">未設定（登録してください）</dd>
-            <dd class="col-sm-2">
-              <a href="/user/mail/register" class="btn btn-sm btn-outline-primary">登録</a>
-            </dd>
-          </th:block>
-          <th:block th:if="${userMail != null}">
-            <dd class="col-sm-7" th:if="${userMail != null}"
-                th:text="${userMail.email}"></dd>
-            <dd class="col-sm-2">
-              <a href="/user/mail/change" class="btn btn-sm btn-outline-primary">変更</a>
-            </dd>
-            <dt class="col-sm-3">送達確認:</dt>
-            <th:block th:if="${userMail.isVerified}">
-              <dd class="col-sm-7" th:if="${userMail != null}"
-                  th:text="確認済み"></dd>
-            </th:block>
-            <th:block th:if="${!userMail.isVerified}">
-              <dd class="col-sm-7" th:if="${userMail != null}"
-                  th:text="未確認"></dd>
-              <dd class="col-sm-2">
-                <a href="/user/mail/change"
-                   class="btn btn-sm btn-outline-primary">再送信</a>
-              </dd>
-            </th:block>
-          </th:block>
-        </dl>
-      </div>
+                    <dt class="col-sm-3">パスワード:</dt>
+                    <dd class="col-sm-7">••••••••</dd>
+                    <dd class="col-sm-2">
+                        <a href="/user/password/change" class="btn btn-sm btn-outline-primary">変更</a>
+                    </dd>
+                    <dt class="col-sm-3">MFA:</dt>
+                    <th:block th:if="${userMfaDto != null}">
+                        <dd class="col-sm-7" th:text="${userMfaDto.mfaType}"></dd>
+                        <dd class="col-sm-2">
+                            <a href="/user/mfa" class="btn btn-sm btn-outline-primary">変更</a>
+                        </dd>
+                    </th:block>
+                    <th:block th:if="${userMfaDto == null}">
+                        <dd class="col-sm-7">未設定（設定してください）</dd>
+                        <dd class="col-sm-2">
+                            <a href="/user/mfa" class="btn btn-sm btn-outline-primary">設定</a>
+                        </dd>
+                    </th:block>
+                </dl>
+            </div>
+        </div>
     </div>
-  </div>
 
-  <div class="center-content">
-    <h3 class="mt-5">行動履歴</h3>
-  </div>
-  <div class="center-content mt-3">
-    <div class="card" style="width: 600px;">
-      <div class="card-body">
-        <a href="/user/activities" class="btn btn-sm btn-outline-primary float-end">もっと見る</a>
-        <h5 class="card-title">最近の行動履歴</h5>
-        <ul class="list-group list-group-flush">
-          <li class="list-group-item" th:each="activity, iterStat : ${userActivities}"
-              th:if="${iterStat.count <= 3}">
-            <strong>日時: </strong><span
-              th:text="${#temporals.format(activity.timestamp, 'yyyy/MM/dd HH:mm:ss')}"></span>
-            <br>
-            <strong>行動: </strong>
-            <th:block th:switch="${activity.activityType}">
-              <span th:case="LOGIN_SUCCESS" th:text="ログイン成功" class="success-text"></span>
-              <span th:case="LOGIN_FAILED" th:text="ログイン失敗" class="fail-text"></span>
-              <span th:case="LOGOUT" th:text="ログアウト"></span>
-              <span th:case="CHANGE_LOGIN_ID" th:text="ログインID変更"></span>
-              <span th:case="CHANGE_PASSWORD" th:text="パスワード変更"></span>
-              <span th:case=* th:text="その他"></span>
-            </th:block>
-          </li>
-        </ul>
-      </div>
+    <div class="center-content">
+        <h3 class="mt-5">通知先</h3>
     </div>
-  </div>
+    <div class="center-content">
+        <div class="card">
+            <div class="card-body">
+                <dl class="row">
+                    <dt class="col-sm-3">メールアドレス:</dt>
+                    <th:block th:if="${userMail == null}">
+                        <dd class="col-sm-7" th:if="${userMail == null}">未設定（登録してください）</dd>
+                        <dd class="col-sm-2">
+                            <a href="/user/mail/register" class="btn btn-sm btn-outline-primary">登録</a>
+                        </dd>
+                    </th:block>
+                    <th:block th:if="${userMail != null}">
+                        <dd class="col-sm-7" th:if="${userMail != null}"
+                            th:text="${userMail.email}"></dd>
+                        <dd class="col-sm-2">
+                            <a href="/user/mail/change" class="btn btn-sm btn-outline-primary">変更</a>
+                        </dd>
+                        <dt class="col-sm-3">送達確認:</dt>
+                        <th:block th:if="${userMail.isVerified}">
+                            <dd class="col-sm-7" th:if="${userMail != null}"
+                                th:text="確認済み"></dd>
+                        </th:block>
+                        <th:block th:if="${!userMail.isVerified}">
+                            <dd class="col-sm-7" th:if="${userMail != null}"
+                                th:text="未確認"></dd>
+                            <dd class="col-sm-2">
+                                <a href="/user/mail/change"
+                                   class="btn btn-sm btn-outline-primary">再送信</a>
+                            </dd>
+                        </th:block>
+                    </th:block>
+                </dl>
+            </div>
+        </div>
+    </div>
+
+    <div class="center-content">
+        <h3 class="mt-5">行動履歴</h3>
+    </div>
+    <div class="center-content mt-3">
+        <div class="card" style="width: 600px;">
+            <div class="card-body">
+                <a href="/user/activities" class="btn btn-sm btn-outline-primary float-end">もっと見る</a>
+                <h5 class="card-title">最近の行動履歴</h5>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item" th:each="activity, iterStat : ${userActivities}"
+                        th:if="${iterStat.count <= 3}">
+                        <strong>日時: </strong><span
+                            th:text="${#temporals.format(activity.timestamp, 'yyyy/MM/dd HH:mm:ss')}"></span>
+                        <br>
+                        <strong>行動: </strong>
+                        <th:block th:switch="${activity.activityType}">
+                            <span th:case="LOGIN_SUCCESS" th:text="ログイン成功" class="success-text"></span>
+                            <span th:case="LOGIN_FAILED" th:text="ログイン失敗" class="fail-text"></span>
+                            <span th:case="LOGOUT" th:text="ログアウト"></span>
+                            <span th:case="CHANGE_LOGIN_ID" th:text="ログインID変更"></span>
+                            <span th:case="CHANGE_PASSWORD" th:text="パスワード変更"></span>
+                            <span th:case=* th:text="その他"></span>
+                        </th:block>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
 </div>
 <script th:src="@{/webjars/jquery/3.4.1/jquery.min.js}"></script>
 <script th:src="@{/webjars/popper.js/2.9.3/umd/popper.min.js}"></script>

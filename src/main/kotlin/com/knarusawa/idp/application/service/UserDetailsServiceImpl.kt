@@ -10,7 +10,6 @@ import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.stereotype.Service
-import java.util.*
 
 @Service
 class UserDetailsServiceImpl(
@@ -33,9 +32,8 @@ class UserDetailsServiceImpl(
     }
 
     if (isUsingMfa) { // TODO: MFA追加したらやる
-      val otp = generateOtpDigit()
-      logger.info("ワンタイムパスワード: $otp")
-      val oneTimePassword = OneTimePassword.of(userId = user.userId, code = otp)
+      val oneTimePassword = OneTimePassword.of(userId = user.userId)
+      logger.info("ワンタイムパスワード: ${oneTimePassword.code}")
       runBlocking { onetimePasswordRepository.save(oneTimePassword) }
       // TODO: OTPを宛先に送る
     }
@@ -48,14 +46,5 @@ class UserDetailsServiceImpl(
       .disabled(user.isDisabled)
       .authorities(authorities)
       .build()
-  }
-
-  private fun generateOtpDigit(): String {
-    val random = Random()
-    val sb = StringBuilder()
-    for (i in 0..5) {
-      sb.append(random.nextInt(10))
-    }
-    return sb.toString()
   }
 }
