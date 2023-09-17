@@ -1,5 +1,7 @@
 package com.knarusawa.idp.configuration
 
+import com.knarusawa.idp.infrastructure.adapter.db.repository.CredentialRepository
+import com.warrenstrange.googleauth.GoogleAuthenticator
 import org.springframework.context.ApplicationEventPublisher
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -18,5 +20,12 @@ class WebConfig : WebMvcConfigurer {
       DefaultAuthenticationEventPublisher(applicationEventPublisher)
 //    authenticationEventPublisher.setAdditionalExceptionMappings(mapping)
     return authenticationEventPublisher
+  }
+
+  @Bean
+  fun gAuth(): GoogleAuthenticator {
+    val googleAuthenticator = GoogleAuthenticator()
+    googleAuthenticator.setCredentialRepository(CredentialRepository())
+    return googleAuthenticator
   }
 }
