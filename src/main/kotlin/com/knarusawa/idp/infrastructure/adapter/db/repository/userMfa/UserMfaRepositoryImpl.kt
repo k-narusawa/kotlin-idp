@@ -10,9 +10,9 @@ import org.springframework.stereotype.Repository
 class UserMfaRepositoryImpl(
   private val userMfaRecordRepository: UserMfaRecordRepository
 ) : UserMfaRepository {
-  override fun findByUserId(userId: UserId): UserMfa {
+  override fun findByUserId(userId: UserId): UserMfa? {
     val record = userMfaRecordRepository.findByUserId(userId = userId.toString())
-    return record.to()
+    return record?.to()
   }
 
   override fun save(userMfa: UserMfa) {
