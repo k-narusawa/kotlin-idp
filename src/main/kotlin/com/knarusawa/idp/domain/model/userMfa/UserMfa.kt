@@ -5,13 +5,23 @@ import com.knarusawa.idp.domain.model.user.UserId
 class UserMfa private constructor(
   val userId: UserId,
   val type: MfaType,
-  val target: String,
+  val secretKey: String?,
+  val validationCode: Int?,
+  val scratchCodes: List<Int>
 ) {
   companion object {
-    fun of(userId: UserId, type: MfaType, target: String) = UserMfa(
+    fun of(
+      userId: UserId,
+      type: MfaType,
+      secretKey: String?,
+      validationCode: Int?,
+      scratchCodes: List<Int>?
+    ) = UserMfa(
       userId = userId,
       type = type,
-      target = target
+      secretKey = secretKey,
+      validationCode = validationCode,
+      scratchCodes = scratchCodes ?: listOf(),
     )
   }
 }

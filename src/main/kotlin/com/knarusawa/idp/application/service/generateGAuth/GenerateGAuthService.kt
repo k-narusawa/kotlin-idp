@@ -14,8 +14,7 @@ class GenerateGAuthService(
   }
 
   fun exec(input: GenerateGAuthInput): String {
-    val key = gauth.createCredentials()
-
-    return GoogleAuthenticatorQRGenerator.getOtpAuthTotpURL(ISSUER, input.userId, key)
+    val gAuthKey = gauth.createCredentials(input.userId)
+    return GoogleAuthenticatorQRGenerator.getOtpAuthTotpURL(ISSUER, input.userId, gAuthKey)
   }
 }

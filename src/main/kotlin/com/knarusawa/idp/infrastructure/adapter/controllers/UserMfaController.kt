@@ -5,6 +5,8 @@ import com.google.zxing.client.j2se.MatrixToImageWriter
 import com.google.zxing.qrcode.QRCodeWriter
 import com.knarusawa.idp.application.service.generateGAuth.GenerateGAuthInput
 import com.knarusawa.idp.application.service.generateGAuth.GenerateGAuthService
+import com.knarusawa.idp.application.service.registerGAuth.RegisterGAuthInput
+import com.knarusawa.idp.application.service.registerGAuth.RegisterGAuthService
 import com.knarusawa.idp.application.service.sendOtp.SendOtpInput
 import com.knarusawa.idp.application.service.sendOtp.SendOtpService
 import com.knarusawa.idp.application.service.verifyOtp.VerifyOtpInput
@@ -22,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestParam
 @PreAuthorize("hasRole('USER')")
 class UserMfaController(
   private val generateGAuthService: GenerateGAuthService,
+  private val registerGAuthService: RegisterGAuthService,
   private val sendOtpService: SendOtpService,
   private val verifyOtpService: VerifyOtpService,
 ) {
@@ -54,8 +57,14 @@ class UserMfaController(
 
   @PostMapping("/user/mfa/app")
   fun registerMfaApp(
+    principal: Principal,
     @RequestParam("code") code: String,
   ): String {
+    val input = RegisterGAuthInput(
+      userId = principal.name,
+      code = code
+    )
+    registerGAuthService.exec(input)
     return "redirect:/"
   }
 
