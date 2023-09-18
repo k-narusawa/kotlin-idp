@@ -21,7 +21,7 @@ class CredentialRepository(
 
     val record = userMfaRecordRepository.findByUserId(userId = userName)
 
-    return record.secretKey ?: throw IdpAppException(
+    return record?.secretKey ?: throw IdpAppException(
       errorCode = ErrorCode.INTERNAL_SERVER_ERROR,
       logMessage = "SecretKeyの値が未設定"
     )

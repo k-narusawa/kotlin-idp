@@ -7,10 +7,10 @@ import com.knarusawa.idp.application.service.generateGAuth.GenerateGAuthInput
 import com.knarusawa.idp.application.service.generateGAuth.GenerateGAuthService
 import com.knarusawa.idp.application.service.registerGAuth.RegisterGAuthInput
 import com.knarusawa.idp.application.service.registerGAuth.RegisterGAuthService
+import com.knarusawa.idp.application.service.registerMfa.RegisterMfaInput
+import com.knarusawa.idp.application.service.registerMfa.RegisterMfaService
 import com.knarusawa.idp.application.service.sendOtp.SendOtpInput
 import com.knarusawa.idp.application.service.sendOtp.SendOtpService
-import com.knarusawa.idp.application.service.verifyOtp.VerifyOtpInput
-import com.knarusawa.idp.application.service.verifyOtp.VerifyOtpService
 import jakarta.servlet.http.HttpServletResponse
 import java.security.Principal
 import org.springframework.security.access.prepost.PreAuthorize
@@ -26,7 +26,7 @@ class UserMfaController(
   private val generateGAuthService: GenerateGAuthService,
   private val registerGAuthService: RegisterGAuthService,
   private val sendOtpService: SendOtpService,
-  private val verifyOtpService: VerifyOtpService,
+  private val registerMfaService: RegisterMfaService
 ) {
   @GetMapping("/user/mfa")
   fun mfa(): String {
@@ -64,7 +64,12 @@ class UserMfaController(
       userId = principal.name,
       code = code
     )
-    registerGAuthService.exec(input)
+
+    val result = registerGAuthService.exec(input)
+
+    if (!result)
+      return "user_mfa_app"
+    
     return "redirect:/"
   }
 
@@ -81,7 +86,8 @@ class UserMfaController(
     principal: Principal,
     @RequestParam("code") code: String,
   ): String {
-    val result = verifyOtpService.exec(input = VerifyOtpInput(userId = principal.name, code = code))
+    val result =
+      registerMfaService.exec(input = RegisterMfaInput(userId = principal.name, code = code))
 
     if (!result) {
       return "user_mfa_mail"
