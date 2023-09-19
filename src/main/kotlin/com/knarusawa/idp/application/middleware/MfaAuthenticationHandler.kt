@@ -31,7 +31,9 @@ class MfaAuthenticationHandler(
     authentication: Authentication
   ) {
     val isUsingMfa = authentication.authorities?.any {
-      it.authority == AuthorityRole.MFA_MAIL.toString()
+      it.authority == AuthorityRole.MFA_APP.toString() ||
+          it.authority == AuthorityRole.MFA_MAIL.toString() ||
+          it.authority == AuthorityRole.MFA_SMS.toString()
     } ?: false
 
     if (isUsingMfa) {

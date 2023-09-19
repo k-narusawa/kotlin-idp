@@ -19,8 +19,14 @@ data class UserMfaRecord(
   @Column(name = "type")
   val type: String = "",
 
-  @Column(name = "target")
-  val target: String = "",
+  @Column(name = "secret_key")
+  val secretKey: String? = null,
+
+  @Column(name = "validation_code")
+  val validationCode: Int? = null,
+
+  @Column(name = "scratch_codes")
+  val scratchCodes: String? = "",
 
   @Column(name = "created_at", insertable = false, updatable = false)
   val createdAt: LocalDateTime? = null,
@@ -32,13 +38,17 @@ data class UserMfaRecord(
     fun from(userMfa: UserMfa) = UserMfaRecord(
       userId = userMfa.userId.toString(),
       type = userMfa.type.toString(),
-      target = userMfa.target,
+      secretKey = userMfa.secretKey,
+      validationCode = userMfa.validationCode,
+      scratchCodes = userMfa.scratchCodes.joinToString(","),
     )
   }
 
   fun to() = UserMfa.of(
     userId = UserId(value = this.userId),
     type = MfaType.from(this.type),
-    target = this.target
+    secretKey = secretKey,
+    validationCode = validationCode,
+    scratchCodes = scratchCodes?.split(",")?.map { it.toInt() },
   )
 }

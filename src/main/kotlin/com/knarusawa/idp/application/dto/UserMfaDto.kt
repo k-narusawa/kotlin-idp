@@ -18,8 +18,14 @@ data class UserMfaDto(
   @Column(name = "type")
   val mfaType: String = "",
 
-  @Column(name = "target", nullable = true)
-  val target: String? = "",
+  @Column(name = "secret_key", nullable = true)
+  val secretKey: String? = null,
+
+  @Column(name = "validation_code", nullable = true)
+  val validationCode: Int? = null,
+
+  @Column(name = "scratch_codes", nullable = true)
+  val scratchCodes: String? = "",
 
   @CreatedDate
   @Column(name = "created_at", nullable = false, insertable = false, updatable = false)
