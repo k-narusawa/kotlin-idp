@@ -1,15 +1,15 @@
 package com.knarusawa.idp.domain.model.user
 
-import java.time.LocalDateTime
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.springframework.test.util.ReflectionTestUtils
+import java.time.LocalDateTime
 
 class UserTest {
   companion object {
-    const val LOGIN_ID = "test"
+    const val LOGIN_ID = "test@example.com"
     const val PASSWORD = "test"
   }
 

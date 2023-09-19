@@ -14,7 +14,7 @@ import org.junit.jupiter.api.Test
 class UserServiceTest {
   companion object {
     val DUMMY_USER_RECORD = User.of(
-      loginId = "test",
+      loginId = "test@example.com",
       password = "password",
       roles = listOf()
     )
@@ -39,7 +39,7 @@ class UserServiceTest {
     fun test1() {
       every { userRepository.findByLoginId(any()) } returns null
 
-      val actual = userService.isExistsLoginId(loginId = LoginId("test"))
+      val actual = userService.isExistsLoginId(loginId = LoginId("test@example.com"))
       assertThat(actual).isFalse()
     }
 
@@ -48,7 +48,7 @@ class UserServiceTest {
     fun test2() {
       every { userRepository.findByLoginId(any()) } returns DUMMY_USER_RECORD
 
-      val actual = userService.isExistsLoginId(loginId = LoginId("test"))
+      val actual = userService.isExistsLoginId(loginId = LoginId("test@example.com"))
       assertThat(actual).isTrue()
     }
   }
