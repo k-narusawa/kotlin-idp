@@ -29,3 +29,9 @@ spring:
       - classpath:db/migration/insert
   jpa:
     show-sql: true
+
+  mvc:
+    hiddenmethod:
+      filter:
+        # thymeleafからDELETEメソッドを利用できるようにする
+        enabled: true
