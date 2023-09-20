@@ -1,11 +1,31 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
+buildscript {
+    ext {
+        kotlinVersion = '1.8.21'
+        kotlinxCoroutinesCoreVersion = '1.7.3'
+        jibVersion = '3.3.2'
+        springBootVersion = '3.1.0'
+        springSecurityVersion = '6.1.1'
+        springSecurity6Version = '3.1.1.RELEASE'
+        springJdbcVersion = '6.0.10'
+        bootStrapVersion = '5.3.0'
+        googleauthVersion = '1.5.0'
+        zxingVersion = '3.5.2'
+        jacksonVersion = '2.15.2'
+        dynamodbSdkVersion = '1.12.546'
+        mysqlConnectorJavaVersion = '8.0.33'
+        hikariCpVersion = '5.0.1'
+        flywayVersion = '9.19.4'
+    }
+}
+
 plugins {
-    id 'org.springframework.boot' version '3.1.0'
+    id 'org.springframework.boot' version "${springBootVersion}"
     id 'io.spring.dependency-management' version '1.1.0'
-    id 'org.jetbrains.kotlin.jvm' version '1.8.21'
-    id 'org.jetbrains.kotlin.plugin.spring' version '1.8.21'
-    id 'com.google.cloud.tools.jib' version '3.3.2'
+    id 'org.jetbrains.kotlin.jvm' version "${kotlinVersion}"
+    id 'org.jetbrains.kotlin.plugin.spring' version "${kotlinVersion}"
+    id 'com.google.cloud.tools.jib' version "${jibVersion}"
     id 'jacoco'
 }
 
@@ -21,28 +41,28 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-web:3.1.0'
-    implementation 'org.springframework.boot:spring-boot-starter-security:3.1.0'
-    implementation 'org.springframework.boot:spring-boot-starter-data-jdbc:3.1.0'
-    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf:3.1.0'
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa:3.1.0'
-    implementation 'org.springframework.data:spring-data-jpa:3.1.0'
-    implementation 'com.warrenstrange:googleauth:1.5.0'
-    implementation 'com.google.zxing:core:3.5.2'
-    implementation 'com.google.zxing:javase:3.5.2'
-    implementation 'org.webjars:bootstrap:5.3.0'
-    implementation 'com.amazonaws:aws-java-sdk-dynamodb:1.12.546'
-    implementation 'com.fasterxml.jackson.module:jackson-module-kotlin:2.15.2'
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3'
-    implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6:3.1.1.RELEASE'
-    implementation 'org.springframework.boot:spring-boot-starter-oauth2-authorization-server:3.1.0'
-    implementation 'org.springframework:spring-jdbc:6.0.10'
-    implementation 'com.zaxxer:HikariCP:5.0.1'
-    implementation 'mysql:mysql-connector-java:8.0.33'
-    implementation 'org.flywaydb:flyway-core:9.19.4'
-    implementation 'org.flywaydb:flyway-mysql:9.19.4'
-    implementation 'org.springframework.security:spring-security-cas:6.1.1'
-    implementation 'org.webjars:popper.js:2.9.3'
+    implementation "org.springframework.boot:spring-boot-starter-web:${springBootVersion}"
+    implementation "org.springframework.boot:spring-boot-starter-security:${springBootVersion}"
+    implementation "org.springframework.boot:spring-boot-starter-data-jdbc:${springBootVersion}"
+    implementation "org.springframework.boot:spring-boot-starter-thymeleaf:${springBootVersion}"
+    implementation "org.springframework.boot:spring-boot-starter-data-jpa:${springBootVersion}"
+    implementation "org.springframework.data:spring-data-jpa:${springBootVersion}"
+    implementation "org.springframework.boot:spring-boot-starter-oauth2-authorization-server:${springBootVersion}"
+    implementation "com.warrenstrange:googleauth:${googleauthVersion}"
+    implementation "com.google.zxing:core:${zxingVersion}"
+    implementation "com.google.zxing:javase:${zxingVersion}"
+    implementation "org.webjars:bootstrap:${bootStrapVersion}"
+    implementation "com.amazonaws:aws-java-sdk-dynamodb:${dynamodbSdkVersion}"
+    implementation "com.fasterxml.jackson.module:jackson-module-kotlin:${jacksonVersion}"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:${kotlinxCoroutinesCoreVersion}"
+    implementation "org.thymeleaf.extras:thymeleaf-extras-springsecurity6:${springSecurity6Version}"
+    implementation "mysql:mysql-connector-java:${mysqlConnectorJavaVersion}"
+    implementation "org.springframework:spring-jdbc:${springJdbcVersion}"
+    implementation "com.zaxxer:HikariCP:${hikariCpVersion}"
+    implementation "org.flywaydb:flyway-core:${flywayVersion}"
+    implementation "org.flywaydb:flyway-mysql:${flywayVersion}"
+    implementation "org.springframework.security:spring-security-cas:${springSecurityVersion}"
+    implementation "org.webjars:popper.js:2.9.3"
 
     runtimeOnly 'org.jetbrains.kotlin:kotlin-reflect:1.8.22'
 
