@@ -5,6 +5,8 @@ import com.google.zxing.client.j2se.MatrixToImageWriter
 import com.google.zxing.qrcode.QRCodeWriter
 import com.knarusawa.idp.application.service.generateGAuth.GenerateGAuthInput
 import com.knarusawa.idp.application.service.generateGAuth.GenerateGAuthService
+import com.knarusawa.idp.application.service.invalidateMfa.InvalidateMfaInputData
+import com.knarusawa.idp.application.service.invalidateMfa.InvalidateMfaService
 import com.knarusawa.idp.application.service.registerGAuth.RegisterGAuthInput
 import com.knarusawa.idp.application.service.registerGAuth.RegisterGAuthService
 import com.knarusawa.idp.application.service.registerMfa.RegisterMfaInput
@@ -12,12 +14,13 @@ import com.knarusawa.idp.application.service.registerMfa.RegisterMfaService
 import com.knarusawa.idp.application.service.sendOtp.SendOtpInput
 import com.knarusawa.idp.application.service.sendOtp.SendOtpService
 import jakarta.servlet.http.HttpServletResponse
-import java.security.Principal
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.stereotype.Controller
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestParam
+import java.security.Principal
 
 
 @Controller
@@ -26,11 +29,20 @@ class UserMfaController(
   private val generateGAuthService: GenerateGAuthService,
   private val registerGAuthService: RegisterGAuthService,
   private val sendOtpService: SendOtpService,
-  private val registerMfaService: RegisterMfaService
+  private val registerMfaService: RegisterMfaService,
+  private val invalidateMfaService: InvalidateMfaService
 ) {
   @GetMapping("/user/mfa")
   fun mfa(): String {
     return "user_mfa"
+  }
+
+  @DeleteMapping("/user/mfa")
+  fun deleteMfa(
+    principal: Principal,
+  ): String {
+    invalidateMfaService.exec(input = InvalidateMfaInputData(userId = principal.name))
+    return "redirect:/"
   }
 
   @GetMapping("/user/mfa/app")
@@ -69,7 +81,7 @@ class UserMfaController(
 
     if (!result)
       return "user_mfa_app"
-    
+
     return "redirect:/"
   }
 

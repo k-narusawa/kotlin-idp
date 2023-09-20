@@ -18,4 +18,8 @@ class UserMfaRepositoryImpl(
   override fun save(userMfa: UserMfa) {
     userMfaRecordRepository.save(UserMfaRecord.from(userMfa = userMfa))
   }
+
+  override fun deleteByUserId(userId: UserId) {
+    userMfaRecordRepository.deleteByUserId(userId = userId.toString())
+  }
 }
