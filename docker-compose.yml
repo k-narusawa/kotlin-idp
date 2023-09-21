@@ -35,5 +35,30 @@ services:
     depends_on:
       - dynamodb-local
 
+  ses-mysql:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: ses_mock
+      MYSQL_USER: docker
+      MYSQL_PASSWORD: docker
+      TZ: 'Asia/Tokyo'
+    volumes:
+      - ./docker/db/data:/var/lib/mysql
+    ports:
+      - "13306:3306"
+    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+
+  ses-local:
+    image: 19992240/aws-ses-local
+    environment:
+      DATA_SOURCE_URL: jdbc:mysql://ses-mysql:3306/ses_mock
+      DATA_SOURCE_USER: docker
+      DATA_SOURCE_PASSWORD: docker
+    ports:
+      - "8005:8080"
+    depends_on:
+      - ses-mysql
+
 volumes:
   mysql-db-data:
