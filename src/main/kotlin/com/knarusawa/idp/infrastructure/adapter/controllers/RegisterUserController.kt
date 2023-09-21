@@ -15,18 +15,17 @@ class RegisterUserController(
 ) {
   @GetMapping("/register")
   fun registerUser(model: Model): String {
-    model.addAttribute("userForm", UserForm("", "", ""))
+    model.addAttribute("userForm", UserForm("", ""))
     return "user_register"
   }
 
   @PostMapping("/register")
   fun registerUser(@ModelAttribute userForm: UserForm): String {
-    val command = UserRegisterInputData(
+    val input = UserRegisterInputData(
       loginId = userForm.loginId,
       password = userForm.password,
-      eMail = userForm.eMail
     )
-    userRegisterService.execute(command)
+    userRegisterService.execute(input)
     return "redirect:/"
   }
 }
