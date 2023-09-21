@@ -95,10 +95,6 @@ class SecurityConfig {
           authorize
             .requestMatchers("/login").permitAll()
             .requestMatchers("/login/mfa").access(mfaAuthorizationManager())
-            .requestMatchers("/api/user/*").permitAll()  //細かい制御は@PreAuthorizedで行う
-            .requestMatchers("/api/admin/*").permitAll() //細かい制御は@PreAuthorizedで行う
-            .requestMatchers("/user/*").permitAll()  //細かい制御は@PreAuthorizedで行う
-            .requestMatchers("/admin/*").permitAll() //細かい制御は@PreAuthorizedで行う
             .requestMatchers("/register").permitAll() // 会員登録画面
             .requestMatchers("/error/*").permitAll() // エラー画面
             .requestMatchers("webjars/**", "/css/**", "/js/**", "/img/**").permitAll()

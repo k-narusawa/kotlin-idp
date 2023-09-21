@@ -29,9 +29,5 @@ class UserRegisterService(
       roles = listOf(Role.USER)
     )
     userRepository.save(user)
-
-    // 会員登録時にメールアドレスを登録しない場合
-    if (input.eMail.isBlank())
-      return
   }
 }

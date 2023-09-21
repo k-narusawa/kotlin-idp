@@ -13,7 +13,7 @@ class WebUIExceptionHandler {
     ex: IdpAppException,
     request: HttpServletRequest
   ): String {
-    return "error"
+    return "error/error"
   }
 
   @ExceptionHandler(Exception::class)
@@ -21,6 +21,6 @@ class WebUIExceptionHandler {
     ex: IdpAppException,
     request: HttpServletRequest
   ): String {
-    return "error"
+    return "error/error"
   }
 }

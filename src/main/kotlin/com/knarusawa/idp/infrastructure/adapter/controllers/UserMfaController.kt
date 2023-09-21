@@ -34,7 +34,7 @@ class UserMfaController(
 ) {
   @GetMapping("/user/mfa")
   fun mfa(): String {
-    return "user_mfa"
+    return "user/user_mfa"
   }
 
   @DeleteMapping("/user/mfa")
@@ -47,7 +47,7 @@ class UserMfaController(
 
   @GetMapping("/user/mfa/app")
   fun mfaApp(): String {
-    return "user_mfa_app"
+    return "user/user_mfa_app"
   }
 
   @GetMapping("/user/mfa/app/qr")
@@ -80,7 +80,7 @@ class UserMfaController(
     val result = registerGAuthService.exec(input)
 
     if (!result)
-      return "user_mfa_app"
+      return "user/user_mfa_app"
 
     return "redirect:/"
   }
@@ -90,7 +90,7 @@ class UserMfaController(
     principal: Principal,
   ): String {
     sendOtpService.exec(input = SendOtpInput(userId = principal.name))
-    return "user_mfa_mail"
+    return "user/user_mfa_mail"
   }
 
   @PostMapping("/user/mfa/mail")
@@ -102,7 +102,7 @@ class UserMfaController(
       registerMfaService.exec(input = RegisterMfaInput(userId = principal.name, code = code))
 
     if (!result) {
-      return "user_mfa_mail"
+      return "user/user_mfa_mail"
     }
     return "redirect:/"
   }
