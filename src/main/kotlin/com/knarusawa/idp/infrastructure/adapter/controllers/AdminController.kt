@@ -5,7 +5,6 @@ import com.knarusawa.idp.application.service.query.UserDtoQueryService
 import com.knarusawa.idp.application.service.registerClient.ClientRegisterInputData
 import com.knarusawa.idp.application.service.registerClient.ClientRegisterService
 import com.knarusawa.idp.infrastructure.dto.form.ClientForm
-import java.security.Principal
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
@@ -13,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.ModelAttribute
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
+import java.security.Principal
 
 
 @Controller
@@ -28,7 +28,7 @@ class AdminController(
   fun getUserList(model: Model, principal: Principal): String {
     val users = userDtoQueryService.findAll()
     model.addAttribute("users", users)
-    return "user_list"
+    return "admin/user_list"
   }
 
   @GetMapping("/client/list")
@@ -36,7 +36,7 @@ class AdminController(
   fun getClientLIst(model: Model): String {
     val clients = clientGetAllService.execute()
     model.addAttribute("clients", clients)
-    return "client_list"
+    return "admin/client_list"
   }
 
   @GetMapping("/client/register")
@@ -61,7 +61,7 @@ class AdminController(
       ClientForm.AuthorizationGrantTypeForm.items()
     )
     model.addAttribute("oidcScopesForm", ClientForm.OidcScopesForm.items())
-    return "client_register"
+    return "admin/client_register"
   }
 
   @PostMapping("/client/register")
@@ -78,6 +78,6 @@ class AdminController(
         scopes = clientForm.scopes.map { it.to() }
       )
     )
-    return "redirect:/client/list"
+    return "redirect:/admin/client/list"
   }
 }

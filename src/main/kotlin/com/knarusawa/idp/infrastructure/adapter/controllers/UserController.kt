@@ -10,7 +10,6 @@ import com.knarusawa.idp.domain.model.error.ErrorCode
 import com.knarusawa.idp.domain.model.error.IdpAppException
 import com.knarusawa.idp.infrastructure.dto.form.ChangeUserLoginIdForm
 import com.knarusawa.idp.infrastructure.dto.form.ChangeUserPasswordForm
-import java.security.Principal
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
 import org.springframework.security.access.prepost.PreAuthorize
@@ -21,6 +20,7 @@ import org.springframework.web.bind.annotation.ModelAttribute
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
+import java.security.Principal
 
 @Controller
 @RequestMapping("user")
@@ -43,7 +43,7 @@ class UserController(
     )
     model.addAttribute("userActivities", userActivities)
     model.addAttribute("totalPages", userActivities.totalPages)
-    return "user_activity_list"
+    return "user/user_activity_list"
   }
 
   @GetMapping("/login_id/change")
@@ -55,7 +55,7 @@ class UserController(
       ?: throw IdpAppException(errorCode = ErrorCode.USER_NOT_FOUND, logMessage = "UserNot Found.")
 
     model.addAttribute("currentLoginId", user.loginId)
-    return "user_login_id_change"
+    return "user/user_login_id_change"
   }
 
   @PostMapping("/login_id/change")
@@ -75,7 +75,7 @@ class UserController(
   fun changePassword(
     model: Model,
   ): String {
-    return "user_password_change"
+    return "user/user_password_change"
   }
 
   @PostMapping("/password/change")
@@ -84,7 +84,7 @@ class UserController(
     principal: Principal
   ): String {
     if (changeUserPasswordForm.newPassword != changeUserPasswordForm.confirmPassword) {
-      return "user_password_change"
+      return "user/user_password_change"
     }
     val inputData = UserPasswordChangeInputData(
       userId = principal.name,
@@ -92,10 +92,5 @@ class UserController(
     )
     userPasswordChangeService.execute(input = inputData)
     return "redirect:/"
-  }
-
-  @GetMapping("/mail/register")
-  fun registerMail(): String {
-    return "user_mail_register"
   }
 }

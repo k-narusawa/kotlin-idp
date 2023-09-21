@@ -33,7 +33,7 @@ class LoginController(
 
   @GetMapping("/login/mfa")
   fun mfa(): String {
-    return "mfa"
+    return "login/mfa"
   }
 
   @PostMapping("/login/mfa")

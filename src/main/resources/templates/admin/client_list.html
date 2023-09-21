@@ -1,0 +1,58 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Client List</title>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.3.0/css/bootstrap.min.css}">
+    <style>
+        .main-container {
+            margin-top: 40px;
+        }
+    </style>
+</head>
+<body>
+<div th:insert="common/header :: header_fragment"></div>
+<div class="container main-container">
+    <h1 class="my-5 text-center">Client</h1>
+    <div class="card">
+        <div class="card-body">
+            <table class="table table-hover">
+                <thead class="table-light">
+                <tr>
+                    <th scope="col">ClientID</th>
+                    <th scope="col">AuthenticationMethod</th>
+                    <th scope="col">GrantTypes</th>
+                    <th scope="col">RedirectUris</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:if="${!#lists.isEmpty(clients)}" th:each="client : ${clients}">
+                    <td th:text="${client.clientId}"/>
+                    <td>
+                        <div th:each="method : ${client.clientAuthenticationMethods}"
+                             th:text="${method.getValue()}"/>
+                        <br/>
+                    </td>
+                    <td>
+                        <div th:each="type : ${client.clientAuthenticationGrantTypes}"
+                             th:text="${type.getValue()}"/>
+                        <br/>
+                    </td>
+                    <td>
+                        <div th:each="uri : ${client.redirectUrls}" th:text="${uri}"/>
+                        <br/>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="d-flex justify-content-end mt-4">
+        <a th:href="@{/admin/client/register}" class="btn btn-primary">新規登録</a>
+    </div>
+</div>
+<script th:src="@{/webjars/jquery/3.4.1/jquery.min.js}"></script>
+<script th:src="@{/webjars/popper.js/2.9.3/umd/popper.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/5.3.0/js/bootstrap.min.js}"></script>
+</body>
+</html>
