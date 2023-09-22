@@ -28,7 +28,7 @@ class MessageTemplateRepositoryImpl : MessageTemplateRepository {
       messageId = "MFA_MAIL_REGISTRATION",
       subject = "MFA認証の登録",
       body = """
-        ワンタイムパスワード $\{otp}
+        ワンタイムパスワード #{otp}
       """.trimIndent(),
     ),
     MessageTemplateList(

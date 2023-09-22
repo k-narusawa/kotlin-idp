@@ -7,7 +7,7 @@ class UserMfa private constructor(
   val type: MfaType,
   val secretKey: String?,
   val validationCode: Int?,
-  val scratchCodes: List<Int>
+  val scratchCodes: List<Int>?
 ) {
   companion object {
     fun of(
@@ -21,7 +21,7 @@ class UserMfa private constructor(
       type = type,
       secretKey = secretKey,
       validationCode = validationCode,
-      scratchCodes = scratchCodes ?: listOf(),
+      scratchCodes = scratchCodes,
     )
   }
 }
