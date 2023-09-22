@@ -14,6 +14,7 @@ buildscript {
         zxingVersion = '3.5.2'
         jacksonVersion = '2.15.2'
         dynamodbSdkVersion = '1.12.546'
+        sesSdkVersion = '1.12.554'
         mysqlConnectorJavaVersion = '8.0.33'
         hikariCpVersion = '5.0.1'
         flywayVersion = '9.19.4'
@@ -54,6 +55,7 @@ dependencies {
     implementation "com.google.zxing:javase:${zxingVersion}"
     implementation "org.webjars:bootstrap:${bootStrapVersion}"
     implementation "com.amazonaws:aws-java-sdk-dynamodb:${dynamodbSdkVersion}"
+    implementation "com.amazonaws:aws-java-sdk-ses:${sesSdkVersion}"
     implementation "com.fasterxml.jackson.module:jackson-module-kotlin:${jacksonVersion}"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:${kotlinxCoroutinesCoreVersion}"
     implementation "mysql:mysql-connector-java:${mysqlConnectorJavaVersion}"
