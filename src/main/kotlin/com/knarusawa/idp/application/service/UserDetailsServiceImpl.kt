@@ -1,7 +1,9 @@
 package com.knarusawa.idp.application.service
 
 import com.knarusawa.idp.application.event.AuthenticationEvents.Companion.logger
+import com.knarusawa.idp.application.facade.MassageSenderFacade
 import com.knarusawa.idp.domain.model.authority.IdpGrantedAuthority
+import com.knarusawa.idp.domain.model.messageTemplate.MessageId
 import com.knarusawa.idp.domain.model.oneTimePassword.OneTimePassword
 import com.knarusawa.idp.domain.model.userMfa.MfaType
 import com.knarusawa.idp.domain.repository.OnetimePasswordRepository
@@ -17,7 +19,8 @@ import org.springframework.stereotype.Service
 class UserDetailsServiceImpl(
   private val userRepository: UserRepository,
   private val userMfaRepository: UserMfaRepository,
-  private val onetimePasswordRepository: OnetimePasswordRepository
+  private val onetimePasswordRepository: OnetimePasswordRepository,
+  private val messageSenderFacade: MassageSenderFacade
 ) : UserDetailsService {
   override fun loadUserByUsername(loginId: String): UserDetails {
     val user = userRepository.findByLoginId(loginId = loginId)
@@ -36,11 +39,16 @@ class UserDetailsServiceImpl(
       else -> listOf(IdpGrantedAuthority.usePassword())
     }
 
-    if (authorities.contains(IdpGrantedAuthority.useMfaMail())) {
+    if (userMfa?.type == MfaType.MAIL || userMfa?.type == MfaType.SMS) {
       val oneTimePassword = OneTimePassword.of(userId = user.userId)
       logger.info("ワンタイムパスワード: ${oneTimePassword.code}")
       runBlocking { onetimePasswordRepository.save(oneTimePassword) }
-      // TODO: OTPを宛先に送る
+
+      messageSenderFacade.exec(
+        toAddress = user.loginId.toString(),
+        messageId = MessageId.MFA_MAIL_AUTHENTICATION,
+        variables = listOf(Pair("#{otp}", oneTimePassword.code.toString()))
+      )
     }
 
     return org.springframework.security.core.userdetails.User

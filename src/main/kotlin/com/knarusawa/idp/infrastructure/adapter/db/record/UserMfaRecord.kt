@@ -26,7 +26,7 @@ data class UserMfaRecord(
   val validationCode: Int? = null,
 
   @Column(name = "scratch_codes")
-  val scratchCodes: String? = "",
+  val scratchCodes: String? = null,
 
   @Column(name = "created_at", insertable = false, updatable = false)
   val createdAt: LocalDateTime? = null,
@@ -40,7 +40,7 @@ data class UserMfaRecord(
       type = userMfa.type.toString(),
       secretKey = userMfa.secretKey,
       validationCode = userMfa.validationCode,
-      scratchCodes = userMfa.scratchCodes.joinToString(","),
+      scratchCodes = userMfa.scratchCodes?.joinToString(","),
     )
   }
 
@@ -49,6 +49,6 @@ data class UserMfaRecord(
     type = MfaType.from(this.type),
     secretKey = secretKey,
     validationCode = validationCode,
-    scratchCodes = scratchCodes?.split(",")?.map { it.toInt() },
+    scratchCodes = if (scratchCodes.isNullOrEmpty()) listOf() else scratchCodes.split(",").map { it.toInt() }
   )
 }

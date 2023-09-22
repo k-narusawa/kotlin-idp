@@ -1,5 +1,10 @@
 package com.knarusawa.idp.application.service.sendOtp
 
+import com.knarusawa.idp.application.facade.MassageSenderFacade
+import com.knarusawa.idp.application.service.query.UserDtoQueryService
+import com.knarusawa.idp.domain.model.error.ErrorCode
+import com.knarusawa.idp.domain.model.error.IdpAppException
+import com.knarusawa.idp.domain.model.messageTemplate.MessageId
 import com.knarusawa.idp.domain.model.oneTimePassword.OneTimePassword
 import com.knarusawa.idp.domain.model.user.UserId
 import com.knarusawa.idp.domain.repository.OnetimePasswordRepository
@@ -11,7 +16,9 @@ import org.springframework.transaction.annotation.Transactional
 
 @Service
 class SendOtpService(
+  private val userDtoQueryService: UserDtoQueryService,
   private val onetimePasswordRepository: OnetimePasswordRepository,
+  private val messageSenderFacade: MassageSenderFacade
 ) {
   companion object {
     val logger = LoggerFactory.getLogger(SendOtpService::class.java)
@@ -21,6 +28,19 @@ class SendOtpService(
   fun exec(input: SendOtpInput) {
     val otp = OneTimePassword.of(userId = UserId(input.userId))
     logger.info("ワンタイムパスワード: ${otp.code}")
+
     runBlocking { onetimePasswordRepository.save(otp) }
+
+    val user = userDtoQueryService.findByUserId(userId = input.userId)
+      ?: throw IdpAppException(
+        errorCode = ErrorCode.INTERNAL_SERVER_ERROR,
+        logMessage = "ユーザーが見つかりません"
+      )
+
+    messageSenderFacade.exec(
+      toAddress = user.loginId,
+      messageId = MessageId.MFA_MAIL_REGISTRATION,
+      variables = listOf(Pair("#{otp}", otp.code.toString()))
+    )
   }
 }
