@@ -35,3 +35,7 @@ spring:
       filter:
         # thymeleafからDELETEメソッドを利用できるようにする
         enabled: true
+
+environments:
+  mail:
+    from: ${FROM_ADDRESS:test@example.com}
