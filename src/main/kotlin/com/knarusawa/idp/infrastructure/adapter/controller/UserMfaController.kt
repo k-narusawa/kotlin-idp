@@ -1,4 +1,4 @@
-package com.knarusawa.idp.infrastructure.adapter.controllers
+package com.knarusawa.idp.infrastructure.adapter.controller
 
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.client.j2se.MatrixToImageWriter

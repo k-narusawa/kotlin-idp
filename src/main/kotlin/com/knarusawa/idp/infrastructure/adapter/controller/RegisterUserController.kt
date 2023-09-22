@@ -1,4 +1,4 @@
-package com.knarusawa.idp.infrastructure.adapter.controllers
+package com.knarusawa.idp.infrastructure.adapter.controller
 
 import com.knarusawa.idp.application.service.registerUser.UserRegisterInputData
 import com.knarusawa.idp.application.service.registerUser.UserRegisterService

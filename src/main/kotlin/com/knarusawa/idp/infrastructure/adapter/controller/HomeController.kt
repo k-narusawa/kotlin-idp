@@ -1,15 +1,15 @@
-package com.knarusawa.idp.infrastructure.adapter.controllers
+package com.knarusawa.idp.infrastructure.adapter.controller
 
 import com.knarusawa.idp.application.service.query.UserActivityDtoQueryService
 import com.knarusawa.idp.application.service.query.UserDtoQueryService
 import com.knarusawa.idp.application.service.query.UserMfaDtoQueryService
-import java.security.Principal
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.GetMapping
+import java.security.Principal
 
 @Controller
 @PreAuthorize("hasRole('USER')")

@@ -1,4 +1,4 @@
-package com.knarusawa.idp.infrastructure.adapter.controllers
+package com.knarusawa.idp.infrastructure.adapter.controller
 
 import com.knarusawa.idp.application.service.changeUserLoginId.UserLoginIdChangeInputData
 import com.knarusawa.idp.application.service.changeUserLoginId.UserLoginIdChangeService
