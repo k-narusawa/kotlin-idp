@@ -6,10 +6,14 @@ import com.knarusawa.idp.application.service.changeUserPassword.UserPasswordChan
 import com.knarusawa.idp.application.service.changeUserPassword.UserPasswordChangeService
 import com.knarusawa.idp.application.service.query.UserActivityDtoQueryService
 import com.knarusawa.idp.application.service.query.UserDtoQueryService
+import com.knarusawa.idp.application.service.withdrawUser.WithdrawUserInputData
+import com.knarusawa.idp.application.service.withdrawUser.WithdrawUserService
 import com.knarusawa.idp.domain.model.error.ErrorCode
 import com.knarusawa.idp.domain.model.error.IdpAppException
 import com.knarusawa.idp.infrastructure.dto.form.ChangeUserLoginIdForm
 import com.knarusawa.idp.infrastructure.dto.form.ChangeUserPasswordForm
+import jakarta.servlet.http.HttpServletRequest
+import java.security.Principal
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
 import org.springframework.security.access.prepost.PreAuthorize
@@ -20,7 +24,6 @@ import org.springframework.web.bind.annotation.ModelAttribute
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
-import java.security.Principal
 
 @Controller
 @RequestMapping("user")
@@ -30,6 +33,7 @@ class UserController(
   private val userActivityDtoQueryService: UserActivityDtoQueryService,
   private val userLoginIdChangeService: UserLoginIdChangeService,
   private val userPasswordChangeService: UserPasswordChangeService,
+  private val withdrawUserService: WithdrawUserService,
 ) {
   @GetMapping("/activities")
   fun getProfile(
@@ -91,6 +95,16 @@ class UserController(
       password = changeUserPasswordForm.confirmPassword,
     )
     userPasswordChangeService.execute(input = inputData)
+    return "redirect:/"
+  }
+
+  @PostMapping("/withdraw")
+  fun withdraw(
+    request: HttpServletRequest,
+    principal: Principal
+  ): String {
+    withdrawUserService.exec(input = WithdrawUserInputData(userId = principal.name))
+    request.logout()
     return "redirect:/"
   }
 }

@@ -22,4 +22,8 @@ class UserRepositoryImpl(
     val record = userRecordRepository.findByLoginId(loginId = loginId)
     return record?.let { User.from(it) }
   }
+
+  override fun deleteByUserId(userId: String) {
+    userRecordRepository.deleteByUserId(userId = userId)
+  }
 }
