@@ -13,11 +13,11 @@ import org.springframework.transaction.annotation.Transactional
 
 @Service
 @Transactional
-class UserPasswordChangeService(
+class ChangeUserPasswordService(
   private val userRepository: UserRepository,
   private val userActivityRepository: UserActivityRepository
 ) {
-  fun execute(input: UserPasswordChangeInputData) {
+  fun execute(input: ChangeUserPasswordInputData) {
     val user = userRepository.findByUserId(userId = input.userId)
       ?: throw IdpAppException(
         errorCode = ErrorCode.USER_NOT_FOUND,
@@ -25,7 +25,7 @@ class UserPasswordChangeService(
       )
 
     user.changePassword(password = input.password)
-    
+
     userRepository.save(user)
 
     storeUserActivity(userId = input.userId)

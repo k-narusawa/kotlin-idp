@@ -16,13 +16,13 @@ import org.springframework.transaction.annotation.Transactional
 
 @Service
 @Transactional
-class UserLoginIdChangeService(
+class ChangeUserLoginIdService(
   private val userService: UserService,
   private val userRepository: UserRepository,
   private val userActivityRepository: UserActivityRepository,
   private val userDtoQueryService: UserDtoQueryService
 ) {
-  fun execute(input: UserLoginIdChangeInputData) {
+  fun execute(input: ChangeUserLoginIdInputData) {
     val user = userRepository.findByUserId(userId = input.userId)
       ?: throw IdpAppException(
         errorCode = ErrorCode.USER_NOT_FOUND,

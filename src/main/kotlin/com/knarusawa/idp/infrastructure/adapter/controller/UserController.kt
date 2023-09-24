@@ -1,9 +1,9 @@
 package com.knarusawa.idp.infrastructure.adapter.controller
 
-import com.knarusawa.idp.application.service.changeUserLoginId.UserLoginIdChangeInputData
-import com.knarusawa.idp.application.service.changeUserLoginId.UserLoginIdChangeService
-import com.knarusawa.idp.application.service.changeUserPassword.UserPasswordChangeInputData
-import com.knarusawa.idp.application.service.changeUserPassword.UserPasswordChangeService
+import com.knarusawa.idp.application.service.changeUserLoginId.ChangeUserLoginIdInputData
+import com.knarusawa.idp.application.service.changeUserLoginId.ChangeUserLoginIdService
+import com.knarusawa.idp.application.service.changeUserPassword.ChangeUserPasswordInputData
+import com.knarusawa.idp.application.service.changeUserPassword.ChangeUserPasswordService
 import com.knarusawa.idp.application.service.query.UserActivityDtoQueryService
 import com.knarusawa.idp.application.service.query.UserDtoQueryService
 import com.knarusawa.idp.application.service.withdrawUser.WithdrawUserInputData
@@ -31,8 +31,8 @@ import org.springframework.web.bind.annotation.RequestParam
 class UserController(
   private val userDtoQueryService: UserDtoQueryService,
   private val userActivityDtoQueryService: UserActivityDtoQueryService,
-  private val userLoginIdChangeService: UserLoginIdChangeService,
-  private val userPasswordChangeService: UserPasswordChangeService,
+  private val changeUserLoginIdService: ChangeUserLoginIdService,
+  private val changeUserPasswordService: ChangeUserPasswordService,
   private val withdrawUserService: WithdrawUserService,
 ) {
   @GetMapping("/activities")
@@ -67,11 +67,11 @@ class UserController(
     @ModelAttribute changeUserLoginIdForm: ChangeUserLoginIdForm,
     principal: Principal
   ): String {
-    val inputData = UserLoginIdChangeInputData(
+    val inputData = ChangeUserLoginIdInputData(
       userId = principal.name,
       loginId = changeUserLoginIdForm.loginId,
     )
-    userLoginIdChangeService.execute(input = inputData)
+    changeUserLoginIdService.execute(input = inputData)
     return "redirect:/"
   }
 
@@ -90,11 +90,11 @@ class UserController(
     if (changeUserPasswordForm.newPassword != changeUserPasswordForm.confirmPassword) {
       return "user/user_password_change"
     }
-    val inputData = UserPasswordChangeInputData(
+    val inputData = ChangeUserPasswordInputData(
       userId = principal.name,
       password = changeUserPasswordForm.confirmPassword,
     )
-    userPasswordChangeService.execute(input = inputData)
+    changeUserPasswordService.execute(input = inputData)
     return "redirect:/"
   }
 
