@@ -25,7 +25,7 @@ class SendOtpService(
   }
 
   @Transactional
-  fun exec(input: SendOtpInput) {
+  fun exec(input: SendOtpInputData) {
     val otp = OneTimePassword.of(userId = UserId(input.userId))
     logger.info("ワンタイムパスワード: ${otp.code}")
 

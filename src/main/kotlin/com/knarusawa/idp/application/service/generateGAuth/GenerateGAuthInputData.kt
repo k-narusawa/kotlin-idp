@@ -1,5 +1,5 @@
 package com.knarusawa.idp.application.service.generateGAuth
 
-data class GenerateGAuthInput(
+data class GenerateGAuthInputData(
   val userId: String,
 )

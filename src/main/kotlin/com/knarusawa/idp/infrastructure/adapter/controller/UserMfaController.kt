@@ -3,24 +3,24 @@ package com.knarusawa.idp.infrastructure.adapter.controller
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.client.j2se.MatrixToImageWriter
 import com.google.zxing.qrcode.QRCodeWriter
-import com.knarusawa.idp.application.service.generateGAuth.GenerateGAuthInput
+import com.knarusawa.idp.application.service.generateGAuth.GenerateGAuthInputData
 import com.knarusawa.idp.application.service.generateGAuth.GenerateGAuthService
 import com.knarusawa.idp.application.service.invalidateMfa.InvalidateMfaInputData
 import com.knarusawa.idp.application.service.invalidateMfa.InvalidateMfaService
-import com.knarusawa.idp.application.service.registerGAuth.RegisterGAuthInput
+import com.knarusawa.idp.application.service.registerGAuth.RegisterGAuthInputData
 import com.knarusawa.idp.application.service.registerGAuth.RegisterGAuthService
-import com.knarusawa.idp.application.service.registerMfa.RegisterMfaInput
+import com.knarusawa.idp.application.service.registerMfa.RegisterMfaInputData
 import com.knarusawa.idp.application.service.registerMfa.RegisterMfaService
-import com.knarusawa.idp.application.service.sendOtp.SendOtpInput
+import com.knarusawa.idp.application.service.sendOtp.SendOtpInputData
 import com.knarusawa.idp.application.service.sendOtp.SendOtpService
 import jakarta.servlet.http.HttpServletResponse
+import java.security.Principal
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestParam
-import java.security.Principal
 
 
 @Controller
@@ -55,7 +55,7 @@ class UserMfaController(
     principal: Principal,
     response: HttpServletResponse
   ) {
-    val input = GenerateGAuthInput(userId = principal.name)
+    val input = GenerateGAuthInputData(userId = principal.name)
 
     val qrCodeWriter = QRCodeWriter()
 
@@ -72,7 +72,7 @@ class UserMfaController(
     principal: Principal,
     @RequestParam("code") code: String,
   ): String {
-    val input = RegisterGAuthInput(
+    val input = RegisterGAuthInputData(
       userId = principal.name,
       code = code
     )
@@ -89,7 +89,7 @@ class UserMfaController(
   fun mfaMail(
     principal: Principal,
   ): String {
-    sendOtpService.exec(input = SendOtpInput(userId = principal.name))
+    sendOtpService.exec(input = SendOtpInputData(userId = principal.name))
     return "user/user_mfa_mail"
   }
 
@@ -99,7 +99,7 @@ class UserMfaController(
     @RequestParam("code") code: String,
   ): String {
     val result =
-      registerMfaService.exec(input = RegisterMfaInput(userId = principal.name, code = code))
+      registerMfaService.exec(input = RegisterMfaInputData(userId = principal.name, code = code))
 
     if (!result) {
       return "user/user_mfa_mail"

@@ -15,7 +15,7 @@ class VerifyOtpService(
   private val onetimePasswordRepository: OnetimePasswordRepository
 ) {
   @Transactional
-  fun exec(input: VerifyOtpInput): Boolean {
+  fun exec(input: VerifyOtpInputData): Boolean {
     val mfaType = MfaType.from(input.mfaType)
 
     return when (mfaType) {

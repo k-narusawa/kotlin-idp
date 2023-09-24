@@ -16,7 +16,7 @@ class RegisterMfaService(
   private val onetimePasswordRepository: OnetimePasswordRepository
 ) {
   @Transactional
-  fun exec(input: RegisterMfaInput): Boolean {
+  fun exec(input: RegisterMfaInputData): Boolean {
     val oneTimePassword =
       runBlocking { onetimePasswordRepository.findByUserId(userId = UserId(input.userId)) }
         ?: return false

@@ -1,6 +1,6 @@
 package com.knarusawa.idp.application.service.verifyOtp
 
-data class VerifyOtpInput(
+data class VerifyOtpInputData(
   val userId: String,
   val mfaType: String,
   val code: String

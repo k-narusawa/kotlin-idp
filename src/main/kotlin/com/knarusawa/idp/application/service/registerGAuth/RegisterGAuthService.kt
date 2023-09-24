@@ -9,7 +9,7 @@ class RegisterGAuthService(
   private val gauth: GoogleAuthenticator
 ) {
   @Transactional
-  fun exec(input: RegisterGAuthInput): Boolean {
+  fun exec(input: RegisterGAuthInputData): Boolean {
     return gauth.authorizeUser(
       input.userId,
       input.code.toInt()

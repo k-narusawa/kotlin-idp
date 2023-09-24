@@ -1,7 +1,7 @@
 package com.knarusawa.idp.infrastructure.adapter.controller
 
 import com.knarusawa.idp.application.service.query.UserMfaDtoQueryService
-import com.knarusawa.idp.application.service.verifyOtp.VerifyOtpInput
+import com.knarusawa.idp.application.service.verifyOtp.VerifyOtpInputData
 import com.knarusawa.idp.application.service.verifyOtp.VerifyOtpService
 import com.knarusawa.idp.domain.model.authentication.MfaAuthentication
 import com.knarusawa.idp.domain.model.error.ErrorCode
@@ -51,7 +51,7 @@ class LoginController(
 
     val isVerified =
       verifyOtpService.exec(
-        input = VerifyOtpInput(
+        input = VerifyOtpInputData(
           userId = userId,
           mfaType = userMfa.mfaType,
           code = code

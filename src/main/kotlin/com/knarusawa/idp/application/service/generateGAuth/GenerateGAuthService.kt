@@ -13,7 +13,7 @@ class GenerateGAuthService(
     private const val ISSUER = "kotlin-idp"
   }
 
-  fun exec(input: GenerateGAuthInput): String {
+  fun exec(input: GenerateGAuthInputData): String {
     val gAuthKey = gauth.createCredentials(input.userId)
     return GoogleAuthenticatorQRGenerator.getOtpAuthTotpURL(ISSUER, input.userId, gAuthKey)
   }
