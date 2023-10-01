@@ -14,4 +14,8 @@ class RedisService(
   fun getObject(key: String): Any? {
     return redisTemplate.opsForValue().get(key)
   }
+
+  fun deleteObject(key: String) {
+    redisTemplate.delete(key)
+  }
 }

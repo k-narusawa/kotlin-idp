@@ -1,6 +1,6 @@
 package com.knarusawa.idp.application.service.registerUser
 
 data class UserRegisterInputData(
-  val loginId: String,
+  val code: String,
   val password: String,
 )

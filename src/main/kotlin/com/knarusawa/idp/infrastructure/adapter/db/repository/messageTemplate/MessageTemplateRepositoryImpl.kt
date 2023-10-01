@@ -38,6 +38,27 @@ class MessageTemplateRepositoryImpl : MessageTemplateRepository {
         ワンタイムパスワード #{otp}
       """.trimIndent(),
     ),
+    MessageTemplateList(
+      messageId = "TMP_USER_CONFIRM",
+      subject = "会員仮登録",
+      body = """
+        仮登録用コード #{otp}
+      """.trimIndent(),
+    ),
+    MessageTemplateList(
+      messageId = "TMP_USER_CONFIRM_FAILED",
+      subject = "会員仮登録失敗",
+      body = """
+        会員の登録に失敗
+      """.trimIndent(),
+    ),
+    MessageTemplateList(
+      messageId = "USER_REGISTER_COMPLETE",
+      subject = "会員登録完了",
+      body = """
+        会員登録完了
+      """.trimIndent(),
+    ),
   )
 
   private data class MessageTemplateList(

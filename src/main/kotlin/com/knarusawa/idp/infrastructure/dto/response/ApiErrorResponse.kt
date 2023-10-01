@@ -20,12 +20,12 @@ data class ApiErrorResponse(
   private fun log(ex: Exception, logLevel: LogLevel, message: String) {
     when (logLevel) {
       LogLevel.OFF -> Unit
-      LogLevel.TRACE -> logger.trace("$message, ex: ${ex.message}")
-      LogLevel.DEBUG -> logger.debug("$message, ex: ${ex.message}")
-      LogLevel.INFO -> logger.info("$message, ex: ${ex.message}")
-      LogLevel.WARN -> logger.warn("$message, ex: ${ex.message}")
-      LogLevel.ERROR -> logger.error("$message, ex: ${ex.message}")
-      LogLevel.FATAL -> logger.error("$message, ex: ${ex.message}")
+      LogLevel.TRACE -> logger.trace("$message, ex: ${ex.message} cause:${ex.cause}")
+      LogLevel.DEBUG -> logger.debug("$message, ex: ${ex.message} cause:${ex.cause}")
+      LogLevel.INFO -> logger.info("$message, ex: ${ex.message} cause:${ex.cause}")
+      LogLevel.WARN -> logger.warn("$message, ex: ${ex.message} cause:${ex.cause}")
+      LogLevel.ERROR -> logger.error("$message, ex: ${ex.message} cause:${ex.cause}")
+      LogLevel.FATAL -> logger.error("$message, ex: ${ex.message} cause:${ex.cause}")
     }
   }
 }

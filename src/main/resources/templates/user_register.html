@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
   <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.3.0/css/bootstrap.min.css}">
-  <title>会員登録フォーム</title>
+  <title>メール認証とパスワード入力</title>
 </head>
 <body>
 <div class="container mt-5">
@@ -10,21 +10,20 @@
     <div class="col-md-6">
       <div class="card">
         <div class="card-header">
-          会員登録
+          メール認証とパスワード入力
         </div>
         <div class="card-body">
-          <form th:action="@{/register}" method="post">
+          <form th:action="@{/verify}" method="post">
             <div class="form-group">
-              <label for="loginId">ログインID <span class="text-danger">*</span></label>
-              <input type="text" class="form-control" id="loginId" name="loginId" required>
-              <div class="invalid-feedback">ログインIDは必須項目です。</div>
+              <label for="verificationCode">認証コード <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" id="verificationCode" name="verificationCode"
+                     required>
             </div>
-            <div class="form-group mt-4">
+            <div class="form-group mt-3">
               <label for="password">パスワード <span class="text-danger">*</span></label>
               <input type="password" class="form-control" id="password" name="password" required>
-              <div class="invalid-feedback">パスワードは必須項目です。</div>
             </div>
-            <button type="submit" class="btn btn-primary mt-4">登録</button>
+            <button type="submit" class="btn btn-primary mt-3">認証</button>
           </form>
         </div>
       </div>
