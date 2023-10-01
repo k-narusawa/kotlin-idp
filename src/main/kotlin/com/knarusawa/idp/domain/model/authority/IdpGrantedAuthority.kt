@@ -1,9 +1,11 @@
 package com.knarusawa.idp.domain.model.authority
 
+import com.fasterxml.jackson.annotation.JsonProperty
 import org.springframework.security.core.GrantedAuthority
 
 class IdpGrantedAuthority private constructor(
-  private val authorityRole: AuthorityRole
+  @JsonProperty("authorityRole")
+  private val authorityRole: AuthorityRole? = null
 ) : GrantedAuthority {
 
   companion object {
@@ -25,6 +27,10 @@ class IdpGrantedAuthority private constructor(
   }
 
   override fun getAuthority(): String {
-    return this.authorityRole.toString()
+    return this.authorityRole?.toString() ?: ""
+  }
+
+  override fun toString(): String {
+    return this.authorityRole?.toString() ?: ""
   }
 }
