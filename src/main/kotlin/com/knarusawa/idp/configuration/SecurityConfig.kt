@@ -4,17 +4,23 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.annotation.JsonSubTypes
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.knarusawa.idp.application.middleware.MfaAuthenticationHandler
 import com.knarusawa.idp.application.service.UserDetailsServiceImpl
 import com.knarusawa.idp.configuration.db.UserDbJdbcTemplate
 import com.knarusawa.idp.domain.model.authentication.MfaAuthentication
 import com.knarusawa.idp.domain.model.authority.AuthorityRole
 import com.knarusawa.idp.domain.model.authority.IdpGrantedAuthority
+import com.knarusawa.idp.infrastructure.middleware.MfaAuthenticationHandler
 import com.nimbusds.jose.jwk.JWKSet
 import com.nimbusds.jose.jwk.RSAKey
 import com.nimbusds.jose.jwk.source.ImmutableJWKSet
 import com.nimbusds.jose.jwk.source.JWKSource
 import com.nimbusds.jose.proc.SecurityContext
+import java.security.KeyPair
+import java.security.KeyPairGenerator
+import java.security.interfaces.RSAPrivateKey
+import java.security.interfaces.RSAPublicKey
+import java.util.*
+import java.util.function.Supplier
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -48,12 +54,6 @@ import org.springframework.security.web.authentication.LoginUrlAuthenticationEnt
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler
 import org.springframework.security.web.authentication.logout.CookieClearingLogoutHandler
-import java.security.KeyPair
-import java.security.KeyPairGenerator
-import java.security.interfaces.RSAPrivateKey
-import java.security.interfaces.RSAPublicKey
-import java.util.*
-import java.util.function.Supplier
 
 
 @Configuration

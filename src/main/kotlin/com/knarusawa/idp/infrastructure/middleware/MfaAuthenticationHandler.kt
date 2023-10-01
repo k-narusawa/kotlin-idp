@@ -1,4 +1,4 @@
-package com.knarusawa.idp.application.middleware
+package com.knarusawa.idp.infrastructure.middleware
 
 import com.knarusawa.idp.domain.model.authentication.MfaAuthentication
 import com.knarusawa.idp.domain.model.authority.AuthorityRole

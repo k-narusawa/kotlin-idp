@@ -1,4 +1,4 @@
-package com.knarusawa.idp.application.middleware
+package com.knarusawa.idp.infrastructure.middleware
 
 import com.knarusawa.idp.domain.model.error.ErrorCode
 import com.knarusawa.idp.domain.model.error.IdpAppException
