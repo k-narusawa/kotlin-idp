@@ -9,9 +9,12 @@ class Environments {
     private const val LOCAL_PROFILE = "local"
   }
 
-
   @Value("\${environments.mail.from}")
   lateinit var fromAddress: String
 
+  @Value("\${environments.redis.host}")
+  lateinit var redisHost: String
 
+  @Value("\${environments.redis.port}")
+  lateinit var redisPort: String
 }

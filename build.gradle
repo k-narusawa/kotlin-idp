@@ -18,6 +18,7 @@ buildscript {
         mysqlConnectorJavaVersion = '8.0.33'
         hikariCpVersion = '5.0.1'
         flywayVersion = '9.19.4'
+        lettuceVersion = '6.2.6.RELEASE'
     }
 }
 
@@ -47,8 +48,9 @@ dependencies {
     implementation "org.springframework.boot:spring-boot-starter-data-jdbc:${springBootVersion}"
     implementation "org.springframework.boot:spring-boot-starter-thymeleaf:${springBootVersion}"
     implementation "org.springframework.boot:spring-boot-starter-data-jpa:${springBootVersion}"
-    implementation "org.springframework.data:spring-data-jpa:${springBootVersion}"
     implementation "org.springframework.boot:spring-boot-starter-oauth2-authorization-server:${springBootVersion}"
+    implementation "org.springframework.data:spring-data-jpa:${springBootVersion}"
+    implementation "org.springframework.data:spring-data-redis:${springBootVersion}"
     implementation "org.thymeleaf.extras:thymeleaf-extras-springsecurity6:${springSecurity6Version}"
     implementation "com.warrenstrange:googleauth:${googleauthVersion}"
     implementation "com.google.zxing:core:${zxingVersion}"
@@ -65,6 +67,7 @@ dependencies {
     implementation "org.flywaydb:flyway-mysql:${flywayVersion}"
     implementation "org.springframework.security:spring-security-cas:${springSecurityVersion}"
     implementation "org.webjars:popper.js:2.9.3"
+    implementation "io.lettuce:lettuce-core:${lettuceVersion}"
 
     runtimeOnly 'org.jetbrains.kotlin:kotlin-reflect:1.8.22'
 
