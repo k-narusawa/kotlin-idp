@@ -60,5 +60,12 @@ services:
     depends_on:
       - ses-mysql
 
+  redis:
+    image: "redis:latest"
+    ports:
+      - "6379:6379"
+    volumes:
+      - "./docker/redis:/data"
+
 volumes:
   mysql-db-data:

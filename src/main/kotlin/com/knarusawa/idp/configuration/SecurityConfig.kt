@@ -3,7 +3,6 @@ package com.knarusawa.idp.configuration
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.annotation.JsonSubTypes
-import com.fasterxml.jackson.databind.ObjectMapper
 import com.knarusawa.idp.application.service.UserDetailsServiceImpl
 import com.knarusawa.idp.configuration.db.UserDbJdbcTemplate
 import com.knarusawa.idp.domain.model.authentication.MfaAuthentication
@@ -37,7 +36,6 @@ import org.springframework.security.config.annotation.web.configurers.FormLoginC
 import org.springframework.security.core.Authentication
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
-import org.springframework.security.jackson2.CoreJackson2Module
 import org.springframework.security.oauth2.jwt.JwtDecoder
 import org.springframework.security.oauth2.server.authorization.JdbcOAuth2AuthorizationService
 import org.springframework.security.oauth2.server.authorization.JdbcOAuth2AuthorizationService.OAuth2AuthorizationRowMapper
@@ -211,17 +209,6 @@ class SecurityConfig {
   @Bean
   fun failureHandler(): AuthenticationFailureHandler {
     return SimpleUrlAuthenticationFailureHandler("/login?error")
-  }
-
-  @Bean
-  fun objectMapper(): ObjectMapper {
-    val mapper = ObjectMapper()
-    mapper.registerModule(CoreJackson2Module())
-    mapper.addMixIn(IdpGrantedAuthority::class.java, IdpGrantedAuthorityMixin::class.java)
-    mapper.deserializationConfig.withoutFeatures(
-      com.fasterxml.jackson.databind.DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES
-    )
-    return mapper
   }
 
   internal class RowMapper(registeredClientRepository: RegisteredClientRepository?) :
