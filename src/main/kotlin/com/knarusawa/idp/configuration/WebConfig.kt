@@ -2,6 +2,8 @@ package com.knarusawa.idp.configuration
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.knarusawa.idp.domain.model.authority.IdpGrantedAuthority
+import com.knarusawa.idp.domain.model.tmpUser.TmpUser
+import com.knarusawa.idp.domain.model.tmpUser.TmpUserMixIn
 import com.knarusawa.idp.infrastructure.adapter.db.repository.CredentialRepository
 import com.warrenstrange.googleauth.GoogleAuthenticator
 import org.springframework.beans.factory.annotation.Autowired
@@ -37,8 +39,9 @@ class WebConfig : WebMvcConfigurer {
       IdpGrantedAuthority::class.java,
       SecurityConfig.IdpGrantedAuthorityMixin::class.java
     )
-    mapper.deserializationConfig.withoutFeatures(
-      com.fasterxml.jackson.databind.DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES
+    mapper.addMixIn(
+      TmpUser::class.java,
+      TmpUserMixIn::class.java,
     )
     return mapper
   }
