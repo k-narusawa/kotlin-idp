@@ -7,6 +7,7 @@ import com.knarusawa.idp.domain.model.user.LoginId
 import com.knarusawa.idp.domain.model.user.UserService
 import com.knarusawa.idp.domain.repository.TmpUserRepository
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
 @Service
 class RegisterTmpUserService(
@@ -14,6 +15,7 @@ class RegisterTmpUserService(
   private val tmpUserRepository: TmpUserRepository,
   private val messageSenderFacade: MassageSenderFacade
 ) {
+  @Transactional
   fun exec(input: RegisterTmpUserInputData) {
     if (userService.isExistsLoginId(loginId = LoginId(input.loginId)))
       messageSenderFacade.exec(
@@ -32,7 +34,7 @@ class RegisterTmpUserService(
     messageSenderFacade.exec(
       toAddress = input.loginId,
       messageId = MessageId.TMP_USER_CONFIRM,
-      variables = listOf(Pair("otp", tmpUser.code.toString()))
+      variables = listOf(Pair("otp", tmpUser.code))
     )
   }
 }
