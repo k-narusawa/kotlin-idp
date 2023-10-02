@@ -14,12 +14,6 @@ import com.nimbusds.jose.jwk.RSAKey
 import com.nimbusds.jose.jwk.source.ImmutableJWKSet
 import com.nimbusds.jose.jwk.source.JWKSource
 import com.nimbusds.jose.proc.SecurityContext
-import java.security.KeyPair
-import java.security.KeyPairGenerator
-import java.security.interfaces.RSAPrivateKey
-import java.security.interfaces.RSAPublicKey
-import java.util.*
-import java.util.function.Supplier
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -52,6 +46,12 @@ import org.springframework.security.web.authentication.LoginUrlAuthenticationEnt
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler
 import org.springframework.security.web.authentication.logout.CookieClearingLogoutHandler
+import java.security.KeyPair
+import java.security.KeyPairGenerator
+import java.security.interfaces.RSAPrivateKey
+import java.security.interfaces.RSAPublicKey
+import java.util.*
+import java.util.function.Supplier
 
 
 @Configuration
@@ -104,6 +104,7 @@ class SecurityConfig {
           authorize
             .requestMatchers("/login").permitAll()
             .requestMatchers("/login/mfa").access(mfaAuthorizationManager())
+            .requestMatchers("/tmp_register").permitAll() // 会員登録画面
             .requestMatchers("/register").permitAll() // 会員登録画面
             .requestMatchers("/error/*").permitAll() // エラー画面
             .requestMatchers("webjars/**", "/css/**", "/js/**", "/img/**").permitAll()
@@ -122,7 +123,7 @@ class SecurityConfig {
           .loginPage("/login")
           .permitAll()
           .successHandler(MfaAuthenticationHandler("/login/mfa"))
-          .failureHandler(MfaAuthenticationHandler("/login/mfa"))
+          .failureHandler(MfaAuthenticationHandler("/login?error"))
       }
       .securityContext { context ->
         context.requireExplicitSave(false)
