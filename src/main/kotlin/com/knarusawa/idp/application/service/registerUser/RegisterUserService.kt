@@ -13,13 +13,13 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 @Service
-class UserRegisterService(
+class RegisterUserService(
         private val userService: UserService,
         private val userRepository: UserRepository,
         private val tmpUserRepository: TmpUserRepository,
 ) {
     @Transactional
-    fun execute(input: UserRegisterInputData) {
+    fun execute(input: RegisterUserInputData) {
         val tmpUser = tmpUserRepository.findByCode(code = Code(input.code))
                 ?: throw IdpAppException(
                         errorCode = ErrorCode.USER_NOT_FOUND,
