@@ -6,9 +6,9 @@ import org.springframework.stereotype.Service
 
 @Service
 class ClientGetAllService(
-  private val extendedRegisteredClientRepository: ExtendedRegisteredClientRepository
+        private val extendedRegisteredClientRepository: ExtendedRegisteredClientRepository
 ) {
-  fun execute(): List<Client> {
-    return extendedRegisteredClientRepository.findAll().map { Client.fromRegisteredClient(it) }
-  }
+    fun execute(): List<Client> {
+        return extendedRegisteredClientRepository.findAll().map { Client.fromRegisteredClient(it) }
+    }
 }

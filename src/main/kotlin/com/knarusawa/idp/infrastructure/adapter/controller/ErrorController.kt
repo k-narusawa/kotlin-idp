@@ -5,8 +5,8 @@ import org.springframework.web.bind.annotation.GetMapping
 
 @Controller
 class ErrorController {
-  @GetMapping("/error/403")
-  fun accessDenied(): String {
-    return "error/403"
-  }
+    @GetMapping("/error/403")
+    fun accessDenied(): String {
+        return "error/403"
+    }
 }

@@ -12,27 +12,27 @@ import org.springframework.stereotype.Service
 
 @Service
 class RegisterMfaService(
-  private val userMfaRepository: UserMfaRepository,
-  private val onetimePasswordRepository: OnetimePasswordRepository
+        private val userMfaRepository: UserMfaRepository,
+        private val onetimePasswordRepository: OnetimePasswordRepository
 ) {
-  @Transactional
-  fun exec(input: RegisterMfaInputData): Boolean {
-    val oneTimePassword =
-      runBlocking { onetimePasswordRepository.findByUserId(userId = UserId(input.userId)) }
-        ?: return false
+    @Transactional
+    fun exec(input: RegisterMfaInputData): Boolean {
+        val oneTimePassword =
+                runBlocking { onetimePasswordRepository.findByUserId(userId = UserId(input.userId)) }
+                        ?: return false
 
-    runBlocking { onetimePasswordRepository.deleteByUserId(userId = UserId(input.userId)) }
+        runBlocking { onetimePasswordRepository.deleteByUserId(userId = UserId(input.userId)) }
 
-    val userMfa = UserMfa.of(
-      userId = UserId(value = input.userId),
-      type = MfaType.MAIL,
-      secretKey = null,
-      validationCode = null,
-      scratchCodes = listOf(),
-    )
+        val userMfa = UserMfa.of(
+                userId = UserId(value = input.userId),
+                type = MfaType.MAIL,
+                secretKey = null,
+                validationCode = null,
+                scratchCodes = listOf(),
+        )
 
-    userMfaRepository.save(userMfa)
+        userMfaRepository.save(userMfa)
 
-    return oneTimePassword.verify(inputCode = Code(input.code))
-  }
+        return oneTimePassword.verify(inputCode = Code(input.code))
+    }
 }

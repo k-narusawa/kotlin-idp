@@ -12,52 +12,52 @@ import org.springframework.stereotype.Repository
 
 @Repository
 class OneTimePasswordRepositoryImpl(
-  private val amazonDynamoDB: AmazonDynamoDB
+        private val amazonDynamoDB: AmazonDynamoDB
 ) : OnetimePasswordRepository {
-  companion object {
-    const val TABLE_NAME = "OneTimePasswordRecord"
-  }
+    companion object {
+        const val TABLE_NAME = "OneTimePasswordRecord"
+    }
 
-  override suspend fun save(oneTimePassword: OneTimePassword) {
-    val itemValues = mutableMapOf<String, AttributeValue>()
-    itemValues["user_id"] = AttributeValue().withS(oneTimePassword.userId.toString())
-    itemValues["code"] = AttributeValue().withS(oneTimePassword.code.toString())
-    itemValues["expired"] = AttributeValue().withS(oneTimePassword.expired.toString())
+    override suspend fun save(oneTimePassword: OneTimePassword) {
+        val itemValues = mutableMapOf<String, AttributeValue>()
+        itemValues["user_id"] = AttributeValue().withS(oneTimePassword.userId.toString())
+        itemValues["code"] = AttributeValue().withS(oneTimePassword.code.toString())
+        itemValues["expired"] = AttributeValue().withS(oneTimePassword.expired.toString())
 
-    val request = PutItemRequest()
-      .withTableName(TABLE_NAME)
-      .withItem(itemValues)
+        val request = PutItemRequest()
+                .withTableName(TABLE_NAME)
+                .withItem(itemValues)
 
-    amazonDynamoDB.putItem(request)
-  }
+        amazonDynamoDB.putItem(request)
+    }
 
-  override suspend fun findByUserId(userId: UserId): OneTimePassword? {
-    val keyToGet = mutableMapOf<String, AttributeValue>()
-    keyToGet["user_id"] = AttributeValue().withS(userId.toString())
+    override suspend fun findByUserId(userId: UserId): OneTimePassword? {
+        val keyToGet = mutableMapOf<String, AttributeValue>()
+        keyToGet["user_id"] = AttributeValue().withS(userId.toString())
 
-    val request = GetItemRequest()
-      .withTableName(TABLE_NAME)
-      .withKey(keyToGet)
+        val request = GetItemRequest()
+                .withTableName(TABLE_NAME)
+                .withKey(keyToGet)
 
-    val result = amazonDynamoDB.getItem(request)
+        val result = amazonDynamoDB.getItem(request)
 
-    if (result.item.isEmpty())
-      return null
+        if (result.item.isEmpty())
+            return null
 
-    return OneTimePassword.of(
-      userId = result.item["user_id"]?.s.toString(),
-      code = result.item["code"]?.s.toString(),
-      expired = result.item["expired"]?.s.toString()
-    )
-  }
+        return OneTimePassword.of(
+                userId = result.item["user_id"]?.s.toString(),
+                code = result.item["code"]?.s.toString(),
+                expired = result.item["expired"]?.s.toString()
+        )
+    }
 
-  override suspend fun deleteByUserId(userId: UserId) {
-    val keyToGet = mutableMapOf<String, AttributeValue>()
-    keyToGet["user_id"] = AttributeValue().withS(userId.toString())
+    override suspend fun deleteByUserId(userId: UserId) {
+        val keyToGet = mutableMapOf<String, AttributeValue>()
+        keyToGet["user_id"] = AttributeValue().withS(userId.toString())
 
-    val request = DeleteItemRequest()
-      .withTableName(TABLE_NAME)
-      .withKey(keyToGet)
-    amazonDynamoDB.deleteItem(request)
-  }
+        val request = DeleteItemRequest()
+                .withTableName(TABLE_NAME)
+                .withKey(keyToGet)
+        amazonDynamoDB.deleteItem(request)
+    }
 }

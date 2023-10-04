@@ -16,31 +16,31 @@ import org.springframework.transaction.annotation.Transactional
 
 @Service
 class SendOtpService(
-  private val userDtoQueryService: UserDtoQueryService,
-  private val onetimePasswordRepository: OnetimePasswordRepository,
-  private val messageSenderFacade: MassageSenderFacade
+        private val userDtoQueryService: UserDtoQueryService,
+        private val onetimePasswordRepository: OnetimePasswordRepository,
+        private val messageSenderFacade: MassageSenderFacade
 ) {
-  companion object {
-    val logger = LoggerFactory.getLogger(SendOtpService::class.java)
-  }
+    companion object {
+        val logger = LoggerFactory.getLogger(SendOtpService::class.java)
+    }
 
-  @Transactional
-  fun exec(input: SendOtpInputData) {
-    val otp = OneTimePassword.of(userId = UserId(input.userId))
-    logger.info("ワンタイムパスワード: ${otp.code}")
+    @Transactional
+    fun exec(input: SendOtpInputData) {
+        val otp = OneTimePassword.of(userId = UserId(input.userId))
+        logger.info("ワンタイムパスワード: ${otp.code}")
 
-    runBlocking { onetimePasswordRepository.save(otp) }
+        runBlocking { onetimePasswordRepository.save(otp) }
 
-    val user = userDtoQueryService.findByUserId(userId = input.userId)
-      ?: throw IdpAppException(
-        errorCode = ErrorCode.INTERNAL_SERVER_ERROR,
-        logMessage = "ユーザーが見つかりません"
-      )
+        val user = userDtoQueryService.findByUserId(userId = input.userId)
+                ?: throw IdpAppException(
+                        errorCode = ErrorCode.INTERNAL_SERVER_ERROR,
+                        logMessage = "ユーザーが見つかりません"
+                )
 
-    messageSenderFacade.exec(
-      toAddress = user.loginId,
-      messageId = MessageId.MFA_MAIL_REGISTRATION,
-      variables = listOf(Pair("#{otp}", otp.code.toString()))
-    )
-  }
+        messageSenderFacade.exec(
+                toAddress = user.loginId,
+                messageId = MessageId.MFA_MAIL_REGISTRATION,
+                variables = listOf(Pair("#{otp}", otp.code.toString()))
+        )
+    }
 }

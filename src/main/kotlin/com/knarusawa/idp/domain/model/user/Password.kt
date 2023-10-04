@@ -1,7 +1,7 @@
 package com.knarusawa.idp.domain.model.user
 
 data class Password(
-  val value: String?
+        val value: String?
 ) {
-  override fun toString() = value ?: ""
+    override fun toString() = value ?: ""
 }

@@ -14,29 +14,29 @@ import org.springframework.transaction.annotation.Transactional
 
 @Service
 class UserRegisterService(
-  private val userService: UserService,
-  private val userRepository: UserRepository,
-  private val tmpUserRepository: TmpUserRepository,
+        private val userService: UserService,
+        private val userRepository: UserRepository,
+        private val tmpUserRepository: TmpUserRepository,
 ) {
-  @Transactional
-  fun execute(input: UserRegisterInputData) {
-    val tmpUser = tmpUserRepository.findByCode(code = Code(input.code))
-      ?: throw IdpAppException(
-        errorCode = ErrorCode.USER_NOT_FOUND,
-        logMessage = "仮会員が見つかりません"
-      )
+    @Transactional
+    fun execute(input: UserRegisterInputData) {
+        val tmpUser = tmpUserRepository.findByCode(code = Code(input.code))
+                ?: throw IdpAppException(
+                        errorCode = ErrorCode.USER_NOT_FOUND,
+                        logMessage = "仮会員が見つかりません"
+                )
 
-    if (userService.isExistsLoginId(loginId = LoginId(tmpUser.loginId.toString())))
-      throw IdpAppException(
-        errorCode = ErrorCode.USER_EXISTS,
-        logMessage = "会員がすでに存在します"
-      )
+        if (userService.isExistsLoginId(loginId = LoginId(tmpUser.loginId.toString())))
+            throw IdpAppException(
+                    errorCode = ErrorCode.USER_EXISTS,
+                    logMessage = "会員がすでに存在します"
+            )
 
-    val user = User.of(
-      loginId = tmpUser.loginId.toString(),
-      password = input.password,
-      roles = listOf(Role.USER)
-    )
-    userRepository.save(user)
-  }
+        val user = User.of(
+                loginId = tmpUser.loginId.toString(),
+                password = input.password,
+                roles = listOf(Role.USER)
+        )
+        userRepository.save(user)
+    }
 }

@@ -19,65 +19,65 @@ import java.security.Principal
 @RequestMapping("admin")
 @PreAuthorize("hasRole('ADMIN')")
 class AdminController(
-  private val userDtoQueryService: UserDtoQueryService,
-  private val clientGetAllService: ClientGetAllService,
-  private val clientRegisterService: ClientRegisterService
+        private val userDtoQueryService: UserDtoQueryService,
+        private val clientGetAllService: ClientGetAllService,
+        private val clientRegisterService: ClientRegisterService
 ) {
-  @GetMapping("/user/list")
-  @PreAuthorize("hasRole('ADMIN')")
-  fun getUserList(model: Model, principal: Principal): String {
-    val users = userDtoQueryService.findAll()
-    model.addAttribute("users", users)
-    return "admin/user_list"
-  }
+    @GetMapping("/user/list")
+    @PreAuthorize("hasRole('ADMIN')")
+    fun getUserList(model: Model, principal: Principal): String {
+        val users = userDtoQueryService.findAll()
+        model.addAttribute("users", users)
+        return "admin/user_list"
+    }
 
-  @GetMapping("/client/list")
-  @PreAuthorize("hasRole('ADMIN')")
-  fun getClientLIst(model: Model): String {
-    val clients = clientGetAllService.execute()
-    model.addAttribute("clients", clients)
-    return "admin/client_list"
-  }
+    @GetMapping("/client/list")
+    @PreAuthorize("hasRole('ADMIN')")
+    fun getClientLIst(model: Model): String {
+        val clients = clientGetAllService.execute()
+        model.addAttribute("clients", clients)
+        return "admin/client_list"
+    }
 
-  @GetMapping("/client/register")
-  @PreAuthorize("hasRole('ADMIN')")
-  fun registerClient(model: Model): String {
-    model.addAttribute(
-      "clientForm", ClientForm(
-        clientId = "",
-        clientSecret = "",
-        clientAuthenticationMethods = listOf(),
-        clientAuthenticationGrantTypes = listOf(),
-        redirectUrls = "",
-        scopes = listOf()
-      )
-    )
-    model.addAttribute(
-      "clientAuthenticationMethods",
-      ClientForm.ClientAuthenticationMethodForm.items()
-    )
-    model.addAttribute(
-      "clientAuthenticationGrantTypes",
-      ClientForm.AuthorizationGrantTypeForm.items()
-    )
-    model.addAttribute("oidcScopesForm", ClientForm.OidcScopesForm.items())
-    return "admin/client_register"
-  }
+    @GetMapping("/client/register")
+    @PreAuthorize("hasRole('ADMIN')")
+    fun registerClient(model: Model): String {
+        model.addAttribute(
+                "clientForm", ClientForm(
+                clientId = "",
+                clientSecret = "",
+                clientAuthenticationMethods = listOf(),
+                clientAuthenticationGrantTypes = listOf(),
+                redirectUrls = "",
+                scopes = listOf()
+        )
+        )
+        model.addAttribute(
+                "clientAuthenticationMethods",
+                ClientForm.ClientAuthenticationMethodForm.items()
+        )
+        model.addAttribute(
+                "clientAuthenticationGrantTypes",
+                ClientForm.AuthorizationGrantTypeForm.items()
+        )
+        model.addAttribute("oidcScopesForm", ClientForm.OidcScopesForm.items())
+        return "admin/client_register"
+    }
 
-  @PostMapping("/client/register")
-  @PreAuthorize("hasRole('ADMIN')")
-  fun registerClient(@ModelAttribute clientForm: ClientForm): String {
-    clientRegisterService.execute(
-      input = ClientRegisterInputData(
-        clientId = clientForm.clientId,
-        clientSecret = clientForm.clientSecret,
-        clientAuthenticationMethods = clientForm.clientAuthenticationMethods.map { it.to() },
-        clientAuthenticationGrantTypes = clientForm.clientAuthenticationGrantTypes.map { it.to() },
-        redirectUrls = clientForm.redirectUrls.split(",").map { it.trim() }
-          .filter { it.isNotEmpty() },
-        scopes = clientForm.scopes.map { it.to() }
-      )
-    )
-    return "redirect:/admin/client/list"
-  }
+    @PostMapping("/client/register")
+    @PreAuthorize("hasRole('ADMIN')")
+    fun registerClient(@ModelAttribute clientForm: ClientForm): String {
+        clientRegisterService.execute(
+                input = ClientRegisterInputData(
+                        clientId = clientForm.clientId,
+                        clientSecret = clientForm.clientSecret,
+                        clientAuthenticationMethods = clientForm.clientAuthenticationMethods.map { it.to() },
+                        clientAuthenticationGrantTypes = clientForm.clientAuthenticationGrantTypes.map { it.to() },
+                        redirectUrls = clientForm.redirectUrls.split(",").map { it.trim() }
+                                .filter { it.isNotEmpty() },
+                        scopes = clientForm.scopes.map { it.to() }
+                )
+        )
+        return "redirect:/admin/client/list"
+    }
 }

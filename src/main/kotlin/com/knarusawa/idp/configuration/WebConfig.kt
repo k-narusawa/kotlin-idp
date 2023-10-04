@@ -18,38 +18,38 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 
 @Configuration
 class WebConfig : WebMvcConfigurer {
-  @Autowired
-  private lateinit var credentialRepository: CredentialRepository
+    @Autowired
+    private lateinit var credentialRepository: CredentialRepository
 
-  @Bean
-  fun authenticationEventPublisher(applicationEventPublisher: ApplicationEventPublisher?): AuthenticationEventPublisher {
+    @Bean
+    fun authenticationEventPublisher(applicationEventPublisher: ApplicationEventPublisher?): AuthenticationEventPublisher {
 //    val mapping: Map<Class<out AuthenticationException>, Class<out AbstractAuthenticationFailureEvent>> =
 //      mapOf(Pair(AppException::class.java, AuthenticationEvents::class.java))
-    val authenticationEventPublisher =
-      DefaultAuthenticationEventPublisher(applicationEventPublisher)
+        val authenticationEventPublisher =
+                DefaultAuthenticationEventPublisher(applicationEventPublisher)
 //    authenticationEventPublisher.setAdditionalExceptionMappings(mapping)
-    return authenticationEventPublisher
-  }
+        return authenticationEventPublisher
+    }
 
-  @Bean
-  fun objectMapper(): ObjectMapper {
-    val mapper = ObjectMapper()
-    mapper.registerModule(CoreJackson2Module())
-    mapper.addMixIn(
-      IdpGrantedAuthority::class.java,
-      SecurityConfig.IdpGrantedAuthorityMixin::class.java
-    )
-    mapper.addMixIn(
-      TmpUser::class.java,
-      TmpUserMixIn::class.java,
-    )
-    return mapper
-  }
+    @Bean
+    fun objectMapper(): ObjectMapper {
+        val mapper = ObjectMapper()
+        mapper.registerModule(CoreJackson2Module())
+        mapper.addMixIn(
+                IdpGrantedAuthority::class.java,
+                SecurityConfig.IdpGrantedAuthorityMixin::class.java
+        )
+        mapper.addMixIn(
+                TmpUser::class.java,
+                TmpUserMixIn::class.java,
+        )
+        return mapper
+    }
 
-  @Bean
-  fun gAuth(): GoogleAuthenticator {
-    val googleAuthenticator = GoogleAuthenticator()
-    googleAuthenticator.setCredentialRepository(credentialRepository)
-    return googleAuthenticator
-  }
+    @Bean
+    fun gAuth(): GoogleAuthenticator {
+        val googleAuthenticator = GoogleAuthenticator()
+        googleAuthenticator.setCredentialRepository(credentialRepository)
+        return googleAuthenticator
+    }
 }

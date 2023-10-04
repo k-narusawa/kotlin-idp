@@ -40,11 +40,7 @@ import org.springframework.security.oauth2.server.authorization.config.annotatio
 import org.springframework.security.oauth2.server.authorization.settings.AuthorizationServerSettings
 import org.springframework.security.web.SecurityFilterChain
 import org.springframework.security.web.access.intercept.RequestAuthorizationContext
-import org.springframework.security.web.authentication.AuthenticationFailureHandler
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler
-import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint
-import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler
-import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler
+import org.springframework.security.web.authentication.*
 import org.springframework.security.web.authentication.logout.CookieClearingLogoutHandler
 import java.security.KeyPair
 import java.security.KeyPairGenerator
@@ -56,173 +52,173 @@ import java.util.function.Supplier
 
 @Configuration
 class SecurityConfig {
-  @Autowired
-  private lateinit var userDetailsServiceImpl: UserDetailsServiceImpl
+    @Autowired
+    private lateinit var userDetailsServiceImpl: UserDetailsServiceImpl
 
-  companion object {
-    private fun generateRsaKey(): KeyPair {
-      val keyPair: KeyPair = try {
-        val keyPairGenerator = KeyPairGenerator.getInstance("RSA")
-        keyPairGenerator.initialize(2048)
-        keyPairGenerator.generateKeyPair()
-      } catch (ex: Exception) {
-        throw IllegalStateException(ex)
-      }
-      return keyPair
-    }
-  }
-
-  @Bean
-  @Order(1)
-  fun authorizationServerSecurityFilterChain(http: HttpSecurity): SecurityFilterChain {
-    OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http)
-    http.getConfigurer(OAuth2AuthorizationServerConfigurer::class.java)
-      .oidc(Customizer.withDefaults())
-    // ObjectMapperを適用する特定のフィルターまたはコンポーネントに
-    // customObjectMapperをセットするロジックをここに書く
-
-    http
-      .exceptionHandling { exceptions: ExceptionHandlingConfigurer<HttpSecurity?> ->
-        exceptions
-          .authenticationEntryPoint(
-            LoginUrlAuthenticationEntryPoint("/login")
-          )
-          .accessDeniedPage("/error/403")
-      }
-      .oauth2ResourceServer { obj ->
-        obj.jwt(Customizer.withDefaults())
-      }
-    return http.build()
-  }
-
-  @Bean
-  @Order(2)
-  fun defaultSecurityFilterChain(http: HttpSecurity): SecurityFilterChain {
-    http
-      .authorizeHttpRequests(
-        Customizer { authorize ->
-          authorize
-            .requestMatchers("/login").permitAll()
-            .requestMatchers("/login/mfa").access(mfaAuthorizationManager())
-            .requestMatchers("/tmp_register").permitAll() // 会員登録画面
-            .requestMatchers("/register").permitAll() // 会員登録画面
-            .requestMatchers("/error/*").permitAll() // エラー画面
-            .requestMatchers("webjars/**", "/css/**", "/js/**", "/img/**").permitAll()
-            .anyRequest().authenticated()
+    companion object {
+        private fun generateRsaKey(): KeyPair {
+            val keyPair: KeyPair = try {
+                val keyPairGenerator = KeyPairGenerator.getInstance("RSA")
+                keyPairGenerator.initialize(2048)
+                keyPairGenerator.generateKeyPair()
+            } catch (ex: Exception) {
+                throw IllegalStateException(ex)
+            }
+            return keyPair
         }
-      )
-      .authenticationManager(authManager(http))
-      .oauth2ResourceServer { oauth2ResourceServer ->
-        oauth2ResourceServer
-          .jwt { jwt ->
-            jwt.decoder(jwtDecoder(jwkSource()))
-          }
-      }
-      .formLogin { form: FormLoginConfigurer<HttpSecurity?> ->
-        form
-          .loginPage("/login")
-          .permitAll()
-          .successHandler(MfaAuthenticationHandler("/login/mfa"))
-          .failureHandler(MfaAuthenticationHandler("/login?error"))
-      }
-      .securityContext { context ->
-        context.requireExplicitSave(false)
-      }
-      .logout { logout ->
-        logout
-          .addLogoutHandler(CookieClearingLogoutHandler("JSESSIONID"))
-      }
-      .exceptionHandling { exceptions: ExceptionHandlingConfigurer<HttpSecurity?> ->
-        exceptions
-          .authenticationEntryPoint(
-            LoginUrlAuthenticationEntryPoint("/login")
-          )
-          .accessDeniedPage("/error/403")
-      }
-    return http.build()
-  }
-
-  @Bean
-  fun authManager(http: HttpSecurity): AuthenticationManager {
-    val authenticationManagerBuilder = http.getSharedObject(
-      AuthenticationManagerBuilder::class.java
-    )
-    val daoAuthenticationProvider = DaoAuthenticationProvider().also {
-      it.setUserDetailsService(userDetailsServiceImpl)
-      it.setPasswordEncoder(passwordEncoder())
     }
 
-    authenticationManagerBuilder.authenticationProvider(daoAuthenticationProvider)
-    return authenticationManagerBuilder.build()
-  }
+    @Bean
+    @Order(1)
+    fun authorizationServerSecurityFilterChain(http: HttpSecurity): SecurityFilterChain {
+        OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http)
+        http.getConfigurer(OAuth2AuthorizationServerConfigurer::class.java)
+                .oidc(Customizer.withDefaults())
+        // ObjectMapperを適用する特定のフィルターまたはコンポーネントに
+        // customObjectMapperをセットするロジックをここに書く
 
-  @Bean
-  fun jwkSource(): JWKSource<SecurityContext> {
-    val keyPair = generateRsaKey()
-    val publicKey = keyPair.public as RSAPublicKey
-    val privateKey = keyPair.private as RSAPrivateKey
-    val rsaKey: RSAKey = RSAKey.Builder(publicKey)
-      .privateKey(privateKey)
-      .keyID(UUID.randomUUID().toString())
-      .build()
-    val jwkSet = JWKSet(rsaKey)
-    return ImmutableJWKSet(jwkSet)
-  }
-
-  @Bean
-  fun jwtDecoder(jwkSource: JWKSource<SecurityContext>): JwtDecoder {
-    return OAuth2AuthorizationServerConfiguration.jwtDecoder(jwkSource)
-  }
-
-  @Bean
-  fun authorizationServerSettings(): AuthorizationServerSettings {
-    return AuthorizationServerSettings.builder()
-      .build()
-  }
-
-  @Bean
-  fun authorizationService(
-    jdbcTemplate: UserDbJdbcTemplate,
-    registeredClientRepository: RegisteredClientRepository
-  ): OAuth2AuthorizationService {
-    val service = JdbcOAuth2AuthorizationService(jdbcTemplate, registeredClientRepository)
-    service.setAuthorizationRowMapper(RowMapper(registeredClientRepository))
-    return service
-  }
-
-  @Bean
-  fun passwordEncoder(): PasswordEncoder = BCryptPasswordEncoder()
-
-  @Bean
-  fun mfaAuthorizationManager(): AuthorizationManager<RequestAuthorizationContext> {
-    return AuthorizationManager { authentication: Supplier<Authentication?>, _: RequestAuthorizationContext? ->
-      AuthorizationDecision(
-        authentication.get() is MfaAuthentication
-      )
+        http
+                .exceptionHandling { exceptions: ExceptionHandlingConfigurer<HttpSecurity?> ->
+                    exceptions
+                            .authenticationEntryPoint(
+                                    LoginUrlAuthenticationEntryPoint("/login")
+                            )
+                            .accessDeniedPage("/error/403")
+                }
+                .oauth2ResourceServer { obj ->
+                    obj.jwt(Customizer.withDefaults())
+                }
+        return http.build()
     }
-  }
 
-  @Bean
-  fun successHandler(): AuthenticationSuccessHandler {
-    return SavedRequestAwareAuthenticationSuccessHandler()
-  }
-
-  @Bean
-  fun failureHandler(): AuthenticationFailureHandler {
-    return SimpleUrlAuthenticationFailureHandler("/login?error")
-  }
-
-  internal class RowMapper(registeredClientRepository: RegisteredClientRepository?) :
-    OAuth2AuthorizationRowMapper(registeredClientRepository) {
-    init {
-      objectMapper.addMixIn(IdpGrantedAuthority::class.java, IdpGrantedAuthorityMixin::class.java)
+    @Bean
+    @Order(2)
+    fun defaultSecurityFilterChain(http: HttpSecurity): SecurityFilterChain {
+        http
+                .authorizeHttpRequests(
+                        Customizer { authorize ->
+                            authorize
+                                    .requestMatchers("/login").permitAll()
+                                    .requestMatchers("/login/mfa").access(mfaAuthorizationManager())
+                                    .requestMatchers("/tmp_register").permitAll() // 会員登録画面
+                                    .requestMatchers("/register").permitAll() // 会員登録画面
+                                    .requestMatchers("/error/*").permitAll() // エラー画面
+                                    .requestMatchers("webjars/**", "/css/**", "/js/**", "/img/**").permitAll()
+                                    .anyRequest().authenticated()
+                        }
+                )
+                .authenticationManager(authManager(http))
+                .oauth2ResourceServer { oauth2ResourceServer ->
+                    oauth2ResourceServer
+                            .jwt { jwt ->
+                                jwt.decoder(jwtDecoder(jwkSource()))
+                            }
+                }
+                .formLogin { form: FormLoginConfigurer<HttpSecurity?> ->
+                    form
+                            .loginPage("/login")
+                            .permitAll()
+                            .successHandler(MfaAuthenticationHandler("/login/mfa"))
+                            .failureHandler(MfaAuthenticationHandler("/login?error"))
+                }
+                .securityContext { context ->
+                    context.requireExplicitSave(false)
+                }
+                .logout { logout ->
+                    logout
+                            .addLogoutHandler(CookieClearingLogoutHandler("JSESSIONID"))
+                }
+                .exceptionHandling { exceptions: ExceptionHandlingConfigurer<HttpSecurity?> ->
+                    exceptions
+                            .authenticationEntryPoint(
+                                    LoginUrlAuthenticationEntryPoint("/login")
+                            )
+                            .accessDeniedPage("/error/403")
+                }
+        return http.build()
     }
-  }
 
-  @JsonIgnoreProperties(ignoreUnknown = true)
-  @JsonSubTypes
-  abstract class IdpGrantedAuthorityMixin {
-    @JsonProperty("authorityRole")
-    private lateinit var authorityRole: AuthorityRole
-  }
+    @Bean
+    fun authManager(http: HttpSecurity): AuthenticationManager {
+        val authenticationManagerBuilder = http.getSharedObject(
+                AuthenticationManagerBuilder::class.java
+        )
+        val daoAuthenticationProvider = DaoAuthenticationProvider().also {
+            it.setUserDetailsService(userDetailsServiceImpl)
+            it.setPasswordEncoder(passwordEncoder())
+        }
+
+        authenticationManagerBuilder.authenticationProvider(daoAuthenticationProvider)
+        return authenticationManagerBuilder.build()
+    }
+
+    @Bean
+    fun jwkSource(): JWKSource<SecurityContext> {
+        val keyPair = generateRsaKey()
+        val publicKey = keyPair.public as RSAPublicKey
+        val privateKey = keyPair.private as RSAPrivateKey
+        val rsaKey: RSAKey = RSAKey.Builder(publicKey)
+                .privateKey(privateKey)
+                .keyID(UUID.randomUUID().toString())
+                .build()
+        val jwkSet = JWKSet(rsaKey)
+        return ImmutableJWKSet(jwkSet)
+    }
+
+    @Bean
+    fun jwtDecoder(jwkSource: JWKSource<SecurityContext>): JwtDecoder {
+        return OAuth2AuthorizationServerConfiguration.jwtDecoder(jwkSource)
+    }
+
+    @Bean
+    fun authorizationServerSettings(): AuthorizationServerSettings {
+        return AuthorizationServerSettings.builder()
+                .build()
+    }
+
+    @Bean
+    fun authorizationService(
+            jdbcTemplate: UserDbJdbcTemplate,
+            registeredClientRepository: RegisteredClientRepository
+    ): OAuth2AuthorizationService {
+        val service = JdbcOAuth2AuthorizationService(jdbcTemplate, registeredClientRepository)
+        service.setAuthorizationRowMapper(RowMapper(registeredClientRepository))
+        return service
+    }
+
+    @Bean
+    fun passwordEncoder(): PasswordEncoder = BCryptPasswordEncoder()
+
+    @Bean
+    fun mfaAuthorizationManager(): AuthorizationManager<RequestAuthorizationContext> {
+        return AuthorizationManager { authentication: Supplier<Authentication?>, _: RequestAuthorizationContext? ->
+            AuthorizationDecision(
+                    authentication.get() is MfaAuthentication
+            )
+        }
+    }
+
+    @Bean
+    fun successHandler(): AuthenticationSuccessHandler {
+        return SavedRequestAwareAuthenticationSuccessHandler()
+    }
+
+    @Bean
+    fun failureHandler(): AuthenticationFailureHandler {
+        return SimpleUrlAuthenticationFailureHandler("/login?error")
+    }
+
+    internal class RowMapper(registeredClientRepository: RegisteredClientRepository?) :
+            OAuth2AuthorizationRowMapper(registeredClientRepository) {
+        init {
+            objectMapper.addMixIn(IdpGrantedAuthority::class.java, IdpGrantedAuthorityMixin::class.java)
+        }
+    }
+
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    @JsonSubTypes
+    abstract class IdpGrantedAuthorityMixin {
+        @JsonProperty("authorityRole")
+        private lateinit var authorityRole: AuthorityRole
+    }
 }

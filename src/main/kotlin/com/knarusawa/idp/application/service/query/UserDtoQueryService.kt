@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface UserDtoQueryService : JpaRepository<UserDto, Int> {
-  override fun findAll(): List<UserDto>
+    override fun findAll(): List<UserDto>
 
-  fun findByUserId(userId: String): UserDto?
+    fun findByUserId(userId: String): UserDto?
 }

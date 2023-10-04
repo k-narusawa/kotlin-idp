@@ -21,52 +21,52 @@ import org.springframework.web.bind.annotation.RequestParam
 @Controller
 @RequestMapping
 class LoginController(
-  private val userMfaDtoQueryService: UserMfaDtoQueryService,
-  private val successHandler: AuthenticationSuccessHandler,
-  private val failureHandler: AuthenticationFailureHandler,
-  private val verifyOtpService: VerifyOtpService,
+        private val userMfaDtoQueryService: UserMfaDtoQueryService,
+        private val successHandler: AuthenticationSuccessHandler,
+        private val failureHandler: AuthenticationFailureHandler,
+        private val verifyOtpService: VerifyOtpService,
 ) {
-  @GetMapping("/login")
-  fun login(): String {
-    return "login"
-  }
-
-  @GetMapping("/login/mfa")
-  fun mfa(): String {
-    return "login/mfa"
-  }
-
-  @PostMapping("/login/mfa")
-  fun mfaAuth(
-    @RequestParam("code") code: String,
-    authentication: MfaAuthentication,
-    request: HttpServletRequest,
-    response: HttpServletResponse
-  ) {
-    val primaryAuthentication = authentication.getFirst()
-    val userId = primaryAuthentication.name
-
-    val userMfa = userMfaDtoQueryService.findByUserId(userId)
-      ?: throw IdpAppException(errorCode = ErrorCode.BAD_REQUEST, logMessage = "MFAが未設定")
-
-    val isVerified =
-      verifyOtpService.exec(
-        input = VerifyOtpInputData(
-          userId = userId,
-          mfaType = userMfa.mfaType,
-          code = code
-        )
-      )
-
-    if (isVerified) {
-      SecurityContextHolder.getContext().authentication = primaryAuthentication
-      successHandler.onAuthenticationSuccess(request, response, authentication)
-    } else {
-      failureHandler.onAuthenticationFailure(
-        request,
-        response,
-        BadCredentialsException("MFA検証失敗")
-      )
+    @GetMapping("/login")
+    fun login(): String {
+        return "login"
     }
-  }
+
+    @GetMapping("/login/mfa")
+    fun mfa(): String {
+        return "login/mfa"
+    }
+
+    @PostMapping("/login/mfa")
+    fun mfaAuth(
+            @RequestParam("code") code: String,
+            authentication: MfaAuthentication,
+            request: HttpServletRequest,
+            response: HttpServletResponse
+    ) {
+        val primaryAuthentication = authentication.getFirst()
+        val userId = primaryAuthentication.name
+
+        val userMfa = userMfaDtoQueryService.findByUserId(userId)
+                ?: throw IdpAppException(errorCode = ErrorCode.BAD_REQUEST, logMessage = "MFAが未設定")
+
+        val isVerified =
+                verifyOtpService.exec(
+                        input = VerifyOtpInputData(
+                                userId = userId,
+                                mfaType = userMfa.mfaType,
+                                code = code
+                        )
+                )
+
+        if (isVerified) {
+            SecurityContextHolder.getContext().authentication = primaryAuthentication
+            successHandler.onAuthenticationSuccess(request, response, authentication)
+        } else {
+            failureHandler.onAuthenticationFailure(
+                    request,
+                    response,
+                    BadCredentialsException("MFA検証失敗")
+            )
+        }
+    }
 }

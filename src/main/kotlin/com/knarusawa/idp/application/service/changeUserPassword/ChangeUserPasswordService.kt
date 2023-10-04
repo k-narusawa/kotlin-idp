@@ -13,30 +13,20 @@ import org.springframework.transaction.annotation.Transactional
 
 @Service
 @Transactional
-class ChangeUserPasswordService(
-  private val userRepository: UserRepository,
-  private val userActivityRepository: UserActivityRepository
-) {
-  fun execute(input: ChangeUserPasswordInputData) {
-    val user = userRepository.findByUserId(userId = input.userId)
-      ?: throw IdpAppException(
-        errorCode = ErrorCode.USER_NOT_FOUND,
-        logMessage = "会員が見つかりませんでした。"
-      )
+class ChangeUserPasswordService(private val userRepository: UserRepository, private val userActivityRepository: UserActivityRepository) {
+    fun execute(input: ChangeUserPasswordInputData) {
+        val user = userRepository.findByUserId(userId = input.userId)
+                ?: throw IdpAppException(errorCode = ErrorCode.USER_NOT_FOUND, logMessage = "会員が見つかりませんでした。")
 
-    user.changePassword(password = input.password)
+        user.changePassword(password = input.password)
 
-    userRepository.save(user)
+        userRepository.save(user)
 
-    storeUserActivity(userId = input.userId)
-  }
+        storeUserActivity(userId = input.userId)
+    }
 
-  private fun storeUserActivity(userId: String) {
-    val activity = UserActivity.of(
-      userId = UserId(value = userId),
-      activityType = ActivityType.CHANGE_PASSWORD,
-      activityData = ActivityData(value = null)
-    )
-    userActivityRepository.save(activity)
-  }
+    private fun storeUserActivity(userId: String) {
+        val activity = UserActivity.of(userId = UserId(value = userId), activityType = ActivityType.CHANGE_PASSWORD, activityData = ActivityData(value = null))
+        userActivityRepository.save(activity)
+    }
 }

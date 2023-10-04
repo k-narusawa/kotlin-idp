@@ -18,7 +18,12 @@ bin/
 !**/src/test/**/bin/
 
 ### IntelliJ IDEA ###
-.idea
+.idea/*
+!.idea/gradle.xml
+!.idea/misc.xml
+!.idea/codeStyles
+!.idea/saveactions_settting.xml
+!.idea/externalDependencies.xml
 *.iws
 *.iml
 *.ipr

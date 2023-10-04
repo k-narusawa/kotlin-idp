@@ -8,14 +8,14 @@ import org.springframework.stereotype.Component
 
 @Component
 class MassageSenderFacade(
-  private val messageTemplateRepository: MessageTemplateRepository,
-  private val mailSender: MailSender
+        private val messageTemplateRepository: MessageTemplateRepository,
+        private val mailSender: MailSender
 ) {
-  fun exec(toAddress: String, messageId: MessageId, variables: List<Pair<String, String>> = listOf()) {
-    val data = messageTemplateRepository.findByMassageId(messageId)
+    fun exec(toAddress: String, messageId: MessageId, variables: List<Pair<String, String>> = listOf()) {
+        val data = messageTemplateRepository.findByMassageId(messageId)
 
-    val messageTemplate = MessageTemplate.of(data, variables)
+        val messageTemplate = MessageTemplate.of(data, variables)
 
-    mailSender.send(to = toAddress, subject = messageTemplate.subject, body = messageTemplate.body)
-  }
+        mailSender.send(to = toAddress, subject = messageTemplate.subject, body = messageTemplate.body)
+    }
 }

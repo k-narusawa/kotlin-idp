@@ -7,9 +7,9 @@ import org.springframework.stereotype.Repository
 
 @Repository
 class UserActivityRepositoryImpl(
-  private val userActivityRecordRepository: UserActivityRecordRepository
+        private val userActivityRecordRepository: UserActivityRecordRepository
 ) : UserActivityRepository {
-  override fun save(userActivity: UserActivity) {
-    userActivityRecordRepository.save(userActivity.toRecord())
-  }
+    override fun save(userActivity: UserActivity) {
+        userActivityRecordRepository.save(userActivity.toRecord())
+    }
 }

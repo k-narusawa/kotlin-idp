@@ -11,24 +11,24 @@ import org.springframework.stereotype.Service
 
 @Service
 class WithdrawUserService(
-  private val userRepository: UserRepository,
-  private val userWithdrawRepository: UserWithdrawRepository
+        private val userRepository: UserRepository,
+        private val userWithdrawRepository: UserWithdrawRepository
 ) {
-  @Transactional
-  fun exec(input: WithdrawUserInputData) {
-    val user = userRepository.findByUserId(userId = input.userId)
-      ?: throw IdpAppException(
-        errorCode = ErrorCode.USER_NOT_FOUND,
-        logMessage = "退会対象のユーザーが見つかりません"
-      )
+    @Transactional
+    fun exec(input: WithdrawUserInputData) {
+        val user = userRepository.findByUserId(userId = input.userId)
+                ?: throw IdpAppException(
+                        errorCode = ErrorCode.USER_NOT_FOUND,
+                        logMessage = "退会対象のユーザーが見つかりません"
+                )
 
-    userRepository.deleteByUserId(input.userId)
+        userRepository.deleteByUserId(input.userId)
 
-    val userWithdraw = UserWithdraw.of(
-      userId = UserId(value = input.userId),
-      loginId = user.loginId
-    )
-    
-    userWithdrawRepository.save(userWithdraw)
-  }
+        val userWithdraw = UserWithdraw.of(
+                userId = UserId(value = input.userId),
+                loginId = user.loginId
+        )
+
+        userWithdrawRepository.save(userWithdraw)
+    }
 }

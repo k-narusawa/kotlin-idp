@@ -5,15 +5,15 @@ import com.knarusawa.idp.domain.model.user.UserId
 import java.time.LocalDateTime
 
 class UserWithdraw private constructor(
-  val userId: UserId,
-  val originalLoginId: LoginId,
-  val withdrawnAt: LocalDateTime
+        val userId: UserId,
+        val originalLoginId: LoginId,
+        val withdrawnAt: LocalDateTime
 ) {
-  companion object {
-    fun of(userId: UserId, loginId: LoginId) = UserWithdraw(
-      userId = userId,
-      originalLoginId = loginId,
-      withdrawnAt = LocalDateTime.now()
-    )
-  }
+    companion object {
+        fun of(userId: UserId, loginId: LoginId) = UserWithdraw(
+                userId = userId,
+                originalLoginId = loginId,
+                withdrawnAt = LocalDateTime.now()
+        )
+    }
 }

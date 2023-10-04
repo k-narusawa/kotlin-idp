@@ -14,38 +14,38 @@ import org.springframework.data.redis.serializer.StringRedisSerializer
 
 @Configuration
 class RedisConfig {
-  @Autowired
-  private lateinit var environments: Environments
+    @Autowired
+    private lateinit var environments: Environments
 
-  @Autowired
-  private lateinit var objectMapper: ObjectMapper
+    @Autowired
+    private lateinit var objectMapper: ObjectMapper
 
-  @Bean
-  fun redisConnectionFactory(): LettuceConnectionFactory {
-    return LettuceConnectionFactory(
-      RedisStandaloneConfiguration(
-        environments.redisHost,
-        environments.redisPort.toInt()
-      )
-    )
-  }
+    @Bean
+    fun redisConnectionFactory(): LettuceConnectionFactory {
+        return LettuceConnectionFactory(
+                RedisStandaloneConfiguration(
+                        environments.redisHost,
+                        environments.redisPort.toInt()
+                )
+        )
+    }
 
-  @Bean
-  fun redisTemplate(redisConnectionFactory: RedisConnectionFactory): RedisTemplate<String, Any> {
-    val template = RedisTemplate<String, Any>()
-    template.connectionFactory = redisConnectionFactory
-    template.valueSerializer = redisSerializer()
-    template.hashKeySerializer = StringRedisSerializer()
-    template.hashValueSerializer = redisSerializer()
-    template.setEnableTransactionSupport(true)
-    template.afterPropertiesSet()
-    return template
-  }
+    @Bean
+    fun redisTemplate(redisConnectionFactory: RedisConnectionFactory): RedisTemplate<String, Any> {
+        val template = RedisTemplate<String, Any>()
+        template.connectionFactory = redisConnectionFactory
+        template.valueSerializer = redisSerializer()
+        template.hashKeySerializer = StringRedisSerializer()
+        template.hashValueSerializer = redisSerializer()
+        template.setEnableTransactionSupport(true)
+        template.afterPropertiesSet()
+        return template
+    }
 
-  @Bean
-  fun redisSerializer(): RedisSerializer<Any> {
-    val serializer = Jackson2JsonRedisSerializer(Any::class.java)
-    serializer.setObjectMapper(objectMapper) // FIXME: deprecatedなのでライブラリの中身確認して修正したい
-    return serializer
-  }
+    @Bean
+    fun redisSerializer(): RedisSerializer<Any> {
+        val serializer = Jackson2JsonRedisSerializer(Any::class.java)
+        serializer.setObjectMapper(objectMapper) // FIXME: deprecatedなのでライブラリの中身確認して修正したい
+        return serializer
+    }
 }
