@@ -7,7 +7,7 @@
         href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css">
 </head>
 <body>
-<div th:insert="common/header :: header_fragment"></div>
+<div th:replace="~{common/header :: common_header(~{::title},~{::link})}"></div>
 <div class="container">
   <h2 class="text-center my-4">2段階認証方式の選択</h2>
   <div class="d-flex justify-content-center">

@@ -15,7 +15,7 @@
   </style>
 </head>
 <body>
-<div th:insert="common/header :: header_fragment"></div>
+<div th:replace="~{common/header :: common_header(~{::title},~{::link})}"></div>
 <div class="container center-content">
   <div class="card" style="width: 400px;">
     <div class="card-header text-center">
