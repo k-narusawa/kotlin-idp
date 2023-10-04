@@ -6,15 +6,13 @@ import org.springframework.stereotype.Service
 
 
 @Service
-class GenerateGAuthService(
-  private val gauth: GoogleAuthenticator
-) {
-  companion object {
-    private const val ISSUER = "kotlin-idp"
-  }
+class GenerateGAuthService(private val gauth: GoogleAuthenticator) {
+    companion object {
+        private const val ISSUER = "kotlin-idp"
+    }
 
-  fun exec(input: GenerateGAuthInputData): String {
-    val gAuthKey = gauth.createCredentials(input.userId)
-    return GoogleAuthenticatorQRGenerator.getOtpAuthTotpURL(ISSUER, input.userId, gAuthKey)
-  }
+    fun exec(input: GenerateGAuthInputData): String {
+        val gAuthKey = gauth.createCredentials(input.userId)
+        return GoogleAuthenticatorQRGenerator.getOtpAuthTotpURL(ISSUER, input.userId, gAuthKey)
+    }
 }

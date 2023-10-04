@@ -4,6 +4,6 @@ import com.knarusawa.idp.infrastructure.adapter.db.record.UserMfaRecord
 import org.springframework.data.repository.CrudRepository
 
 interface UserMfaRecordRepository : CrudRepository<UserMfaRecord, String> {
-  fun findByUserId(userId: String): UserMfaRecord?
-  fun deleteByUserId(userId: String)
+    fun findByUserId(userId: String): UserMfaRecord?
+    fun deleteByUserId(userId: String)
 }

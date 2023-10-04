@@ -1,47 +1,47 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.3.0/css/bootstrap.min.css}">
-    <title>2段階認証</title>
-    <style>
-        #code {
-            height: 50px;
-        }
+  <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.3.0/css/bootstrap.min.css}">
+  <title>2段階認証</title>
+  <style>
+    #code {
+      height: 50px;
+    }
 
-        .spacer {
-            margin-bottom: 20px;
-        }
+    .spacer {
+      margin-bottom: 20px;
+    }
 
-        input[type="text"]:focus {
-            text-align: center;
-        }
-    </style>
+    input[type="text"]:focus {
+      text-align: center;
+    }
+  </style>
 </head>
 <body>
 <div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-header text-center">
-                    2段階認証
-                </div>
-                <div class="card-body">
-                    <form th:action="@{/login/mfa}" method="post">
-                        <div class="text-center spacer">6桁の認証コードを入力してください <span
-                                class="text-danger">*</span></div>
-                        <div class="form-group">
-                            <input type="text" class="form-control" id="code" name="code" required autofocus
-                                   pattern="\d{6}">
-                            <div class="invalid-feedback">6桁の数字を入力してください。</div>
-                        </div>
-                        <div class="text-center mt-4">
-                            <button type="submit" class="btn btn-primary">認証</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-header text-center">
+          2段階認証
         </div>
+        <div class="card-body">
+          <form th:action="@{/login/mfa}" method="post">
+            <div class="text-center spacer">6桁の認証コードを入力してください <span
+                class="text-danger">*</span></div>
+            <div class="form-group">
+              <input type="text" class="form-control" id="code" name="code" required autofocus
+                     pattern="\d{6}">
+              <div class="invalid-feedback">6桁の数字を入力してください。</div>
+            </div>
+            <div class="text-center mt-4">
+              <button type="submit" class="btn btn-primary">認証</button>
+            </div>
+          </form>
+        </div>
+      </div>
     </div>
+  </div>
 </div>
 <script th:src="@{/webjars/jquery/3.4.1/jquery.min.js}"></script>
 <script th:src="@{/webjars/popper.js/2.9.3/umd/popper.min.js}"></script>

@@ -7,9 +7,9 @@ import org.springframework.stereotype.Repository
 
 @Repository
 class UserWithdrawRepositoryImpl(
-  private val userWithdrawRecordRepository: UserWithdrawRecordRepository
+        private val userWithdrawRecordRepository: UserWithdrawRecordRepository
 ) : UserWithdrawRepository {
-  override fun save(userWithdraw: UserWithdraw) {
-    userWithdrawRecordRepository.save(UserWithdrawRecord.from(userWithdraw))
-  }
+    override fun save(userWithdraw: UserWithdraw) {
+        userWithdrawRecordRepository.save(UserWithdrawRecord.from(userWithdraw))
+    }
 }

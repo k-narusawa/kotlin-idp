@@ -10,17 +10,17 @@ import java.util.concurrent.TimeUnit
 
 @Repository
 class TmpUserRepositoryImpl(
-  private val redisService: RedisService
+        private val redisService: RedisService
 ) : TmpUserRepository {
-  override fun save(tmpUser: TmpUser) {
-    redisService.saveObject(tmpUser.code, tmpUser, tmpUser.ttl, TimeUnit.SECONDS)
-  }
+    override fun save(tmpUser: TmpUser) {
+        redisService.saveObject(tmpUser.code, tmpUser, tmpUser.ttl, TimeUnit.SECONDS)
+    }
 
-  override fun findByCode(code: Code): TmpUser? {
-    return redisService.getObject(code.toString()) as? TmpUser
-  }
+    override fun findByCode(code: Code): TmpUser? {
+        return redisService.getObject(code.toString()) as? TmpUser
+    }
 
-  override fun deleteByLoginId(loginId: LoginId) {
-    redisService.deleteObject(loginId.toString())
-  }
+    override fun deleteByLoginId(loginId: LoginId) {
+        redisService.deleteObject(loginId.toString())
+    }
 }

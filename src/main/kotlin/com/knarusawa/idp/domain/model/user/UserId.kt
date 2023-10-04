@@ -1,13 +1,13 @@
 package com.knarusawa.idp.domain.model.user
 
 data class UserId(
-  val value: String
+        val value: String
 ) {
-  companion object {
-    fun generate(): UserId {
-      return UserId(java.util.UUID.randomUUID().toString())
+    companion object {
+        fun generate(): UserId {
+            return UserId(java.util.UUID.randomUUID().toString())
+        }
     }
-  }
 
-  override fun toString() = value
+    override fun toString() = value
 }

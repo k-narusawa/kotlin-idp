@@ -15,45 +15,45 @@ import org.springframework.stereotype.Component
 
 @Component
 class AuthenticationEvents(
-  private val userRepository: UserRepository,
-  private val userActivityRepository: UserActivityRepository
+        private val userRepository: UserRepository,
+        private val userActivityRepository: UserActivityRepository
 ) {
-  companion object {
-    val logger: Logger =
-      LoggerFactory.getLogger(AuthenticationEvents::class.java)
-  }
-
-  @EventListener
-  fun onSuccess(success: AuthenticationSuccessEvent?) {
-    val userId = success?.authentication?.name ?: return
-    val user = userRepository.findByUserId(userId = userId)
-    if (user != null) {
-      user.authSuccess()
-      userRepository.save(user)
-      val activity = UserActivity.of(
-        userId = UserId(value = userId),
-        activityType = ActivityType.LOGIN_SUCCESS,
-        activityData = ActivityData(value = null)
-      )
-      userActivityRepository.save(activity)
+    companion object {
+        val logger: Logger =
+                LoggerFactory.getLogger(AuthenticationEvents::class.java)
     }
-    logger.debug("ログイン成功 userId: $userId")
-  }
 
-  @EventListener
-  fun onFailure(failures: AbstractAuthenticationFailureEvent?) {
-    val loginId = failures?.authentication?.name.toString()
-    val user = userRepository.findByLoginId(loginId = loginId)
-    if (user != null) {
-      user.authFailed()
-      userRepository.save(user)
-      val activity = UserActivity.of(
-        userId = user.userId,
-        activityType = ActivityType.LOGIN_FAILED,
-        activityData = ActivityData(value = null)
-      )
-      userActivityRepository.save(activity)
+    @EventListener
+    fun onSuccess(success: AuthenticationSuccessEvent?) {
+        val userId = success?.authentication?.name ?: return
+        val user = userRepository.findByUserId(userId = userId)
+        if (user != null) {
+            user.authSuccess()
+            userRepository.save(user)
+            val activity = UserActivity.of(
+                    userId = UserId(value = userId),
+                    activityType = ActivityType.LOGIN_SUCCESS,
+                    activityData = ActivityData(value = null)
+            )
+            userActivityRepository.save(activity)
+        }
+        logger.debug("ログイン成功 userId: $userId")
     }
-    logger.debug("ログイン失敗 loginId: $loginId")
-  }
+
+    @EventListener
+    fun onFailure(failures: AbstractAuthenticationFailureEvent?) {
+        val loginId = failures?.authentication?.name.toString()
+        val user = userRepository.findByLoginId(loginId = loginId)
+        if (user != null) {
+            user.authFailed()
+            userRepository.save(user)
+            val activity = UserActivity.of(
+                    userId = user.userId,
+                    activityType = ActivityType.LOGIN_FAILED,
+                    activityData = ActivityData(value = null)
+            )
+            userActivityRepository.save(activity)
+        }
+        logger.debug("ログイン失敗 loginId: $loginId")
+    }
 }

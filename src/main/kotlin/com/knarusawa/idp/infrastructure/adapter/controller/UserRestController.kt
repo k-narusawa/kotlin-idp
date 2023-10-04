@@ -13,16 +13,16 @@ import java.security.Principal
 @RestController
 @RequestMapping("/api/user")
 class UserRestController(
-  private val userDtoQueryService: UserDtoQueryService,
+        private val userDtoQueryService: UserDtoQueryService,
 ) {
-  @GetMapping
-  @PreAuthorize("hasRole('USER')")
-  fun getUser(principal: Principal): UserDto {
-    val userId = principal.name
-    return userDtoQueryService.findByUserId(userId = userId)
-      ?: throw IdpAppException(
-        errorCode = ErrorCode.USER_NOT_FOUND,
-        logMessage = "User Not Found."
-      )
-  }
+    @GetMapping
+    @PreAuthorize("hasRole('USER')")
+    fun getUser(principal: Principal): UserDto {
+        val userId = principal.name
+        return userDtoQueryService.findByUserId(userId = userId)
+                ?: throw IdpAppException(
+                        errorCode = ErrorCode.USER_NOT_FOUND,
+                        logMessage = "User Not Found."
+                )
+    }
 }

@@ -17,47 +17,47 @@ import org.springframework.stereotype.Service
 
 @Service
 class UserDetailsServiceImpl(
-  private val userRepository: UserRepository,
-  private val userMfaRepository: UserMfaRepository,
-  private val onetimePasswordRepository: OnetimePasswordRepository,
-  private val messageSenderFacade: MassageSenderFacade
+        private val userRepository: UserRepository,
+        private val userMfaRepository: UserMfaRepository,
+        private val onetimePasswordRepository: OnetimePasswordRepository,
+        private val messageSenderFacade: MassageSenderFacade
 ) : UserDetailsService {
-  override fun loadUserByUsername(loginId: String): UserDetails {
-    val user = userRepository.findByLoginId(loginId = loginId)
-      ?: throw UsernameNotFoundException("認証に失敗しました")
+    override fun loadUserByUsername(loginId: String): UserDetails {
+        val user = userRepository.findByLoginId(loginId = loginId)
+                ?: throw UsernameNotFoundException("認証に失敗しました")
 
-    // ロックされてから30分経過していたらアンロックする
-    user.unlockByTimeElapsed()
-    userRepository.save(user)
+        // ロックされてから30分経過していたらアンロックする
+        user.unlockByTimeElapsed()
+        userRepository.save(user)
 
-    val userMfa = userMfaRepository.findByUserId(userId = user.userId)
+        val userMfa = userMfaRepository.findByUserId(userId = user.userId)
 
-    val authorities = when (userMfa?.type) {
-      MfaType.APP -> listOf(IdpGrantedAuthority.useMfaApp())
-      MfaType.MAIL -> listOf(IdpGrantedAuthority.useMfaMail())
-      MfaType.SMS -> listOf(IdpGrantedAuthority.useMfaSms())
-      else -> listOf(IdpGrantedAuthority.usePassword())
+        val authorities = when (userMfa?.type) {
+            MfaType.APP -> listOf(IdpGrantedAuthority.useMfaApp())
+            MfaType.MAIL -> listOf(IdpGrantedAuthority.useMfaMail())
+            MfaType.SMS -> listOf(IdpGrantedAuthority.useMfaSms())
+            else -> listOf(IdpGrantedAuthority.usePassword())
+        }
+
+        if (userMfa?.type == MfaType.MAIL || userMfa?.type == MfaType.SMS) {
+            val oneTimePassword = OneTimePassword.of(userId = user.userId)
+            logger.info("ワンタイムパスワード: ${oneTimePassword.code}")
+            runBlocking { onetimePasswordRepository.save(oneTimePassword) }
+
+            messageSenderFacade.exec(
+                    toAddress = user.loginId.toString(),
+                    messageId = MessageId.MFA_MAIL_AUTHENTICATION,
+                    variables = listOf(Pair("#{otp}", oneTimePassword.code.toString()))
+            )
+        }
+
+        return org.springframework.security.core.userdetails.User
+                .withUsername(user.userId.toString())
+                .password(user.password.value)
+                .roles(*user.roles.map { it.name }.toTypedArray())
+                .accountLocked(user.isLock)
+                .disabled(user.isDisabled)
+                .authorities(authorities)
+                .build()
     }
-
-    if (userMfa?.type == MfaType.MAIL || userMfa?.type == MfaType.SMS) {
-      val oneTimePassword = OneTimePassword.of(userId = user.userId)
-      logger.info("ワンタイムパスワード: ${oneTimePassword.code}")
-      runBlocking { onetimePasswordRepository.save(oneTimePassword) }
-
-      messageSenderFacade.exec(
-        toAddress = user.loginId.toString(),
-        messageId = MessageId.MFA_MAIL_AUTHENTICATION,
-        variables = listOf(Pair("#{otp}", oneTimePassword.code.toString()))
-      )
-    }
-
-    return org.springframework.security.core.userdetails.User
-      .withUsername(user.userId.toString())
-      .password(user.password.value)
-      .roles(*user.roles.map { it.name }.toTypedArray())
-      .accountLocked(user.isLock)
-      .disabled(user.isDisabled)
-      .authorities(authorities)
-      .build()
-  }
 }

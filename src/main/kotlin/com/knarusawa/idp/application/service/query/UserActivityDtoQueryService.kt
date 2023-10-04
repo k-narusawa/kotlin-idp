@@ -6,5 +6,5 @@ import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.JpaRepository
 
 interface UserActivityDtoQueryService : JpaRepository<UserActivityDto, Int> {
-  fun findByUserId(userId: String, pageable: Pageable): Page<UserActivityDto>
+    fun findByUserId(userId: String, pageable: Pageable): Page<UserActivityDto>
 }

@@ -12,44 +12,44 @@ import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 
 class UserServiceTest {
-  companion object {
-    val DUMMY_USER_RECORD = User.of(
-      loginId = "test@example.com",
-      password = "password",
-      roles = listOf()
-    )
-  }
-
-  @RelaxedMockK
-  private lateinit var userRepository: UserRepository
-
-  @InjectMockKs
-  private lateinit var userService: UserService
-
-  @BeforeEach
-  fun setUp() {
-    MockKAnnotations.init(this)
-  }
-
-  @Nested
-  @DisplayName("ログインIDの存在チェックテスト")
-  inner class IsExistsLoginId {
-    @Test
-    @DisplayName("ログインIDが存在しない場合にfalseを返すこと")
-    fun test1() {
-      every { userRepository.findByLoginId(any()) } returns null
-
-      val actual = userService.isExistsLoginId(loginId = LoginId("test@example.com"))
-      assertThat(actual).isFalse()
+    companion object {
+        val DUMMY_USER_RECORD = User.of(
+                loginId = "test@example.com",
+                password = "password",
+                roles = listOf()
+        )
     }
 
-    @Test
-    @DisplayName("ログインIDが使用済みの場合にtrueを返すこと")
-    fun test2() {
-      every { userRepository.findByLoginId(any()) } returns DUMMY_USER_RECORD
+    @RelaxedMockK
+    private lateinit var userRepository: UserRepository
 
-      val actual = userService.isExistsLoginId(loginId = LoginId("test@example.com"))
-      assertThat(actual).isTrue()
+    @InjectMockKs
+    private lateinit var userService: UserService
+
+    @BeforeEach
+    fun setUp() {
+        MockKAnnotations.init(this)
     }
-  }
+
+    @Nested
+    @DisplayName("ログインIDの存在チェックテスト")
+    inner class IsExistsLoginId {
+        @Test
+        @DisplayName("ログインIDが存在しない場合にfalseを返すこと")
+        fun test1() {
+            every { userRepository.findByLoginId(any()) } returns null
+
+            val actual = userService.isExistsLoginId(loginId = LoginId("test@example.com"))
+            assertThat(actual).isFalse()
+        }
+
+        @Test
+        @DisplayName("ログインIDが使用済みの場合にtrueを返すこと")
+        fun test2() {
+            every { userRepository.findByLoginId(any()) } returns DUMMY_USER_RECORD
+
+            val actual = userService.isExistsLoginId(loginId = LoginId("test@example.com"))
+            assertThat(actual).isTrue()
+        }
+    }
 }

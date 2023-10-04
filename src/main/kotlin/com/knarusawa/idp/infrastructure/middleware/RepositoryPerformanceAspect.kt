@@ -9,18 +9,18 @@ import org.springframework.stereotype.Component
 @Aspect
 @Component
 class RepositoryPerformanceAspect {
-  companion object {
-    val logger = LoggerFactory.getLogger(RepositoryPerformanceAspect::class.java)
-  }
+    companion object {
+        val logger = LoggerFactory.getLogger(RepositoryPerformanceAspect::class.java)
+    }
 
-  @Around("execution(public * org.springframework.data.jpa.repository.JpaRepository+.*(..)) || execution(* com.knarusawa.demo.idp.idpdemo.infrastructure.db.repository.*.*(..))")
-  fun logExecutionTime(joinPoint: ProceedingJoinPoint): Any? {
-    val start = System.currentTimeMillis()
-    val proceed = joinPoint.proceed()
-    val executionTime = System.currentTimeMillis() - start
-    val className = joinPoint.signature.declaringTypeName
-    val methodName = joinPoint.signature.name
-    logger.info("クラス [${className}], メソッド:[${methodName}], 実行時間:[$executionTime ms]")
-    return proceed
-  }
+    @Around("execution(public * org.springframework.data.jpa.repository.JpaRepository+.*(..)) || execution(* com.knarusawa.demo.idp.idpdemo.infrastructure.db.repository.*.*(..))")
+    fun logExecutionTime(joinPoint: ProceedingJoinPoint): Any? {
+        val start = System.currentTimeMillis()
+        val proceed = joinPoint.proceed()
+        val executionTime = System.currentTimeMillis() - start
+        val className = joinPoint.signature.declaringTypeName
+        val methodName = joinPoint.signature.name
+        logger.info("クラス [${className}], メソッド:[${methodName}], 実行時間:[$executionTime ms]")
+        return proceed
+    }
 }

@@ -8,19 +8,19 @@ import org.springframework.web.bind.annotation.ExceptionHandler
 
 @ControllerAdvice
 class WebUIExceptionHandler {
-  @ExceptionHandler(IdpAppException::class)
-  fun handleIdpAppException(
-    ex: IdpAppException,
-    request: HttpServletRequest
-  ): String {
-    return "error/error"
-  }
+    @ExceptionHandler(IdpAppException::class)
+    fun handleIdpAppException(
+            ex: IdpAppException,
+            request: HttpServletRequest
+    ): String {
+        return "error/error"
+    }
 
-  @ExceptionHandler(Exception::class)
-  fun handleException(
-    ex: IdpAppException,
-    request: HttpServletRequest
-  ): String {
-    return "error/error"
-  }
+    @ExceptionHandler(Exception::class)
+    fun handleException(
+            ex: IdpAppException,
+            request: HttpServletRequest
+    ): String {
+        return "error/error"
+    }
 }

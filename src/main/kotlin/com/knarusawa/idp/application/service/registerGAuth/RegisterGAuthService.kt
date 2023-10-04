@@ -6,13 +6,13 @@ import org.springframework.stereotype.Service
 
 @Service
 class RegisterGAuthService(
-  private val gauth: GoogleAuthenticator
+        private val gauth: GoogleAuthenticator
 ) {
-  @Transactional
-  fun exec(input: RegisterGAuthInputData): Boolean {
-    return gauth.authorizeUser(
-      input.userId,
-      input.code.toInt()
-    )
-  }
+    @Transactional
+    fun exec(input: RegisterGAuthInputData): Boolean {
+        return gauth.authorizeUser(
+                input.userId,
+                input.code.toInt()
+        )
+    }
 }

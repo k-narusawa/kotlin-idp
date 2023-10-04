@@ -8,18 +8,18 @@ import org.springframework.stereotype.Repository
 
 @Repository
 class UserMfaRepositoryImpl(
-  private val userMfaRecordRepository: UserMfaRecordRepository
+        private val userMfaRecordRepository: UserMfaRecordRepository
 ) : UserMfaRepository {
-  override fun findByUserId(userId: UserId): UserMfa? {
-    val record = userMfaRecordRepository.findByUserId(userId = userId.toString())
-    return record?.to()
-  }
+    override fun findByUserId(userId: UserId): UserMfa? {
+        val record = userMfaRecordRepository.findByUserId(userId = userId.toString())
+        return record?.to()
+    }
 
-  override fun save(userMfa: UserMfa) {
-    userMfaRecordRepository.save(UserMfaRecord.from(userMfa = userMfa))
-  }
+    override fun save(userMfa: UserMfa) {
+        userMfaRecordRepository.save(UserMfaRecord.from(userMfa = userMfa))
+    }
 
-  override fun deleteByUserId(userId: UserId) {
-    userMfaRecordRepository.deleteByUserId(userId = userId.toString())
-  }
+    override fun deleteByUserId(userId: UserId) {
+        userMfaRecordRepository.deleteByUserId(userId = userId.toString())
+    }
 }

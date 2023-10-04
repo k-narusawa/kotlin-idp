@@ -16,52 +16,52 @@ import org.springframework.security.web.authentication.SimpleUrlAuthenticationSu
 
 
 class MfaAuthenticationHandler(
-  nextAuthUrl: String,
+        nextAuthUrl: String,
 ) : AuthenticationSuccessHandler, AuthenticationFailureHandler {
-  private val successHandler = SimpleUrlAuthenticationSuccessHandler(nextAuthUrl)
-  private val loginCompleteSuccessHandler = SavedRequestAwareAuthenticationSuccessHandler()
+    private val successHandler = SimpleUrlAuthenticationSuccessHandler(nextAuthUrl)
+    private val loginCompleteSuccessHandler = SavedRequestAwareAuthenticationSuccessHandler()
 
-  init {
-    successHandler.setAlwaysUseDefaultTargetUrl(true)
-  }
-
-  override fun onAuthenticationSuccess(
-    request: HttpServletRequest?,
-    response: HttpServletResponse?,
-    authentication: Authentication
-  ) {
-    val isUsingMfa = authentication.authorities?.any {
-      it.authority == AuthorityRole.MFA_APP.toString() ||
-          it.authority == AuthorityRole.MFA_MAIL.toString() ||
-          it.authority == AuthorityRole.MFA_SMS.toString()
-    } ?: false
-
-    if (isUsingMfa) {
-      saveMfaAuthentication(request!!, response!!, authentication)
-    } else {
-      loginCompleteSuccessHandler.onAuthenticationSuccess(request, response, authentication)
+    init {
+        successHandler.setAlwaysUseDefaultTargetUrl(true)
     }
-  }
 
-  private fun saveMfaAuthentication(
-    request: HttpServletRequest,
-    response: HttpServletResponse,
-    authentication: Authentication
-  ) {
-    SecurityContextHolder.getContext().authentication = MfaAuthentication.of(authentication)
-    successHandler.onAuthenticationSuccess(request, response, authentication)
-  }
+    override fun onAuthenticationSuccess(
+            request: HttpServletRequest?,
+            response: HttpServletResponse?,
+            authentication: Authentication
+    ) {
+        val isUsingMfa = authentication.authorities?.any {
+            it.authority == AuthorityRole.MFA_APP.toString() ||
+                    it.authority == AuthorityRole.MFA_MAIL.toString() ||
+                    it.authority == AuthorityRole.MFA_SMS.toString()
+        } ?: false
 
-  override fun onAuthenticationFailure(
-    request: HttpServletRequest?,
-    response: HttpServletResponse?,
-    exception: AuthenticationException?
-  ) {
-    val anonymous: Authentication = AnonymousAuthenticationToken(
-      "key",
-      "anonymousUser",
-      AuthorityUtils.createAuthorityList("ROLE_ANONYMOUS")
-    )
-    saveMfaAuthentication(request!!, response!!, MfaAuthentication.of(anonymous))
-  }
+        if (isUsingMfa) {
+            saveMfaAuthentication(request!!, response!!, authentication)
+        } else {
+            loginCompleteSuccessHandler.onAuthenticationSuccess(request, response, authentication)
+        }
+    }
+
+    private fun saveMfaAuthentication(
+            request: HttpServletRequest,
+            response: HttpServletResponse,
+            authentication: Authentication
+    ) {
+        SecurityContextHolder.getContext().authentication = MfaAuthentication.of(authentication)
+        successHandler.onAuthenticationSuccess(request, response, authentication)
+    }
+
+    override fun onAuthenticationFailure(
+            request: HttpServletRequest?,
+            response: HttpServletResponse?,
+            exception: AuthenticationException?
+    ) {
+        val anonymous: Authentication = AnonymousAuthenticationToken(
+                "key",
+                "anonymousUser",
+                AuthorityUtils.createAuthorityList("ROLE_ANONYMOUS")
+        )
+        saveMfaAuthentication(request!!, response!!, MfaAuthentication.of(anonymous))
+    }
 }

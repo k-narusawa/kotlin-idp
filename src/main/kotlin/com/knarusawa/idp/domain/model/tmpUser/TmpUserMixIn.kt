@@ -7,13 +7,13 @@ import com.knarusawa.idp.domain.model.oneTimePassword.Code
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "@class")
 abstract class TmpUserMixIn(
-  @JsonProperty("loginId")
-  private var loginId: String,
+        @JsonProperty("loginId")
+        private var loginId: String,
 
-  @JsonProperty("code")
-  @JsonSubTypes.Type(Code::class)
-  private var code: String,
+        @JsonProperty("code")
+        @JsonSubTypes.Type(Code::class)
+        private var code: String,
 
-  @JsonProperty("ttl")
-  private var ttl: Long
+        @JsonProperty("ttl")
+        private var ttl: Long
 )

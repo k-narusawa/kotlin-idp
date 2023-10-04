@@ -12,43 +12,43 @@ import java.time.LocalDateTime
 @Entity
 @Table(name = "user_mfa")
 data class UserMfaRecord(
-  @Id
-  @Column(name = "user_id")
-  val userId: String = "",
+        @Id
+        @Column(name = "user_id")
+        val userId: String = "",
 
-  @Column(name = "type")
-  val type: String = "",
+        @Column(name = "type")
+        val type: String = "",
 
-  @Column(name = "secret_key")
-  val secretKey: String? = null,
+        @Column(name = "secret_key")
+        val secretKey: String? = null,
 
-  @Column(name = "validation_code")
-  val validationCode: Int? = null,
+        @Column(name = "validation_code")
+        val validationCode: Int? = null,
 
-  @Column(name = "scratch_codes")
-  val scratchCodes: String? = null,
+        @Column(name = "scratch_codes")
+        val scratchCodes: String? = null,
 
-  @Column(name = "created_at", insertable = false, updatable = false)
-  val createdAt: LocalDateTime? = null,
+        @Column(name = "created_at", insertable = false, updatable = false)
+        val createdAt: LocalDateTime? = null,
 
-  @Column(name = "updated_at", insertable = false, updatable = false)
-  val updatedAt: LocalDateTime? = null
+        @Column(name = "updated_at", insertable = false, updatable = false)
+        val updatedAt: LocalDateTime? = null
 ) {
-  companion object {
-    fun from(userMfa: UserMfa) = UserMfaRecord(
-      userId = userMfa.userId.toString(),
-      type = userMfa.type.toString(),
-      secretKey = userMfa.secretKey,
-      validationCode = userMfa.validationCode,
-      scratchCodes = userMfa.scratchCodes?.joinToString(","),
-    )
-  }
+    companion object {
+        fun from(userMfa: UserMfa) = UserMfaRecord(
+                userId = userMfa.userId.toString(),
+                type = userMfa.type.toString(),
+                secretKey = userMfa.secretKey,
+                validationCode = userMfa.validationCode,
+                scratchCodes = userMfa.scratchCodes?.joinToString(","),
+        )
+    }
 
-  fun to() = UserMfa.of(
-    userId = UserId(value = this.userId),
-    type = MfaType.from(this.type),
-    secretKey = secretKey,
-    validationCode = validationCode,
-    scratchCodes = if (scratchCodes.isNullOrEmpty()) listOf() else scratchCodes.split(",").map { it.toInt() }
-  )
+    fun to() = UserMfa.of(
+            userId = UserId(value = this.userId),
+            type = MfaType.from(this.type),
+            secretKey = secretKey,
+            validationCode = validationCode,
+            scratchCodes = if (scratchCodes.isNullOrEmpty()) listOf() else scratchCodes.split(",").map { it.toInt() }
+    )
 }

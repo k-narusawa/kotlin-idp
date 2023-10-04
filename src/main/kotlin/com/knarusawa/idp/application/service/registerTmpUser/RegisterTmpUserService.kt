@@ -11,30 +11,30 @@ import org.springframework.transaction.annotation.Transactional
 
 @Service
 class RegisterTmpUserService(
-  private val userService: UserService,
-  private val tmpUserRepository: TmpUserRepository,
-  private val messageSenderFacade: MassageSenderFacade
+        private val userService: UserService,
+        private val tmpUserRepository: TmpUserRepository,
+        private val messageSenderFacade: MassageSenderFacade
 ) {
-  @Transactional
-  fun exec(input: RegisterTmpUserInputData) {
-    if (userService.isExistsLoginId(loginId = LoginId(input.loginId)))
-      messageSenderFacade.exec(
-        toAddress = input.loginId,
-        messageId = MessageId.TMP_USER_CONFIRM_FAILED,
-        variables = listOf()
-      )
+    @Transactional
+    fun exec(input: RegisterTmpUserInputData) {
+        if (userService.isExistsLoginId(loginId = LoginId(input.loginId)))
+            messageSenderFacade.exec(
+                    toAddress = input.loginId,
+                    messageId = MessageId.TMP_USER_CONFIRM_FAILED,
+                    variables = listOf()
+            )
 
-    val tmpUser = TmpUser.of(
-      loginId = LoginId(value = input.loginId),
-      ttl = null
-    )
+        val tmpUser = TmpUser.of(
+                loginId = LoginId(value = input.loginId),
+                ttl = null
+        )
 
-    tmpUserRepository.save(tmpUser)
+        tmpUserRepository.save(tmpUser)
 
-    messageSenderFacade.exec(
-      toAddress = input.loginId,
-      messageId = MessageId.TMP_USER_CONFIRM,
-      variables = listOf(Pair("otp", tmpUser.code))
-    )
-  }
+        messageSenderFacade.exec(
+                toAddress = input.loginId,
+                messageId = MessageId.TMP_USER_CONFIRM,
+                variables = listOf(Pair("otp", tmpUser.code))
+        )
+    }
 }

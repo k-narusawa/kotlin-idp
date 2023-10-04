@@ -7,10 +7,10 @@ import org.springframework.transaction.annotation.Transactional
 
 @Service
 class InvalidateMfaService(
-  private val userMfaRepository: UserMfaRepository
+        private val userMfaRepository: UserMfaRepository
 ) {
-  @Transactional
-  fun exec(input: InvalidateMfaInputData) {
-    userMfaRepository.deleteByUserId(UserId(input.userId))
-  }
+    @Transactional
+    fun exec(input: InvalidateMfaInputData) {
+        userMfaRepository.deleteByUserId(UserId(input.userId))
+    }
 }

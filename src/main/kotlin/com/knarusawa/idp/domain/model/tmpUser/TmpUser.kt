@@ -5,15 +5,15 @@ import com.knarusawa.idp.domain.model.user.LoginId
 import java.io.Serializable
 
 class TmpUser private constructor(
-  val loginId: String,
-  val code: String,
-  val ttl: Long
+        val loginId: String,
+        val code: String,
+        val ttl: Long
 ) : Serializable {
-  companion object {
-    fun of(loginId: LoginId, ttl: Long?) = TmpUser(
-      loginId = loginId.toString(),
-      code = Code.generate().toString(),
-      ttl = ttl ?: 600L // デフォルトで600秒(10分)
-    )
-  }
+    companion object {
+        fun of(loginId: LoginId, ttl: Long?) = TmpUser(
+                loginId = loginId.toString(),
+                code = Code.generate().toString(),
+                ttl = ttl ?: 600L // デフォルトで600秒(10分)
+        )
+    }
 }

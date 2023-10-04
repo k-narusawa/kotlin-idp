@@ -11,35 +11,35 @@ import org.springframework.web.bind.annotation.RestControllerAdvice
 
 @RestControllerAdvice
 class ApiExceptionHandler {
-  @ExceptionHandler(IdpAppException::class)
-  fun handleIdpAppException(
-    ex: IdpAppException,
-    request: HttpServletRequest
-  ): ResponseEntity<ApiErrorResponse> {
-    return ResponseEntity(
-      ApiErrorResponse.of(
-        exception = ex,
-        errorCode = ex.errorCode.name,
-        errorMessage = ex.logMessage,
-        logLevel = LogLevel.INFO
-      ),
-      ex.errorCode.status
-    )
-  }
+    @ExceptionHandler(IdpAppException::class)
+    fun handleIdpAppException(
+            ex: IdpAppException,
+            request: HttpServletRequest
+    ): ResponseEntity<ApiErrorResponse> {
+        return ResponseEntity(
+                ApiErrorResponse.of(
+                        exception = ex,
+                        errorCode = ex.errorCode.name,
+                        errorMessage = ex.logMessage,
+                        logLevel = LogLevel.INFO
+                ),
+                ex.errorCode.status
+        )
+    }
 
-  @ExceptionHandler(Exception::class)
-  fun handleException(
-    ex: Exception,
-    request: HttpServletRequest
-  ): ResponseEntity<ApiErrorResponse> {
-    return ResponseEntity(
-      ApiErrorResponse.of(
-        exception = ex,
-        errorCode = ErrorCode.INTERNAL_SERVER_ERROR.name,
-        errorMessage = ErrorCode.INTERNAL_SERVER_ERROR.message,
-        logLevel = LogLevel.ERROR
-      ),
-      org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR
-    )
-  }
+    @ExceptionHandler(Exception::class)
+    fun handleException(
+            ex: Exception,
+            request: HttpServletRequest
+    ): ResponseEntity<ApiErrorResponse> {
+        return ResponseEntity(
+                ApiErrorResponse.of(
+                        exception = ex,
+                        errorCode = ErrorCode.INTERNAL_SERVER_ERROR.name,
+                        errorMessage = ErrorCode.INTERNAL_SERVER_ERROR.message,
+                        logLevel = LogLevel.ERROR
+                ),
+                org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR
+        )
+    }
 }
