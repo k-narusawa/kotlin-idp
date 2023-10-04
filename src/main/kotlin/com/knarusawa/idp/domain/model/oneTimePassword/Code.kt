@@ -3,7 +3,7 @@ package com.knarusawa.idp.domain.model.oneTimePassword
 import java.util.*
 
 data class Code(
-        val value: String
+        private val value: String
 ) {
     companion object {
         fun generate(): Code {
