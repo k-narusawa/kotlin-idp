@@ -20,7 +20,7 @@ class RepositoryPerformanceAspect {
         val executionTime = System.currentTimeMillis() - start
         val className = joinPoint.signature.declaringTypeName
         val methodName = joinPoint.signature.name
-        logger.info("クラス [${className}], メソッド:[${methodName}], 実行時間:[$executionTime ms]")
+        logger.info("クラス:[${className}], メソッド:[${methodName}], 実行時間:[$executionTime ms]")
         return proceed
     }
 }
