@@ -1,6 +1,5 @@
 package com.knarusawa.idp.application.service
 
-import com.knarusawa.idp.application.event.AuthenticationEvents.Companion.logger
 import com.knarusawa.idp.application.facade.MassageSenderFacade
 import com.knarusawa.idp.domain.model.IdpGrantedAuthority
 import com.knarusawa.idp.domain.model.OneTimePassword
@@ -9,6 +8,7 @@ import com.knarusawa.idp.domain.repository.UserMfaRepository
 import com.knarusawa.idp.domain.repository.UserRepository
 import com.knarusawa.idp.domain.value.MessageId
 import com.knarusawa.idp.domain.value.MfaType
+import com.knarusawa.idp.infrastructure.middleware.logger
 import kotlinx.coroutines.runBlocking
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
@@ -22,6 +22,8 @@ class UserDetailsServiceImpl(
         private val onetimePasswordRepository: OnetimePasswordRepository,
         private val messageSenderFacade: MassageSenderFacade
 ) : UserDetailsService {
+    private val log = logger()
+    
     override fun loadUserByUsername(loginId: String): UserDetails {
         val user = userRepository.findByLoginId(loginId = loginId)
                 ?: throw UsernameNotFoundException("認証に失敗しました")
@@ -41,7 +43,7 @@ class UserDetailsServiceImpl(
 
         if (userMfa?.type == MfaType.MAIL || userMfa?.type == MfaType.SMS) {
             val oneTimePassword = OneTimePassword.of(userId = user.userId)
-            logger.info("ワンタイムパスワード: ${oneTimePassword.code}")
+            log.info("ワンタイムパスワード: ${oneTimePassword.code}")
             runBlocking { onetimePasswordRepository.save(oneTimePassword) }
 
             messageSenderFacade.exec(

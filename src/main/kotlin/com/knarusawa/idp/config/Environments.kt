@@ -1,4 +1,4 @@
-package com.knarusawa.idp.configuration
+package com.knarusawa.idp.config
 
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Configuration

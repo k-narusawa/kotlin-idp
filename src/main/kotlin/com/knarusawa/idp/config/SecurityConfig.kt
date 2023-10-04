@@ -1,10 +1,10 @@
-package com.knarusawa.idp.configuration
+package com.knarusawa.idp.config
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.annotation.JsonSubTypes
 import com.knarusawa.idp.application.service.UserDetailsServiceImpl
-import com.knarusawa.idp.configuration.db.UserDbJdbcTemplate
+import com.knarusawa.idp.config.db.UserDbJdbcTemplate
 import com.knarusawa.idp.domain.model.IdpGrantedAuthority
 import com.knarusawa.idp.domain.model.MfaAuthentication
 import com.knarusawa.idp.domain.value.AuthorityRole

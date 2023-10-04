@@ -8,8 +8,8 @@ import com.knarusawa.idp.domain.repository.OnetimePasswordRepository
 import com.knarusawa.idp.domain.value.ErrorCode
 import com.knarusawa.idp.domain.value.MessageId
 import com.knarusawa.idp.domain.value.UserId
+import com.knarusawa.idp.infrastructure.middleware.logger
 import kotlinx.coroutines.runBlocking
-import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -20,14 +20,12 @@ class SendOtpService(
         private val onetimePasswordRepository: OnetimePasswordRepository,
         private val messageSenderFacade: MassageSenderFacade
 ) {
-    companion object {
-        val logger = LoggerFactory.getLogger(SendOtpService::class.java)
-    }
+    private val log = logger()
 
     @Transactional
     fun exec(input: SendOtpInputData) {
         val otp = OneTimePassword.of(userId = UserId(input.userId))
-        logger.info("ワンタイムパスワード: ${otp.code}")
+        log.info("ワンタイムパスワード: ${otp.code}")
 
         runBlocking { onetimePasswordRepository.save(otp) }
 

@@ -12,7 +12,7 @@
   </style>
 </head>
 <body>
-<div th:insert="common/header :: header_fragment"></div>
+<div th:replace="~{common/header :: common_header(~{::title},~{::link})}"></div>
 <div class="container form-container">
   <div class="card">
     <div class="card-header">

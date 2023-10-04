@@ -5,8 +5,6 @@ logging:
   level:
     root: info
     org.springframework.security: info
-    jdbc:
-      sqlonly: trace
     org:
       springframework:
         jdbc:
@@ -28,7 +26,9 @@ spring:
       - classpath:db/migration/create
       - classpath:db/migration/insert
   jpa:
-    show-sql: true
+    open-in-view: false
+  #  必要に応じてコメントアウトを外す
+  #    show-sql: true
 
   mvc:
     hiddenmethod:

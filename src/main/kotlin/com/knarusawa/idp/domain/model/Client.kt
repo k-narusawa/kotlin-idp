@@ -1,6 +1,6 @@
 package com.knarusawa.idp.domain.model
 
-import com.knarusawa.idp.configuration.SecurityConfig
+import com.knarusawa.idp.config.SecurityConfig
 import org.springframework.security.oauth2.core.AuthorizationGrantType
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient

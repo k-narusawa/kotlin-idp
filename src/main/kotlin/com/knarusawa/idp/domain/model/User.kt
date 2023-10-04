@@ -1,6 +1,6 @@
 package com.knarusawa.idp.domain.model
 
-import com.knarusawa.idp.configuration.SecurityConfig
+import com.knarusawa.idp.config.SecurityConfig
 import com.knarusawa.idp.domain.value.LoginId
 import com.knarusawa.idp.domain.value.Password
 import com.knarusawa.idp.domain.value.Role

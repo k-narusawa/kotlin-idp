@@ -1,4 +1,4 @@
-package com.knarusawa.idp.configuration.db
+package com.knarusawa.idp.config.db
 
 import com.zaxxer.hikari.HikariConfig
 import org.springframework.context.annotation.Configuration
