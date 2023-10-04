@@ -25,8 +25,9 @@ spring:
     locations:
       - classpath:db/migration/create
       - classpath:db/migration/insert
+  jpa:
+    open-in-view: false
   #  必要に応じてコメントアウトを外す
-  #  jpa:
   #    show-sql: true
 
   mvc:
