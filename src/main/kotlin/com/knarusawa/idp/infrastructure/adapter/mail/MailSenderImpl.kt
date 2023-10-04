@@ -18,21 +18,11 @@ class MailSenderImpl(
         val sendEmailRequest = SendEmailRequest()
                 .withSource(environments.fromAddress)
                 .withDestination(
-                        Destination()
-                                .withToAddresses(toAddress)
+                        Destination().withToAddresses(toAddress)
                 )
-                .withMessage(
-                        Message()
-                                .withSubject(
-                                        Content().withCharset("UTF-8").withData(subject)
-                                )
-                                .withBody(
-                                        Body()
-                                                .withText(
-                                                        Content()
-                                                                .withCharset("UTF-8").withData(body)
-                                                )
-                                )
+                .withMessage(Message()
+                        .withSubject(Content().withCharset("UTF-8").withData(subject))
+                        .withBody(Body().withText(Content().withCharset("UTF-8").withData(body)))
                 )
 
         try {
