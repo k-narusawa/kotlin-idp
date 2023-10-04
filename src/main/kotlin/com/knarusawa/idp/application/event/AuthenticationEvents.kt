@@ -1,11 +1,11 @@
 package com.knarusawa.idp.application.event
 
-import com.knarusawa.idp.domain.model.user.UserId
-import com.knarusawa.idp.domain.model.userActivity.ActivityData
-import com.knarusawa.idp.domain.model.userActivity.ActivityType
-import com.knarusawa.idp.domain.model.userActivity.UserActivity
+import com.knarusawa.idp.domain.model.UserActivity
 import com.knarusawa.idp.domain.repository.UserActivityRepository
 import com.knarusawa.idp.domain.repository.UserRepository
+import com.knarusawa.idp.domain.value.ActivityData
+import com.knarusawa.idp.domain.value.ActivityType
+import com.knarusawa.idp.domain.value.UserId
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.context.event.EventListener

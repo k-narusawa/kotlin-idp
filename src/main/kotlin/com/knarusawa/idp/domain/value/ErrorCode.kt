@@ -1,4 +1,4 @@
-package com.knarusawa.idp.domain.model.error
+package com.knarusawa.idp.domain.value
 
 import org.springframework.http.HttpStatus
 

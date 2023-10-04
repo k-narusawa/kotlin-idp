@@ -1,7 +1,7 @@
-package com.knarusawa.idp.domain.model.userWithdraw
+package com.knarusawa.idp.domain.model
 
-import com.knarusawa.idp.domain.model.user.LoginId
-import com.knarusawa.idp.domain.model.user.UserId
+import com.knarusawa.idp.domain.value.LoginId
+import com.knarusawa.idp.domain.value.UserId
 import java.time.LocalDateTime
 
 class UserWithdraw private constructor(

@@ -1,6 +1,6 @@
 package com.knarusawa.idp.infrastructure.middleware
 
-import com.knarusawa.idp.domain.model.error.IdpAppException
+import com.knarusawa.idp.domain.model.IdpAppException
 import jakarta.servlet.http.HttpServletRequest
 import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.bind.annotation.ExceptionHandler

@@ -1,4 +1,4 @@
-package com.knarusawa.idp.domain.model.messageTemplate
+package com.knarusawa.idp.domain.value
 
 enum class MessageId {
     MFA_MAIL_REGISTRATION,

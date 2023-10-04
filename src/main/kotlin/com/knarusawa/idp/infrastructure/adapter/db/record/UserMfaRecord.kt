@@ -1,8 +1,8 @@
 package com.knarusawa.idp.infrastructure.adapter.db.record
 
-import com.knarusawa.idp.domain.model.user.UserId
-import com.knarusawa.idp.domain.model.userMfa.MfaType
-import com.knarusawa.idp.domain.model.userMfa.UserMfa
+import com.knarusawa.idp.domain.model.UserMfa
+import com.knarusawa.idp.domain.value.MfaType
+import com.knarusawa.idp.domain.value.UserId
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.Id

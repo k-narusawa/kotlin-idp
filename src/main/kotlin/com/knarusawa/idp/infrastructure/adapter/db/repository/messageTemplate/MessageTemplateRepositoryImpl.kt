@@ -1,10 +1,10 @@
 package com.knarusawa.idp.infrastructure.adapter.db.repository.messageTemplate
 
 import com.knarusawa.idp.application.service.query.MessageTemplateRepository
-import com.knarusawa.idp.domain.model.error.ErrorCode
-import com.knarusawa.idp.domain.model.error.IdpAppException
-import com.knarusawa.idp.domain.model.messageTemplate.MessageId
-import com.knarusawa.idp.domain.model.messageTemplate.MessageTemplateData
+import com.knarusawa.idp.domain.model.IdpAppException
+import com.knarusawa.idp.domain.model.MessageTemplateData
+import com.knarusawa.idp.domain.value.ErrorCode
+import com.knarusawa.idp.domain.value.MessageId
 import org.springframework.stereotype.Repository
 
 @Repository

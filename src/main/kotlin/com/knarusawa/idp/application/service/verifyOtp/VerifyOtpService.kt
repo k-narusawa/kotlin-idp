@@ -1,9 +1,9 @@
 package com.knarusawa.idp.application.service.verifyOtp
 
-import com.knarusawa.idp.domain.model.oneTimePassword.Code
-import com.knarusawa.idp.domain.model.user.UserId
-import com.knarusawa.idp.domain.model.userMfa.MfaType
 import com.knarusawa.idp.domain.repository.OnetimePasswordRepository
+import com.knarusawa.idp.domain.value.Code
+import com.knarusawa.idp.domain.value.MfaType
+import com.knarusawa.idp.domain.value.UserId
 import com.warrenstrange.googleauth.GoogleAuthenticator
 import jakarta.transaction.Transactional
 import kotlinx.coroutines.runBlocking

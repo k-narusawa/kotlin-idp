@@ -1,7 +1,7 @@
-package com.knarusawa.idp.domain.model.user
+package com.knarusawa.idp.domain.value
 
 data class LoginId(
-        val value: String
+        private val value: String
 ) {
     init {
         // RFC5322で定義されているメールアドレス形式に準拠

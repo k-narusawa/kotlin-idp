@@ -1,7 +1,6 @@
-package com.knarusawa.idp.domain.model.user
+package com.knarusawa.idp.domain.value
 
-import com.knarusawa.idp.domain.model.error.ErrorCode
-import com.knarusawa.idp.domain.model.error.IdpAppException
+import com.knarusawa.idp.domain.model.IdpAppException
 
 enum class Role {
     ADMIN,

@@ -8,8 +8,8 @@ import com.knarusawa.idp.application.service.query.UserActivityDtoQueryService
 import com.knarusawa.idp.application.service.query.UserDtoQueryService
 import com.knarusawa.idp.application.service.withdrawUser.WithdrawUserInputData
 import com.knarusawa.idp.application.service.withdrawUser.WithdrawUserService
-import com.knarusawa.idp.domain.model.error.ErrorCode
-import com.knarusawa.idp.domain.model.error.IdpAppException
+import com.knarusawa.idp.domain.model.IdpAppException
+import com.knarusawa.idp.domain.value.ErrorCode
 import com.knarusawa.idp.infrastructure.dto.form.ChangeUserLoginIdForm
 import com.knarusawa.idp.infrastructure.dto.form.ChangeUserPasswordForm
 import jakarta.servlet.http.HttpServletRequest

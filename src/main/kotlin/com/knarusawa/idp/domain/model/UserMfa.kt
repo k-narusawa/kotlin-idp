@@ -1,6 +1,7 @@
-package com.knarusawa.idp.domain.model.userMfa
+package com.knarusawa.idp.domain.model
 
-import com.knarusawa.idp.domain.model.user.UserId
+import com.knarusawa.idp.domain.value.MfaType
+import com.knarusawa.idp.domain.value.UserId
 
 class UserMfa private constructor(
         val userId: UserId,

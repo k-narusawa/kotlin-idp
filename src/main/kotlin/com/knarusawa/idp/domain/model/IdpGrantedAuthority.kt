@@ -1,6 +1,7 @@
-package com.knarusawa.idp.domain.model.authority
+package com.knarusawa.idp.domain.model
 
 import com.fasterxml.jackson.annotation.JsonProperty
+import com.knarusawa.idp.domain.value.AuthorityRole
 import org.springframework.security.core.GrantedAuthority
 
 class IdpGrantedAuthority private constructor(

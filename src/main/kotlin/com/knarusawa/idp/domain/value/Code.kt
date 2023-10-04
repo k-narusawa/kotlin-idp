@@ -1,9 +1,9 @@
-package com.knarusawa.idp.domain.model.oneTimePassword
+package com.knarusawa.idp.domain.value
 
 import java.util.*
 
 data class Code(
-        val value: String
+        private val value: String
 ) {
     companion object {
         fun generate(): Code {

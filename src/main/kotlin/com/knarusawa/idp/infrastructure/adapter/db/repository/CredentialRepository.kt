@@ -1,10 +1,10 @@
 package com.knarusawa.idp.infrastructure.adapter.db.repository
 
-import com.knarusawa.idp.domain.model.error.ErrorCode
-import com.knarusawa.idp.domain.model.error.IdpAppException
-import com.knarusawa.idp.domain.model.user.UserId
-import com.knarusawa.idp.domain.model.userMfa.MfaType
-import com.knarusawa.idp.domain.model.userMfa.UserMfa
+import com.knarusawa.idp.domain.model.IdpAppException
+import com.knarusawa.idp.domain.model.UserMfa
+import com.knarusawa.idp.domain.value.ErrorCode
+import com.knarusawa.idp.domain.value.MfaType
+import com.knarusawa.idp.domain.value.UserId
 import com.knarusawa.idp.infrastructure.adapter.db.record.UserMfaRecord
 import com.knarusawa.idp.infrastructure.adapter.db.repository.userMfa.UserMfaRecordRepository
 import com.warrenstrange.googleauth.ICredentialRepository

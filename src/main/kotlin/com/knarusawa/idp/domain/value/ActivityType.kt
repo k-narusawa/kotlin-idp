@@ -1,4 +1,4 @@
-package com.knarusawa.idp.domain.model.userActivity
+package com.knarusawa.idp.domain.value
 
 enum class ActivityType {
     LOGIN_SUCCESS,

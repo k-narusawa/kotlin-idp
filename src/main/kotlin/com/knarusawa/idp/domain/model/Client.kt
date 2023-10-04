@@ -1,4 +1,4 @@
-package com.knarusawa.idp.domain.model.client
+package com.knarusawa.idp.domain.model
 
 import com.knarusawa.idp.configuration.SecurityConfig
 import org.springframework.security.oauth2.core.AuthorizationGrantType

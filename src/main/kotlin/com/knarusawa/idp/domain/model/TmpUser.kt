@@ -1,7 +1,7 @@
-package com.knarusawa.idp.domain.model.tmpUser
+package com.knarusawa.idp.domain.model
 
-import com.knarusawa.idp.domain.model.oneTimePassword.Code
-import com.knarusawa.idp.domain.model.user.LoginId
+import com.knarusawa.idp.domain.value.Code
+import com.knarusawa.idp.domain.value.LoginId
 import java.io.Serializable
 
 class TmpUser private constructor(

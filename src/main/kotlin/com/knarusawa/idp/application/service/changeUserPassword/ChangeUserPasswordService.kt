@@ -1,13 +1,13 @@
 package com.knarusawa.idp.application.service.changeUserPassword
 
-import com.knarusawa.idp.domain.model.error.ErrorCode
-import com.knarusawa.idp.domain.model.error.IdpAppException
-import com.knarusawa.idp.domain.model.user.UserId
-import com.knarusawa.idp.domain.model.userActivity.ActivityData
-import com.knarusawa.idp.domain.model.userActivity.ActivityType
-import com.knarusawa.idp.domain.model.userActivity.UserActivity
+import com.knarusawa.idp.domain.model.IdpAppException
+import com.knarusawa.idp.domain.model.UserActivity
 import com.knarusawa.idp.domain.repository.UserActivityRepository
 import com.knarusawa.idp.domain.repository.UserRepository
+import com.knarusawa.idp.domain.value.ActivityData
+import com.knarusawa.idp.domain.value.ActivityType
+import com.knarusawa.idp.domain.value.ErrorCode
+import com.knarusawa.idp.domain.value.UserId
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 

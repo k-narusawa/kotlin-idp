@@ -1,6 +1,6 @@
 package com.knarusawa.idp.infrastructure.adapter.db.repository.userWithdraw
 
-import com.knarusawa.idp.domain.model.userWithdraw.UserWithdraw
+import com.knarusawa.idp.domain.model.UserWithdraw
 import com.knarusawa.idp.domain.repository.UserWithdrawRepository
 import com.knarusawa.idp.infrastructure.adapter.db.record.UserWithdrawRecord
 import org.springframework.stereotype.Repository

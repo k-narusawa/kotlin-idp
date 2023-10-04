@@ -1,7 +1,7 @@
 package com.knarusawa.idp.domain.repository
 
-import com.knarusawa.idp.domain.model.user.UserId
-import com.knarusawa.idp.domain.model.userMfa.UserMfa
+import com.knarusawa.idp.domain.model.UserMfa
+import com.knarusawa.idp.domain.value.UserId
 
 interface UserMfaRepository {
     fun findByUserId(userId: UserId): UserMfa?

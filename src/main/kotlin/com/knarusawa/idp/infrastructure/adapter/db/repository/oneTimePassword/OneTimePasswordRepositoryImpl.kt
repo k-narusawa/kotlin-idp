@@ -5,9 +5,9 @@ import com.amazonaws.services.dynamodbv2.model.AttributeValue
 import com.amazonaws.services.dynamodbv2.model.DeleteItemRequest
 import com.amazonaws.services.dynamodbv2.model.GetItemRequest
 import com.amazonaws.services.dynamodbv2.model.PutItemRequest
-import com.knarusawa.idp.domain.model.oneTimePassword.OneTimePassword
-import com.knarusawa.idp.domain.model.user.UserId
+import com.knarusawa.idp.domain.model.OneTimePassword
 import com.knarusawa.idp.domain.repository.OnetimePasswordRepository
+import com.knarusawa.idp.domain.value.UserId
 import org.springframework.stereotype.Repository
 
 @Repository

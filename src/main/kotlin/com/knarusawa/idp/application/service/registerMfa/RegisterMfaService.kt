@@ -1,11 +1,11 @@
 package com.knarusawa.idp.application.service.registerMfa
 
-import com.knarusawa.idp.domain.model.oneTimePassword.Code
-import com.knarusawa.idp.domain.model.user.UserId
-import com.knarusawa.idp.domain.model.userMfa.MfaType
-import com.knarusawa.idp.domain.model.userMfa.UserMfa
+import com.knarusawa.idp.domain.model.UserMfa
 import com.knarusawa.idp.domain.repository.OnetimePasswordRepository
 import com.knarusawa.idp.domain.repository.UserMfaRepository
+import com.knarusawa.idp.domain.value.Code
+import com.knarusawa.idp.domain.value.MfaType
+import com.knarusawa.idp.domain.value.UserId
 import jakarta.transaction.Transactional
 import kotlinx.coroutines.runBlocking
 import org.springframework.stereotype.Service

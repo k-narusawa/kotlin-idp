@@ -1,6 +1,10 @@
-package com.knarusawa.idp.domain.model.user
+package com.knarusawa.idp.domain.model
 
 import com.knarusawa.idp.configuration.SecurityConfig
+import com.knarusawa.idp.domain.value.LoginId
+import com.knarusawa.idp.domain.value.Password
+import com.knarusawa.idp.domain.value.Role
+import com.knarusawa.idp.domain.value.UserId
 import com.knarusawa.idp.infrastructure.adapter.db.record.UserRecord
 import java.time.LocalDateTime
 
