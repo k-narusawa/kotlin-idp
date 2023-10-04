@@ -22,13 +22,13 @@ class RequestFilter : OncePerRequestFilter() {
             response: HttpServletResponse,
             filterChain: FilterChain
     ) {
-        logger.debug("request User-Agent: " + request.getHeader("User-Agent"));
+        logger.debug("User-Agent: " + request.getHeader("User-Agent"));
         val start = System.currentTimeMillis()
         try {
             filterChain.doFilter(request, response)
         } finally {
             val end = System.currentTimeMillis()
-            logger.info("METHOD: ${request.method}, REQUEST_URL: ${request.requestURI}, RESPONSE_TIME: ${end - start}ms")
+            logger.info("メソッド: ${request.method}, リクエストURL: ${request.requestURI}, ステータス: ${response.status}, レスポンスタイム: ${end - start}ms")
         }
     }
 
