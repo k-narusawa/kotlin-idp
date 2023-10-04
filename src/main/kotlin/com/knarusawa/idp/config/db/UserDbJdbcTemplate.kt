@@ -1,4 +1,4 @@
-package com.knarusawa.idp.configuration.db
+package com.knarusawa.idp.config.db
 
 import org.springframework.context.annotation.Configuration
 import org.springframework.jdbc.core.JdbcTemplate

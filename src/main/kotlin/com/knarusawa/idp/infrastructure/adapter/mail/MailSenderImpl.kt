@@ -2,7 +2,7 @@ package com.knarusawa.idp.infrastructure.adapter.mail
 
 import com.amazonaws.services.simpleemail.AmazonSimpleEmailService
 import com.amazonaws.services.simpleemail.model.*
-import com.knarusawa.idp.configuration.Environments
+import com.knarusawa.idp.config.Environments
 import com.knarusawa.idp.domain.port.MailSender
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service

@@ -1,6 +1,6 @@
 package com.knarusawa.idp.infrastructure.adapter.db.repository
 
-import com.knarusawa.idp.configuration.db.UserDbJdbcTemplate
+import com.knarusawa.idp.config.db.UserDbJdbcTemplate
 import org.springframework.security.oauth2.core.AuthorizationGrantType
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod
 import org.springframework.security.oauth2.server.authorization.client.JdbcRegisteredClientRepository

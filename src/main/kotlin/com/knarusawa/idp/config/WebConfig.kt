@@ -1,4 +1,4 @@
-package com.knarusawa.idp.configuration
+package com.knarusawa.idp.config
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.knarusawa.idp.domain.model.IdpGrantedAuthority
