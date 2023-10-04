@@ -1,7 +1,7 @@
 package com.knarusawa.idp.infrastructure.middleware
 
-import com.knarusawa.idp.domain.model.authentication.MfaAuthentication
-import com.knarusawa.idp.domain.model.authority.AuthorityRole
+import com.knarusawa.idp.domain.model.MfaAuthentication
+import com.knarusawa.idp.domain.value.AuthorityRole
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.security.authentication.AnonymousAuthenticationToken

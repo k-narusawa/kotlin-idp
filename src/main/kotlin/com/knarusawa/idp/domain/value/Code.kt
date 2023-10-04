@@ -1,4 +1,4 @@
-package com.knarusawa.idp.domain.model.oneTimePassword
+package com.knarusawa.idp.domain.value
 
 import java.util.*
 

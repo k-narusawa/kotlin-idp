@@ -1,6 +1,7 @@
-package com.knarusawa.idp.domain.model.user
+package com.knarusawa.idp.domain.service
 
 import com.knarusawa.idp.domain.repository.UserRepository
+import com.knarusawa.idp.domain.value.LoginId
 import org.springframework.stereotype.Component
 
 @Component

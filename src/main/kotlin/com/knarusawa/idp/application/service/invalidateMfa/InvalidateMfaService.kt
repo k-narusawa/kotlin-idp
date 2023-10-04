@@ -1,7 +1,7 @@
 package com.knarusawa.idp.application.service.invalidateMfa
 
-import com.knarusawa.idp.domain.model.user.UserId
 import com.knarusawa.idp.domain.repository.UserMfaRepository
+import com.knarusawa.idp.domain.value.UserId
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 

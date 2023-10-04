@@ -1,6 +1,6 @@
 package com.knarusawa.idp.domain.repository
 
-import com.knarusawa.idp.domain.model.user.User
+import com.knarusawa.idp.domain.model.User
 
 
 interface UserRepository {

@@ -1,4 +1,4 @@
-package com.knarusawa.idp.domain.model.authentication
+package com.knarusawa.idp.domain.model
 
 import org.springframework.security.authentication.AbstractAuthenticationToken
 import org.springframework.security.core.Authentication

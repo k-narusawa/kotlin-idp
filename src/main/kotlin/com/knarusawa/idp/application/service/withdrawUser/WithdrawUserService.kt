@@ -1,11 +1,11 @@
 package com.knarusawa.idp.application.service.withdrawUser
 
-import com.knarusawa.idp.domain.model.error.ErrorCode
-import com.knarusawa.idp.domain.model.error.IdpAppException
-import com.knarusawa.idp.domain.model.user.UserId
-import com.knarusawa.idp.domain.model.userWithdraw.UserWithdraw
+import com.knarusawa.idp.domain.model.IdpAppException
+import com.knarusawa.idp.domain.model.UserWithdraw
 import com.knarusawa.idp.domain.repository.UserRepository
 import com.knarusawa.idp.domain.repository.UserWithdrawRepository
+import com.knarusawa.idp.domain.value.ErrorCode
+import com.knarusawa.idp.domain.value.UserId
 import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
 

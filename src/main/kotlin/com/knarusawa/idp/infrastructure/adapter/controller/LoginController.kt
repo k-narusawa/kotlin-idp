@@ -3,9 +3,9 @@ package com.knarusawa.idp.infrastructure.adapter.controller
 import com.knarusawa.idp.application.service.query.UserMfaDtoQueryService
 import com.knarusawa.idp.application.service.verifyOtp.VerifyOtpInputData
 import com.knarusawa.idp.application.service.verifyOtp.VerifyOtpService
-import com.knarusawa.idp.domain.model.authentication.MfaAuthentication
-import com.knarusawa.idp.domain.model.error.ErrorCode
-import com.knarusawa.idp.domain.model.error.IdpAppException
+import com.knarusawa.idp.domain.model.IdpAppException
+import com.knarusawa.idp.domain.model.MfaAuthentication
+import com.knarusawa.idp.domain.value.ErrorCode
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.security.authentication.BadCredentialsException

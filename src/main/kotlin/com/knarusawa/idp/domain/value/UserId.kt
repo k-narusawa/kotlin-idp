@@ -1,11 +1,13 @@
-package com.knarusawa.idp.domain.model.user
+package com.knarusawa.idp.domain.value
+
+import java.util.*
 
 data class UserId(
         private val value: String
 ) {
     companion object {
         fun generate(): UserId {
-            return UserId(java.util.UUID.randomUUID().toString())
+            return UserId(UUID.randomUUID().toString())
         }
     }
 

@@ -1,4 +1,4 @@
-package com.knarusawa.idp.domain.model.user
+package com.knarusawa.idp.domain.value
 
 data class LoginId(
         private val value: String

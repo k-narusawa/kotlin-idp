@@ -2,8 +2,8 @@ package com.knarusawa.idp.infrastructure.adapter.controller
 
 import com.knarusawa.idp.application.dto.UserDto
 import com.knarusawa.idp.application.service.query.UserDtoQueryService
-import com.knarusawa.idp.domain.model.error.ErrorCode
-import com.knarusawa.idp.domain.model.error.IdpAppException
+import com.knarusawa.idp.domain.model.IdpAppException
+import com.knarusawa.idp.domain.value.ErrorCode
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping

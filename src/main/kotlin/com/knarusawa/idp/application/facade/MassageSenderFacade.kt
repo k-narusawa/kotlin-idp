@@ -1,9 +1,9 @@
 package com.knarusawa.idp.application.facade
 
 import com.knarusawa.idp.application.service.query.MessageTemplateRepository
-import com.knarusawa.idp.domain.model.messageTemplate.MessageId
-import com.knarusawa.idp.domain.model.messageTemplate.MessageTemplate
+import com.knarusawa.idp.domain.model.MessageTemplate
 import com.knarusawa.idp.domain.port.MailSender
+import com.knarusawa.idp.domain.value.MessageId
 import org.springframework.stereotype.Component
 
 @Component

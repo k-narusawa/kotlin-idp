@@ -1,8 +1,8 @@
 package com.knarusawa.idp.domain.repository
 
-import com.knarusawa.idp.domain.model.oneTimePassword.Code
-import com.knarusawa.idp.domain.model.tmpUser.TmpUser
-import com.knarusawa.idp.domain.model.user.LoginId
+import com.knarusawa.idp.domain.model.TmpUser
+import com.knarusawa.idp.domain.value.Code
+import com.knarusawa.idp.domain.value.LoginId
 
 
 interface TmpUserRepository {

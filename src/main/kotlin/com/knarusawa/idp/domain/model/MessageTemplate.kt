@@ -1,4 +1,6 @@
-package com.knarusawa.idp.domain.model.messageTemplate
+package com.knarusawa.idp.domain.model
+
+import com.knarusawa.idp.domain.value.MessageId
 
 class MessageTemplate private constructor(
         val messageId: MessageId,

@@ -1,5 +1,7 @@
 package com.knarusawa.idp.domain.model.user
 
+import com.knarusawa.idp.domain.model.User
+import com.knarusawa.idp.domain.value.Role
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested

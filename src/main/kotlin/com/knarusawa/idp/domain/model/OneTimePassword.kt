@@ -1,6 +1,7 @@
-package com.knarusawa.idp.domain.model.oneTimePassword
+package com.knarusawa.idp.domain.model
 
-import com.knarusawa.idp.domain.model.user.UserId
+import com.knarusawa.idp.domain.value.Code
+import com.knarusawa.idp.domain.value.UserId
 import java.time.LocalDateTime
 
 

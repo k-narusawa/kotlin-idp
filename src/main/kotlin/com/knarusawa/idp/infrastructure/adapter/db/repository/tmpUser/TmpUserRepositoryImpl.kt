@@ -1,9 +1,9 @@
 package com.knarusawa.idp.infrastructure.adapter.db.repository.tmpUser
 
-import com.knarusawa.idp.domain.model.oneTimePassword.Code
-import com.knarusawa.idp.domain.model.tmpUser.TmpUser
-import com.knarusawa.idp.domain.model.user.LoginId
+import com.knarusawa.idp.domain.model.TmpUser
 import com.knarusawa.idp.domain.repository.TmpUserRepository
+import com.knarusawa.idp.domain.value.Code
+import com.knarusawa.idp.domain.value.LoginId
 import com.knarusawa.idp.infrastructure.adapter.db.redis.RedisService
 import org.springframework.stereotype.Repository
 import java.util.concurrent.TimeUnit

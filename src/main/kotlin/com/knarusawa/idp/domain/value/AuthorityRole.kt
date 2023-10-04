@@ -1,4 +1,4 @@
-package com.knarusawa.idp.domain.model.authority
+package com.knarusawa.idp.domain.value
 
 enum class AuthorityRole {
     PASSWORD,

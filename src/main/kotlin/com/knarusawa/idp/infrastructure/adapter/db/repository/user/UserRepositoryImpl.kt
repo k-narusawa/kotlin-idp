@@ -1,6 +1,6 @@
 package com.knarusawa.idp.infrastructure.adapter.db.repository.user
 
-import com.knarusawa.idp.domain.model.user.User
+import com.knarusawa.idp.domain.model.User
 import com.knarusawa.idp.domain.repository.UserRepository
 import org.springframework.stereotype.Repository
 

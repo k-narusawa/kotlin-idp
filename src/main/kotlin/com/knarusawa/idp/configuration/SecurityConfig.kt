@@ -5,9 +5,9 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.annotation.JsonSubTypes
 import com.knarusawa.idp.application.service.UserDetailsServiceImpl
 import com.knarusawa.idp.configuration.db.UserDbJdbcTemplate
-import com.knarusawa.idp.domain.model.authentication.MfaAuthentication
-import com.knarusawa.idp.domain.model.authority.AuthorityRole
-import com.knarusawa.idp.domain.model.authority.IdpGrantedAuthority
+import com.knarusawa.idp.domain.model.IdpGrantedAuthority
+import com.knarusawa.idp.domain.model.MfaAuthentication
+import com.knarusawa.idp.domain.value.AuthorityRole
 import com.knarusawa.idp.infrastructure.middleware.MfaAuthenticationHandler
 import com.nimbusds.jose.jwk.JWKSet
 import com.nimbusds.jose.jwk.RSAKey

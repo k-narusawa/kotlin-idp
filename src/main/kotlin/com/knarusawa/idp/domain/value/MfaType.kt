@@ -1,4 +1,4 @@
-package com.knarusawa.idp.domain.model.userMfa
+package com.knarusawa.idp.domain.value
 
 enum class MfaType {
     MAIL,

@@ -1,6 +1,6 @@
 package com.knarusawa.idp.infrastructure.adapter.db.record
 
-import com.knarusawa.idp.domain.model.userWithdraw.UserWithdraw
+import com.knarusawa.idp.domain.model.UserWithdraw
 import jakarta.persistence.*
 import java.time.LocalDateTime
 

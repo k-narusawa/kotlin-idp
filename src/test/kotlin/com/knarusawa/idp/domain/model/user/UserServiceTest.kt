@@ -1,6 +1,9 @@
 package com.knarusawa.idp.domain.model.user
 
+import com.knarusawa.idp.domain.model.User
 import com.knarusawa.idp.domain.repository.UserRepository
+import com.knarusawa.idp.domain.service.UserService
+import com.knarusawa.idp.domain.value.LoginId
 import io.mockk.MockKAnnotations
 import io.mockk.every
 import io.mockk.impl.annotations.InjectMockKs
