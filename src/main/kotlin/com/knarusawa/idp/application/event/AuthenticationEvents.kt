@@ -6,8 +6,7 @@ import com.knarusawa.idp.domain.repository.UserRepository
 import com.knarusawa.idp.domain.value.ActivityData
 import com.knarusawa.idp.domain.value.ActivityType
 import com.knarusawa.idp.domain.value.UserId
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
+import com.knarusawa.idp.infrastructure.middleware.logger
 import org.springframework.context.event.EventListener
 import org.springframework.security.authentication.event.AbstractAuthenticationFailureEvent
 import org.springframework.security.authentication.event.AuthenticationSuccessEvent
@@ -18,10 +17,7 @@ class AuthenticationEvents(
         private val userRepository: UserRepository,
         private val userActivityRepository: UserActivityRepository
 ) {
-    companion object {
-        val logger: Logger =
-                LoggerFactory.getLogger(AuthenticationEvents::class.java)
-    }
+    private val log = logger()
 
     @EventListener
     fun onSuccess(success: AuthenticationSuccessEvent?) {
@@ -37,7 +33,7 @@ class AuthenticationEvents(
             )
             userActivityRepository.save(activity)
         }
-        logger.debug("ログイン成功 userId: $userId")
+        log.debug("ログイン成功 userId: $userId")
     }
 
     @EventListener
@@ -54,6 +50,6 @@ class AuthenticationEvents(
             )
             userActivityRepository.save(activity)
         }
-        logger.debug("ログイン失敗 loginId: $loginId")
+        log.debug("ログイン失敗 loginId: $loginId")
     }
 }
