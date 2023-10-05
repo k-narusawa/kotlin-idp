@@ -23,7 +23,7 @@ class UserDetailsServiceImpl(
         private val messageSenderFacade: MassageSenderFacade
 ) : UserDetailsService {
     private val log = logger()
-    
+
     override fun loadUserByUsername(loginId: String): UserDetails {
         val user = userRepository.findByLoginId(loginId = loginId)
                 ?: throw UsernameNotFoundException("認証に失敗しました")
@@ -40,6 +40,8 @@ class UserDetailsServiceImpl(
             MfaType.SMS -> listOf(IdpGrantedAuthority.useMfaSms())
             else -> listOf(IdpGrantedAuthority.usePassword())
         }
+
+        user.setAuthorities(authorities)
 
         if (userMfa?.type == MfaType.MAIL || userMfa?.type == MfaType.SMS) {
             val oneTimePassword = OneTimePassword.of(userId = user.userId)
