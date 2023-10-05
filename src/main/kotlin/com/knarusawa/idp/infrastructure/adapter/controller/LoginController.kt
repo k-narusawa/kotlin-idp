@@ -9,6 +9,7 @@ import com.knarusawa.idp.domain.value.ErrorCode
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.security.authentication.BadCredentialsException
+import org.springframework.security.core.Authentication
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.web.authentication.AuthenticationFailureHandler
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler
@@ -39,20 +40,22 @@ class LoginController(
     @PostMapping("/login/mfa")
     fun mfaAuth(
             @RequestParam("code") code: String,
-            authentication: MfaAuthentication,
+            mfaAuthentication: MfaAuthentication,
+            authentication: Authentication,
             request: HttpServletRequest,
             response: HttpServletResponse
     ) {
-        val primaryAuthentication = authentication.getFirst()
-        val userId = primaryAuthentication.name
+        val primaryAuthentication = mfaAuthentication.getFirst()
+        val user = authentication.principal as? com.knarusawa.idp.domain.model.User
+                ?: throw IdpAppException(errorCode = ErrorCode.BAD_REQUEST, logMessage = "User not found")
 
-        val userMfa = userMfaDtoQueryService.findByUserId(userId)
+        val userMfa = userMfaDtoQueryService.findByUserId(user.userId.toString())
                 ?: throw IdpAppException(errorCode = ErrorCode.BAD_REQUEST, logMessage = "MFAが未設定")
 
         val isVerified =
                 verifyOtpService.exec(
                         input = VerifyOtpInputData(
-                                userId = userId,
+                                userId = user.userId.toString(),
                                 mfaType = userMfa.mfaType,
                                 code = code
                         )
@@ -60,7 +63,7 @@ class LoginController(
 
         if (isVerified) {
             SecurityContextHolder.getContext().authentication = primaryAuthentication
-            successHandler.onAuthenticationSuccess(request, response, authentication)
+            successHandler.onAuthenticationSuccess(request, response, mfaAuthentication)
         } else {
             failureHandler.onAuthenticationFailure(
                     request,

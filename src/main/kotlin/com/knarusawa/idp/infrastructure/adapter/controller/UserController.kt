@@ -16,10 +16,10 @@ import jakarta.servlet.http.HttpServletRequest
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
 import org.springframework.security.access.prepost.PreAuthorize
+import org.springframework.security.core.Authentication
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.*
-import java.security.Principal
 
 @Controller
 @RequestMapping("user")
@@ -34,11 +34,14 @@ class UserController(
     @GetMapping("/activities")
     fun getProfile(
             model: Model,
-            principal: Principal,
+            authentication: Authentication,
             @RequestParam page: Int?
     ): String {
+        val contextUser = authentication.principal as? com.knarusawa.idp.domain.model.User
+                ?: throw RuntimeException("コンテキストから会員の取得に失敗しました")
+
         val userActivities = userActivityDtoQueryService.findByUserId(
-                userId = principal.name,
+                userId = contextUser.userId.toString(),
                 pageable = PageRequest.of(page ?: 0, 10, Sort.by("timestamp").descending())
         )
         model.addAttribute("userActivities", userActivities)
@@ -49,9 +52,12 @@ class UserController(
     @GetMapping("/login_id/change")
     fun changeLoginId(
             model: Model,
-            principal: Principal
+            authentication: Authentication
     ): String {
-        val user = userDtoQueryService.findByUserId(userId = principal.name)
+        val contextUser = authentication.principal as? com.knarusawa.idp.domain.model.User
+                ?: throw RuntimeException("コンテキストから会員の取得に失敗しました")
+
+        val user = userDtoQueryService.findByUserId(userId = contextUser.userId.toString())
                 ?: throw IdpAppException(errorCode = ErrorCode.USER_NOT_FOUND, logMessage = "UserNot Found.")
 
         model.addAttribute("currentLoginId", user.loginId)
@@ -60,11 +66,14 @@ class UserController(
 
     @PostMapping("/login_id/change")
     fun changeLoginId(
+            authentication: Authentication,
             @ModelAttribute changeUserLoginIdForm: ChangeUserLoginIdForm,
-            principal: Principal
     ): String {
+        val contextUser = authentication.principal as? com.knarusawa.idp.domain.model.User
+                ?: throw RuntimeException("コンテキストから会員の取得に失敗しました")
+
         val inputData = ChangeUserLoginIdInputData(
-                userId = principal.name,
+                userId = contextUser.userId.toString(),
                 loginId = changeUserLoginIdForm.loginId,
         )
         changeUserLoginIdService.execute(input = inputData)
@@ -72,22 +81,24 @@ class UserController(
     }
 
     @GetMapping("/password/change")
-    fun changePassword(
-            model: Model,
-    ): String {
+    fun changePassword(model: Model): String {
         return "user/user_password_change"
     }
 
     @PostMapping("/password/change")
     fun changePassword(
+            authentication: Authentication,
             @ModelAttribute changeUserPasswordForm: ChangeUserPasswordForm,
-            principal: Principal
     ): String {
         if (changeUserPasswordForm.newPassword != changeUserPasswordForm.confirmPassword) {
             return "user/user_password_change"
         }
+
+        val contextUser = authentication.principal as? com.knarusawa.idp.domain.model.User
+                ?: throw RuntimeException("コンテキストから会員の取得に失敗しました")
+
         val inputData = ChangeUserPasswordInputData(
-                userId = principal.name,
+                userId = contextUser.userId.toString(),
                 password = changeUserPasswordForm.confirmPassword,
         )
         changeUserPasswordService.execute(input = inputData)
@@ -97,9 +108,12 @@ class UserController(
     @PostMapping("/withdraw")
     fun withdraw(
             request: HttpServletRequest,
-            principal: Principal
+            authentication: Authentication
     ): String {
-        withdrawUserService.exec(input = WithdrawUserInputData(userId = principal.name))
+        val contextUser = authentication.principal as? com.knarusawa.idp.domain.model.User
+                ?: throw RuntimeException("コンテキストから会員の取得に失敗しました")
+
+        withdrawUserService.exec(input = WithdrawUserInputData(userId = contextUser.userId.toString()))
         request.logout()
         return "redirect:/"
     }

@@ -118,7 +118,7 @@ class User private constructor(
     }
 
     override fun getAuthorities(): MutableCollection<out GrantedAuthority> {
-        return this.roles.map { SimpleGrantedAuthority(it.name) }.toMutableList()
+        return (this.roles.map { SimpleGrantedAuthority("ROLE_${it.name}") } + this.authorities).toMutableList()
     }
 
     override fun getPassword(): String {
@@ -126,7 +126,7 @@ class User private constructor(
     }
 
     override fun getUsername(): String {
-        return this.userId.toString() // FIXME: ここloginIdにする
+        return this.loginId.toString()
     }
 
     override fun isAccountNonExpired(): Boolean {

@@ -55,13 +55,6 @@ class UserDetailsServiceImpl(
             )
         }
 
-        return org.springframework.security.core.userdetails.User
-                .withUsername(user.userId.toString())
-                .password(user.password.toString())
-                .roles(*user.roles.map { it.name }.toTypedArray())
-                .accountLocked(user.isLock)
-                .disabled(user.isDisabled)
-                .authorities(authorities)
-                .build()
+        return user
     }
 }
