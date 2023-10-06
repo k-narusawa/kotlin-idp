@@ -1,13 +1,9 @@
 package com.knarusawa.idp.config
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties
-import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.annotation.JsonSubTypes
 import com.knarusawa.idp.application.service.UserDetailsServiceImpl
 import com.knarusawa.idp.config.db.UserDbJdbcTemplate
 import com.knarusawa.idp.domain.model.IdpGrantedAuthority
 import com.knarusawa.idp.domain.model.MfaAuthentication
-import com.knarusawa.idp.domain.value.AuthorityRole
 import com.knarusawa.idp.infrastructure.middleware.MfaAuthenticationHandler
 import com.nimbusds.jose.jwk.JWKSet
 import com.nimbusds.jose.jwk.RSAKey
@@ -211,14 +207,7 @@ class SecurityConfig {
     internal class RowMapper(registeredClientRepository: RegisteredClientRepository?) :
             OAuth2AuthorizationRowMapper(registeredClientRepository) {
         init {
-            objectMapper.addMixIn(IdpGrantedAuthority::class.java, IdpGrantedAuthorityMixin::class.java)
+            objectMapper.addMixIn(IdpGrantedAuthority::class.java, IdpGrantedAuthority.IdpGrantedAuthorityMixin::class.java)
         }
-    }
-
-    @JsonIgnoreProperties(ignoreUnknown = true)
-    @JsonSubTypes
-    abstract class IdpGrantedAuthorityMixin {
-        @JsonProperty("authorityRole")
-        private lateinit var authorityRole: AuthorityRole
     }
 }

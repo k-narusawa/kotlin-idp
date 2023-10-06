@@ -23,7 +23,7 @@ class UserDetailsServiceImpl(
         private val messageSenderFacade: MassageSenderFacade
 ) : UserDetailsService {
     private val log = logger()
-    
+
     override fun loadUserByUsername(loginId: String): UserDetails {
         val user = userRepository.findByLoginId(loginId = loginId)
                 ?: throw UsernameNotFoundException("認証に失敗しました")
@@ -41,6 +41,8 @@ class UserDetailsServiceImpl(
             else -> listOf(IdpGrantedAuthority.usePassword())
         }
 
+        user.setAuthorities(authorities)
+
         if (userMfa?.type == MfaType.MAIL || userMfa?.type == MfaType.SMS) {
             val oneTimePassword = OneTimePassword.of(userId = user.userId)
             log.info("ワンタイムパスワード: ${oneTimePassword.code}")
@@ -53,13 +55,6 @@ class UserDetailsServiceImpl(
             )
         }
 
-        return org.springframework.security.core.userdetails.User
-                .withUsername(user.userId.toString())
-                .password(user.password.toString())
-                .roles(*user.roles.map { it.name }.toTypedArray())
-                .accountLocked(user.isLock)
-                .disabled(user.isDisabled)
-                .authorities(authorities)
-                .build()
+        return user
     }
 }

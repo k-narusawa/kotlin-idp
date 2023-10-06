@@ -6,6 +6,9 @@ import com.knarusawa.idp.domain.value.Password
 import com.knarusawa.idp.domain.value.Role
 import com.knarusawa.idp.domain.value.UserId
 import com.knarusawa.idp.infrastructure.adapter.db.record.UserRecord
+import org.springframework.security.core.GrantedAuthority
+import org.springframework.security.core.authority.SimpleGrantedAuthority
+import org.springframework.security.core.userdetails.UserDetails
 import java.time.LocalDateTime
 
 class User private constructor(
@@ -13,17 +16,20 @@ class User private constructor(
         loginId: LoginId,
         password: Password,
         roles: List<Role>,
+        authorities: List<IdpGrantedAuthority>,
         isLock: Boolean,
         failedAttempts: Int,
         lockTime: LocalDateTime?,
         isDisabled: Boolean,
-) {
+) : UserDetails {
     val userId: UserId = userId
     var loginId: LoginId = loginId
         private set
     var password: Password = password
         private set
     var roles: List<Role> = roles
+        private set
+    var authorities: List<IdpGrantedAuthority> = authorities
         private set
     var isLock: Boolean = isLock
         private set
@@ -43,6 +49,7 @@ class User private constructor(
                         userId = UserId.generate(),
                         loginId = LoginId(value = loginId),
                         password = Password(value = SecurityConfig().passwordEncoder().encode(password)),
+                        authorities = listOf(),
                         roles = roles,
                         isLock = false,
                         failedAttempts = 0,
@@ -54,6 +61,7 @@ class User private constructor(
                 userId = UserId(value = userRecord.userId),
                 loginId = LoginId(value = userRecord.loginId),
                 password = Password(value = userRecord.password),
+                authorities = listOf(),
                 roles = userRecord.roles.split(",").map { Role.fromString(it) },
                 isLock = userRecord.isLock,
                 failedAttempts = userRecord.failedAttempts,
@@ -103,5 +111,37 @@ class User private constructor(
             this.isLock = false
             this.lockTime = null
         }
+    }
+
+    fun setAuthorities(authorities: List<IdpGrantedAuthority>) {
+        this.authorities = authorities
+    }
+
+    override fun getAuthorities(): MutableCollection<out GrantedAuthority> {
+        return (this.roles.map { SimpleGrantedAuthority("ROLE_${it.name}") } + this.authorities).toMutableList()
+    }
+
+    override fun getPassword(): String {
+        return this.password.toString()
+    }
+
+    override fun getUsername(): String {
+        return this.loginId.toString()
+    }
+
+    override fun isAccountNonExpired(): Boolean {
+        return !this.isDisabled
+    }
+
+    override fun isAccountNonLocked(): Boolean {
+        return !this.isLock
+    }
+
+    override fun isCredentialsNonExpired(): Boolean {
+        return !this.isDisabled
+    }
+
+    override fun isEnabled(): Boolean {
+        return !this.isDisabled
     }
 }
