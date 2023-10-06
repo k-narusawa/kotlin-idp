@@ -3,7 +3,6 @@ package com.knarusawa.idp.config
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.knarusawa.idp.domain.model.IdpGrantedAuthority
 import com.knarusawa.idp.domain.model.TmpUser
-import com.knarusawa.idp.domain.model.TmpUserMixIn
 import com.knarusawa.idp.infrastructure.adapter.db.repository.CredentialRepository
 import com.warrenstrange.googleauth.GoogleAuthenticator
 import org.springframework.beans.factory.annotation.Autowired
@@ -37,11 +36,11 @@ class WebConfig : WebMvcConfigurer {
         mapper.registerModule(CoreJackson2Module())
         mapper.addMixIn(
                 IdpGrantedAuthority::class.java,
-                SecurityConfig.IdpGrantedAuthorityMixin::class.java
+                IdpGrantedAuthority.IdpGrantedAuthorityMixin::class.java
         )
         mapper.addMixIn(
                 TmpUser::class.java,
-                TmpUserMixIn::class.java,
+                TmpUser.TmpUserMixIn::class.java,
         )
         return mapper
     }
