@@ -1,11 +1,10 @@
-package com.knarusawa.idp.application.event
+package com.knarusawa.idp.infrastructure.middleware
 
 import com.knarusawa.idp.domain.model.UserActivity
 import com.knarusawa.idp.domain.repository.UserActivityRepository
 import com.knarusawa.idp.domain.repository.UserRepository
 import com.knarusawa.idp.domain.value.ActivityData
 import com.knarusawa.idp.domain.value.ActivityType
-import com.knarusawa.idp.infrastructure.middleware.logger
 import org.springframework.context.event.EventListener
 import org.springframework.security.authentication.event.AbstractAuthenticationFailureEvent
 import org.springframework.security.authentication.event.AuthenticationSuccessEvent
@@ -31,13 +30,25 @@ class AuthenticationEvents(
                 activityData = ActivityData(value = null)
         )
         userActivityRepository.save(activity)
-        log.info("ログイン成功 userId: ${user.userId}")
+        log.info("ログイン成功 userId:[${user.userId}]")
     }
 
     @EventListener
     fun onFailure(failures: AbstractAuthenticationFailureEvent?) {
-        val user = failures?.authentication?.principal as? com.knarusawa.idp.domain.model.User
-                ?: throw RuntimeException("ログインイベントからユーザーの取得に失敗しました")
+        val loginId = failures?.authentication?.name
+        log.info("ログイン失敗 ログインID:[${loginId}]")
+
+        if (loginId.isNullOrBlank()) {
+            log.warn("ログイン失敗時にログインIDの取得に失敗しました loginId:[${loginId}]")
+            return
+        }
+
+        val user = userRepository.findByLoginId(loginId)
+
+        if (user == null) {
+            log.warn("ログイン失敗時にログインIDの取得に失敗しました loginId:[${loginId}]")
+            return
+        }
 
         user.authFailed()
         userRepository.save(user)
@@ -47,6 +58,6 @@ class AuthenticationEvents(
                 activityData = ActivityData(value = null)
         )
         userActivityRepository.save(activity)
-        log.info("ログイン失敗 userId: ${user.userId}")
+        log.info("ログイン失敗 userId:[${user.userId}], 失敗回数:[${user.failedAttempts}]")
     }
 }

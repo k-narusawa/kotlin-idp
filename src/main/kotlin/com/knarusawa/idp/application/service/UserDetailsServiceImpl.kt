@@ -25,7 +25,7 @@ class UserDetailsServiceImpl(
     private val log = logger()
 
     override fun loadUserByUsername(loginId: String): UserDetails {
-        log.debug("ログイン試行 ログインID: $loginId")
+        log.debug("ログイン試行 ログインID:[${loginId}]")
 
         val user = userRepository.findByLoginId(loginId = loginId)
                 ?: throw UsernameNotFoundException("認証に失敗しました")
@@ -36,7 +36,7 @@ class UserDetailsServiceImpl(
 
         val userMfa = userMfaRepository.findByUserId(userId = user.userId)
 
-        log.info("ログイン検証: userId: ${user.userId}, mfa: ${userMfa?.type}")
+        log.info("ログイン検証 userId:[${user.userId}], mfaType:[${userMfa?.type}]")
 
         val authorities = when (userMfa?.type) {
             MfaType.APP -> listOf(IdpGrantedAuthority.useMfaApp())

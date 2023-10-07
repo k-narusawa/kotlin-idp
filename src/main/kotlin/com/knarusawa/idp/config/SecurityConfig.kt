@@ -4,6 +4,8 @@ import com.knarusawa.idp.application.service.UserDetailsServiceImpl
 import com.knarusawa.idp.config.db.UserDbJdbcTemplate
 import com.knarusawa.idp.domain.model.IdpGrantedAuthority
 import com.knarusawa.idp.domain.model.MfaAuthentication
+import com.knarusawa.idp.domain.repository.UserActivityRepository
+import com.knarusawa.idp.infrastructure.middleware.IdpLogoutHandler
 import com.knarusawa.idp.infrastructure.middleware.MfaAuthenticationHandler
 import com.nimbusds.jose.jwk.JWKSet
 import com.nimbusds.jose.jwk.RSAKey
@@ -51,6 +53,9 @@ class SecurityConfig {
     @Autowired
     private lateinit var userDetailsServiceImpl: UserDetailsServiceImpl
 
+    @Autowired
+    private lateinit var userActivityRepository: UserActivityRepository
+
     companion object {
         private fun generateRsaKey(): KeyPair {
             val keyPair: KeyPair = try {
@@ -93,6 +98,7 @@ class SecurityConfig {
                         Customizer { authorize ->
                             authorize
                                     .requestMatchers("/login").permitAll()
+                                    .requestMatchers("/logout").permitAll()
                                     .requestMatchers("/login/mfa").access(mfaAuthorizationManager())
                                     .requestMatchers("/tmp_register").permitAll() // 会員登録画面
                                     .requestMatchers("/register").permitAll() // 会員登録画面
@@ -121,6 +127,7 @@ class SecurityConfig {
                 .logout { logout ->
                     logout
                             .addLogoutHandler(CookieClearingLogoutHandler("JSESSIONID"))
+                            .addLogoutHandler(IdpLogoutHandler(userActivityRepository))
                 }
                 .exceptionHandling { exceptions: ExceptionHandlingConfigurer<HttpSecurity?> ->
                     exceptions
