@@ -6,9 +6,6 @@ on:
       tags:
         description: 'docker image tag'
         required: false
-  push:
-    branches:
-      - 'main'
 
 jobs:
   push-docker-hub:
