@@ -9,6 +9,12 @@ class Environments {
         private const val LOCAL_PROFILE = "local"
     }
 
+    @Value("\${environments.db.crypt-key}")
+    lateinit var cryptKey: String
+
+    @Value("\${environments.db.salt}")
+    lateinit var cryptSalt: String
+
     @Value("\${environments.mail.from}")
     lateinit var fromAddress: String
 

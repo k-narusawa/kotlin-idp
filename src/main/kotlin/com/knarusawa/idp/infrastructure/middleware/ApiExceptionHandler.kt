@@ -11,11 +11,15 @@ import org.springframework.web.bind.annotation.RestControllerAdvice
 
 @RestControllerAdvice
 class ApiExceptionHandler {
+    private val log = logger()
+
     @ExceptionHandler(IdpAppException::class)
     fun handleIdpAppException(
             ex: IdpAppException,
             request: HttpServletRequest
     ): ResponseEntity<ApiErrorResponse> {
+        log.warn("message: ${ex.message}, cause: ${ex.cause}, ex: $ex")
+        ex.printStackTrace()
         return ResponseEntity(
                 ApiErrorResponse.of(
                         exception = ex,
@@ -32,6 +36,8 @@ class ApiExceptionHandler {
             ex: Exception,
             request: HttpServletRequest
     ): ResponseEntity<ApiErrorResponse> {
+        log.warn("message: ${ex.message}, cause: ${ex.cause}, ex: $ex")
+        ex.printStackTrace()
         return ResponseEntity(
                 ApiErrorResponse.of(
                         exception = ex,

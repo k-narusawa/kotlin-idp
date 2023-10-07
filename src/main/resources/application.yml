@@ -37,6 +37,9 @@ spring:
         enabled: true
 
 environments:
+  db:
+    crypt-key: ${CRYPT_KEY:284d835f8118e791}
+    salt: ${CRYPT_SALT:306252e5a01e691f}
   mail:
     from: ${FROM_ADDRESS:test@example.com}
   redis:

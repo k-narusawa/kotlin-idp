@@ -1,9 +1,7 @@
 package com.knarusawa.idp.application.dto
 
-import jakarta.persistence.Column
-import jakarta.persistence.Entity
-import jakarta.persistence.Id
-import jakarta.persistence.Table
+import com.knarusawa.idp.infrastructure.middleware.DbColumnEncryptDecryptConverter
+import jakarta.persistence.*
 import java.time.LocalDateTime
 
 @Entity
@@ -14,6 +12,7 @@ data class UserDto(
         val userId: String = "",
 
         @Column(name = "login_id")
+        @Convert(converter = DbColumnEncryptDecryptConverter::class)
         val loginId: String = "",
 
         @Column(name = "roles")

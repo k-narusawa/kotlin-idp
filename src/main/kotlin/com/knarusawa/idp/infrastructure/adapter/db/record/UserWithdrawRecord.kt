@@ -1,6 +1,7 @@
 package com.knarusawa.idp.infrastructure.adapter.db.record
 
 import com.knarusawa.idp.domain.model.UserWithdraw
+import com.knarusawa.idp.infrastructure.middleware.DbColumnEncryptDecryptConverter
 import jakarta.persistence.*
 import java.time.LocalDateTime
 
@@ -16,6 +17,7 @@ data class UserWithdrawRecord(
         val userId: String = "",
 
         @Column(name = "original_login_id")
+        @Convert(converter = DbColumnEncryptDecryptConverter::class)
         val originalLoginId: String = "",
 
         @Column(name = "withdrawn_at")

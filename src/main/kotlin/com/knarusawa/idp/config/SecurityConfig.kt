@@ -70,8 +70,6 @@ class SecurityConfig {
         OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http)
         http.getConfigurer(OAuth2AuthorizationServerConfigurer::class.java)
                 .oidc(Customizer.withDefaults())
-        // ObjectMapperを適用する特定のフィルターまたはコンポーネントに
-        // customObjectMapperをセットするロジックをここに書く
 
         http
                 .exceptionHandling { exceptions: ExceptionHandlingConfigurer<HttpSecurity?> ->

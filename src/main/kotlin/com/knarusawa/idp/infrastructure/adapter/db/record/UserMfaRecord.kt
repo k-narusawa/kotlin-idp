@@ -3,10 +3,8 @@ package com.knarusawa.idp.infrastructure.adapter.db.record
 import com.knarusawa.idp.domain.model.UserMfa
 import com.knarusawa.idp.domain.value.MfaType
 import com.knarusawa.idp.domain.value.UserId
-import jakarta.persistence.Column
-import jakarta.persistence.Entity
-import jakarta.persistence.Id
-import jakarta.persistence.Table
+import com.knarusawa.idp.infrastructure.middleware.DbColumnEncryptDecryptConverter
+import jakarta.persistence.*
 import java.time.LocalDateTime
 
 @Entity
@@ -20,6 +18,7 @@ data class UserMfaRecord(
         val type: String = "",
 
         @Column(name = "secret_key")
+        @Convert(converter = DbColumnEncryptDecryptConverter::class)
         val secretKey: String? = null,
 
         @Column(name = "validation_code")

@@ -1,9 +1,12 @@
 package com.knarusawa.idp.infrastructure.adapter.db.record
 
+import com.knarusawa.idp.infrastructure.middleware.DbColumnEncryptDecryptConverter
 import jakarta.persistence.Column
+import jakarta.persistence.Convert
 import jakarta.persistence.Entity
 import jakarta.persistence.Id
 import jakarta.persistence.Table
+import org.hibernate.annotations.ColumnTransformer
 import java.time.LocalDateTime
 
 @Entity
@@ -14,8 +17,10 @@ data class UserRecord(
         val userId: String = "",
 
         @Column(name = "login_id")
+        @Convert(converter = DbColumnEncryptDecryptConverter::class)
         val loginId: String = "",
 
+        @Convert(converter = DbColumnEncryptDecryptConverter::class)
         @Column(name = "password")
         val password: String = "",
 
