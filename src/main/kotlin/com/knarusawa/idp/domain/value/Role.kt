@@ -1,8 +1,9 @@
 package com.knarusawa.idp.domain.value
 
 import com.knarusawa.idp.domain.model.IdpAppException
+import java.io.Serializable
 
-enum class Role {
+enum class Role : Serializable {
     ADMIN,
     USER
     ;

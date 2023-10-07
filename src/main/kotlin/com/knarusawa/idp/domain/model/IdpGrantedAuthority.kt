@@ -5,11 +5,12 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.annotation.JsonSubTypes
 import com.knarusawa.idp.domain.value.AuthorityRole
 import org.springframework.security.core.GrantedAuthority
+import java.io.Serializable
 
 class IdpGrantedAuthority private constructor(
         @JsonProperty("authorityRole")
         private val authorityRole: AuthorityRole? = null
-) : GrantedAuthority {
+) : GrantedAuthority, Serializable {
 
     companion object {
         fun useMfaApp(): IdpGrantedAuthority {

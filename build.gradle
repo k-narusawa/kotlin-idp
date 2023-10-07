@@ -51,6 +51,7 @@ dependencies {
     implementation "org.springframework.boot:spring-boot-starter-oauth2-authorization-server:${springBootVersion}"
     implementation "org.springframework.data:spring-data-jpa:${springBootVersion}"
     implementation "org.springframework.data:spring-data-redis:${springBootVersion}"
+    implementation "org.springframework.session:spring-session-data-redis:${springBootVersion}"
     implementation "org.thymeleaf.extras:thymeleaf-extras-springsecurity6:${springSecurity6Version}"
     implementation "com.warrenstrange:googleauth:${googleauthVersion}"
     implementation "com.google.zxing:core:${zxingVersion}"

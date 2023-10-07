@@ -18,9 +18,9 @@ class Environments {
     @Value("\${environments.mail.from}")
     lateinit var fromAddress: String
 
-    @Value("\${environments.redis.host}")
+    @Value("\${spring.data.redis.host}")
     lateinit var redisHost: String
 
-    @Value("\${environments.redis.port}")
+    @Value("\${spring.data.redis.port}")
     lateinit var redisPort: String
 }
