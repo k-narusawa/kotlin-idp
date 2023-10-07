@@ -25,6 +25,8 @@ class UserDetailsServiceImpl(
     private val log = logger()
 
     override fun loadUserByUsername(loginId: String): UserDetails {
+        log.debug("ログイン試行 ログインID: $loginId")
+
         val user = userRepository.findByLoginId(loginId = loginId)
                 ?: throw UsernameNotFoundException("認証に失敗しました")
 
@@ -33,6 +35,8 @@ class UserDetailsServiceImpl(
         userRepository.save(user)
 
         val userMfa = userMfaRepository.findByUserId(userId = user.userId)
+
+        log.info("ログイン検証: userId: ${user.userId}, mfa: ${userMfa?.type}")
 
         val authorities = when (userMfa?.type) {
             MfaType.APP -> listOf(IdpGrantedAuthority.useMfaApp())
@@ -45,7 +49,6 @@ class UserDetailsServiceImpl(
 
         if (userMfa?.type == MfaType.MAIL || userMfa?.type == MfaType.SMS) {
             val oneTimePassword = OneTimePassword.of(userId = user.userId)
-            log.info("ワンタイムパスワード: ${oneTimePassword.code}")
             runBlocking { onetimePasswordRepository.save(oneTimePassword) }
 
             messageSenderFacade.exec(
