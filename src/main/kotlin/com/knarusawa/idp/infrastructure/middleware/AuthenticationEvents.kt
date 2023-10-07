@@ -1,11 +1,10 @@
-package com.knarusawa.idp.application.event
+package com.knarusawa.idp.infrastructure.middleware
 
 import com.knarusawa.idp.domain.model.UserActivity
 import com.knarusawa.idp.domain.repository.UserActivityRepository
 import com.knarusawa.idp.domain.repository.UserRepository
 import com.knarusawa.idp.domain.value.ActivityData
 import com.knarusawa.idp.domain.value.ActivityType
-import com.knarusawa.idp.infrastructure.middleware.logger
 import org.springframework.context.event.EventListener
 import org.springframework.security.authentication.event.AbstractAuthenticationFailureEvent
 import org.springframework.security.authentication.event.AuthenticationSuccessEvent
