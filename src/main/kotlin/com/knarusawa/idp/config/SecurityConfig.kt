@@ -1,5 +1,6 @@
 package com.knarusawa.idp.config
 
+import com.knarusawa.idp.application.facade.SessionFacade
 import com.knarusawa.idp.application.service.UserDetailsServiceImpl
 import com.knarusawa.idp.config.db.UserDbJdbcTemplate
 import com.knarusawa.idp.domain.model.IdpGrantedAuthority
@@ -55,6 +56,9 @@ class SecurityConfig {
 
     @Autowired
     private lateinit var userActivityRepository: UserActivityRepository
+
+    @Autowired
+    private lateinit var sessionFacade: SessionFacade
 
     companion object {
         private fun generateRsaKey(): KeyPair {
@@ -127,7 +131,7 @@ class SecurityConfig {
                 .logout { logout ->
                     logout
                             .addLogoutHandler(CookieClearingLogoutHandler("JSESSIONID"))
-                            .addLogoutHandler(IdpLogoutHandler(userActivityRepository))
+                            .addLogoutHandler(IdpLogoutHandler(userActivityRepository, sessionFacade))
                 }
                 .exceptionHandling { exceptions: ExceptionHandlingConfigurer<HttpSecurity?> ->
                     exceptions

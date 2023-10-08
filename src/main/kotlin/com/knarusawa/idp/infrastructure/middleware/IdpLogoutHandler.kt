@@ -1,5 +1,6 @@
 package com.knarusawa.idp.infrastructure.middleware
 
+import com.knarusawa.idp.application.facade.SessionFacade
 import com.knarusawa.idp.domain.model.UserActivity
 import com.knarusawa.idp.domain.repository.UserActivityRepository
 import com.knarusawa.idp.domain.value.ActivityData
@@ -10,7 +11,8 @@ import org.springframework.security.core.Authentication
 import org.springframework.security.web.authentication.logout.LogoutHandler
 
 class IdpLogoutHandler(
-        private val userActivityRepository: UserActivityRepository
+        private val userActivityRepository: UserActivityRepository,
+        private val sessionFacade: SessionFacade
 ) : LogoutHandler {
 
     private val log = logger()
@@ -21,6 +23,8 @@ class IdpLogoutHandler(
             log.warn("ログアウト時にユーザー情報の取得に失敗しました")
             return
         }
+
+        sessionFacade.deleteUserSessions(user.username)
 
         val activity = UserActivity.of(
                 userId = user.userId,
