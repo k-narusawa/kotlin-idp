@@ -1,8 +1,10 @@
 package com.knarusawa.idp.domain.value
 
+import java.io.Serializable
+
 data class LoginId(
         private val value: String
-) {
+) : Serializable {
     init {
         // RFC5322で定義されているメールアドレス形式に準拠
         val regex =

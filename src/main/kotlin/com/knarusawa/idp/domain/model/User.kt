@@ -9,6 +9,7 @@ import com.knarusawa.idp.infrastructure.adapter.db.record.UserRecord
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
+import java.io.Serializable
 import java.time.LocalDateTime
 
 class User private constructor(
@@ -21,7 +22,7 @@ class User private constructor(
         failedAttempts: Int,
         lockTime: LocalDateTime?,
         isDisabled: Boolean,
-) : UserDetails {
+) : UserDetails, Serializable {
     val userId: UserId = userId
     var loginId: LoginId = loginId
         private set

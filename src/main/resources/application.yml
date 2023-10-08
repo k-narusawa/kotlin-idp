@@ -1,5 +1,8 @@
 server:
   port: 8080
+  servlet:
+    session:
+      timeout: 1800
 
 logging:
   level:
@@ -29,6 +32,15 @@ spring:
     open-in-view: false
   #  必要に応じてコメントアウトを外す
   #    show-sql: true
+  data:
+    redis:
+      host: ${REDIS_HOST:127.0.0.1}
+      port: 6379
+  session:
+    store-type: redis
+    redis:
+      flush-mode: on_save
+      namespace: idp_session
 
   mvc:
     hiddenmethod:
@@ -42,6 +54,3 @@ environments:
     salt: ${CRYPT_SALT:306252e5a01e691f}
   mail:
     from: ${FROM_ADDRESS:test@example.com}
-  redis:
-    host: ${REDIS_HOST:127.0.0.1}
-    port: 6379
