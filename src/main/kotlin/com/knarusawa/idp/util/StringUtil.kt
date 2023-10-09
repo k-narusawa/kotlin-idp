@@ -11,6 +11,4 @@ object StringUtil {
         }
         return sb.toString()
     }
-
-
 }
