@@ -106,6 +106,8 @@ class SecurityConfig {
                                     .requestMatchers("/login/mfa").access(mfaAuthorizationManager())
                                     .requestMatchers("/tmp_register").permitAll() // 会員登録画面
                                     .requestMatchers("/register").permitAll() // 会員登録画面
+                                    .requestMatchers("/password/**").permitAll() // 会員登録画面
+                                    .requestMatchers("/password/reset").permitAll() // 会員登録画面
                                     .requestMatchers("/error/*").permitAll() // エラー画面
                                     .requestMatchers("webjars/**", "/css/**", "/js/**", "/img/**").permitAll()
                                     .anyRequest().authenticated()

@@ -8,6 +8,7 @@ enum class MessageId {
     USER_REGISTER_COMPLETE,
     USER_LOGIN_ID_UPDATE,
     USER_LOGIN_ID_UPDATE_FAILED,
+    USER_PASSWORD_RESET,
     ;
 
     companion object {
