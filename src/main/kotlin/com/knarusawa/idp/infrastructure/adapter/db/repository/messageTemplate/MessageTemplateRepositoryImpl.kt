@@ -27,45 +27,32 @@ class MessageTemplateRepositoryImpl : MessageTemplateRepository {
             MessageTemplateList(
                     messageId = "MFA_MAIL_REGISTRATION",
                     subject = "MFA認証の登録",
-                    body = """
-        ワンタイムパスワード #{otp}
-      """.trimIndent(),
+                    body = """ワンタイムパスワード #{otp}""".trimIndent(),
             ),
             MessageTemplateList(
                     messageId = "MFA_MAIL_AUTHENTICATION",
                     subject = "ワンタイムパスワード認証",
-                    body = """
-        ワンタイムパスワード #{otp}
-      """.trimIndent(),
+                    body = """ワンタイムパスワード #{otp}""".trimIndent(),
             ),
             MessageTemplateList(
                     messageId = "TMP_USER_CONFIRM",
                     subject = "会員仮登録",
-                    body = """
-        仮登録用コード #{otp}
-      """.trimIndent(),
+                    body = """仮登録用コード #{otp}""".trimIndent(),
             ),
             MessageTemplateList(
                     messageId = "TMP_USER_CONFIRM_FAILED",
                     subject = "会員仮登録失敗",
-                    body = """
-        会員の登録に失敗
-      """.trimIndent(),
+                    body = """会員の登録に失敗""".trimIndent(),
             ),
             MessageTemplateList(
                     messageId = "USER_REGISTER_COMPLETE",
                     subject = "会員登録完了",
-                    body = """
-        会員登録完了
-      """.trimIndent(),
+                    body = """会員登録完了""".trimIndent(),
             ),
             MessageTemplateList(
                     messageId = "USER_LOGIN_ID_UPDATE",
                     subject = "ログインID変更",
-                    body =
-                    """
-        ログインIDの変更 #{otp}
-      """.trimIndent(),
+                    body = """ログインIDの変更 #{otp}""".trimIndent(),
             ),
 
             MessageTemplateList(
@@ -73,9 +60,12 @@ class MessageTemplateRepositoryImpl : MessageTemplateRepository {
                     subject = "ログインID変更失敗",
                     body = """ログインID変更失敗""".trimIndent(),
             ),
-
-
-            )
+            MessageTemplateList(
+                    messageId = "USER_PASSWORD_RESET",
+                    subject = "パスワードリセット",
+                    body = """パスワードリセット #{otp}""".trimIndent(),
+            ),
+    )
 
     private data class MessageTemplateList(
             val messageId: String,
