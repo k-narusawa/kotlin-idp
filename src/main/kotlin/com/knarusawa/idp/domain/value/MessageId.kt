@@ -6,9 +6,15 @@ enum class MessageId {
     TMP_USER_CONFIRM,
     TMP_USER_CONFIRM_FAILED,
     USER_REGISTER_COMPLETE,
+    USER_LOGIN_ID_UPDATE,
+    USER_LOGIN_ID_UPDATE_FAILED,
     ;
 
     companion object {
         fun from(str: String) = valueOf(str)
+    }
+
+    override fun toString(): String {
+        return name
     }
 }

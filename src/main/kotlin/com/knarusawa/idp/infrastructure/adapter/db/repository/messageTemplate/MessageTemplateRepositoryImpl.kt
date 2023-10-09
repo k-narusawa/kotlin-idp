@@ -59,7 +59,23 @@ class MessageTemplateRepositoryImpl : MessageTemplateRepository {
         会員登録完了
       """.trimIndent(),
             ),
-    )
+            MessageTemplateList(
+                    messageId = "USER_LOGIN_ID_UPDATE",
+                    subject = "ログインID変更",
+                    body =
+                    """
+        ログインIDの変更 #{otp}
+      """.trimIndent(),
+            ),
+
+            MessageTemplateList(
+                    messageId = "USER_LOGIN_ID_UPDATE_FAILED",
+                    subject = "ログインID変更失敗",
+                    body = """ログインID変更失敗""".trimIndent(),
+            ),
+
+
+            )
 
     private data class MessageTemplateList(
             val messageId: String,

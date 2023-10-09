@@ -5,13 +5,13 @@ import com.knarusawa.idp.application.service.changeUserLoginId.ChangeUserLoginId
 import com.knarusawa.idp.application.service.changeUserPassword.ChangeUserPasswordInputData
 import com.knarusawa.idp.application.service.changeUserPassword.ChangeUserPasswordService
 import com.knarusawa.idp.application.service.query.UserActivityDtoQueryService
-import com.knarusawa.idp.application.service.query.UserDtoQueryService
+import com.knarusawa.idp.application.service.requestChangeUserLoginId.RequestChangeUserLoginIdInputData
+import com.knarusawa.idp.application.service.requestChangeUserLoginId.RequestChangeUserLoginIdService
 import com.knarusawa.idp.application.service.withdrawUser.WithdrawUserInputData
 import com.knarusawa.idp.application.service.withdrawUser.WithdrawUserService
-import com.knarusawa.idp.domain.model.IdpAppException
-import com.knarusawa.idp.domain.value.ErrorCode
 import com.knarusawa.idp.infrastructure.dto.form.ChangeUserLoginIdForm
 import com.knarusawa.idp.infrastructure.dto.form.ChangeUserPasswordForm
+import com.knarusawa.idp.infrastructure.dto.form.RequestChangeUserLoginIdForm
 import jakarta.servlet.http.HttpServletRequest
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
@@ -25,8 +25,8 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("user")
 @PreAuthorize("hasRole('USER')")
 class UserController(
-        private val userDtoQueryService: UserDtoQueryService,
         private val userActivityDtoQueryService: UserActivityDtoQueryService,
+        private val requestChangeUserLoginIdService: RequestChangeUserLoginIdService,
         private val changeUserLoginIdService: ChangeUserLoginIdService,
         private val changeUserPasswordService: ChangeUserPasswordService,
         private val withdrawUserService: WithdrawUserService,
@@ -49,33 +49,49 @@ class UserController(
         return "user/user_activity_list"
     }
 
-    @GetMapping("/login_id/change")
-    fun changeLoginId(
+    @GetMapping("/login_id/change/request")
+    fun requestChangeLoginId(
             model: Model,
             authentication: Authentication
     ): String {
         val contextUser = authentication.principal as? com.knarusawa.idp.domain.model.User
                 ?: throw RuntimeException("コンテキストから会員の取得に失敗しました")
 
-        val user = userDtoQueryService.findByUserId(userId = contextUser.userId.toString())
-                ?: throw IdpAppException(errorCode = ErrorCode.USER_NOT_FOUND, logMessage = "UserNot Found.")
+        model.addAttribute("currentLoginId", contextUser.loginId)
+        return "user/user_login_id_change_request"
+    }
 
-        model.addAttribute("currentLoginId", user.loginId)
+    @PostMapping("/login_id/change/request")
+    fun requestChangeLoginId(
+            authentication: Authentication,
+            @ModelAttribute requestChangeUserLoginIdForm: RequestChangeUserLoginIdForm,
+    ): String {
+        val contextUser = authentication.principal as? com.knarusawa.idp.domain.model.User
+                ?: throw RuntimeException("コンテキストから会員の取得に失敗しました")
+
+        val inputData = RequestChangeUserLoginIdInputData(
+                userId = contextUser.userId.toString(),
+                loginId = requestChangeUserLoginIdForm.loginId,
+        )
+
+        requestChangeUserLoginIdService.exec(input = inputData)
+        return "redirect:/user/login_id/change"
+    }
+
+    @GetMapping("/login_id/change")
+    fun changeLoginId(): String {
         return "user/user_login_id_change"
     }
 
     @PostMapping("/login_id/change")
-    fun changeLoginId(
+    fun changeLoginIdPost(
             authentication: Authentication,
             @ModelAttribute changeUserLoginIdForm: ChangeUserLoginIdForm,
     ): String {
         val contextUser = authentication.principal as? com.knarusawa.idp.domain.model.User
                 ?: throw RuntimeException("コンテキストから会員の取得に失敗しました")
 
-        val inputData = ChangeUserLoginIdInputData(
-                userId = contextUser.userId.toString(),
-                loginId = changeUserLoginIdForm.loginId,
-        )
+        val inputData = ChangeUserLoginIdInputData(code = changeUserLoginIdForm.code)
         changeUserLoginIdService.execute(input = inputData)
         return "redirect:/"
     }

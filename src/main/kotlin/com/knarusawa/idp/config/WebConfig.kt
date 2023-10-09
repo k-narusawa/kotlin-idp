@@ -3,6 +3,7 @@ package com.knarusawa.idp.config
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.knarusawa.idp.domain.model.IdpGrantedAuthority
 import com.knarusawa.idp.domain.model.TmpUser
+import com.knarusawa.idp.domain.value.LoginIdUpdateValue
 import com.knarusawa.idp.infrastructure.adapter.db.repository.CredentialRepository
 import com.warrenstrange.googleauth.GoogleAuthenticator
 import org.springframework.beans.factory.annotation.Autowired
@@ -41,6 +42,10 @@ class WebConfig : WebMvcConfigurer {
         mapper.addMixIn(
                 TmpUser::class.java,
                 TmpUser.TmpUserMixIn::class.java,
+        )
+        mapper.addMixIn(
+                LoginIdUpdateValue::class.java,
+                LoginIdUpdateValue.LoginIdUpdateValueMixIn::class.java
         )
         return mapper
     }
