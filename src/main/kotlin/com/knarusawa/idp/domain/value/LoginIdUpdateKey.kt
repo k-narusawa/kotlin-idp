@@ -8,7 +8,7 @@ data class LoginIdUpdateKey(
 ) : Serializable {
     companion object {
         private const val PREFIX = "LOGIN_ID_UPDATE_"
-        fun generate() = LoginIdUpdateKey(value = "${PREFIX}${StringUtil.generateRandomString(6)}")
+        fun generate() = LoginIdUpdateKey(value = "${PREFIX}${StringUtil.generateRandomNumberString(6)}")
         fun fromCode(code: String) = LoginIdUpdateKey(value = "${PREFIX}${code}")
     }
 
