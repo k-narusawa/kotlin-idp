@@ -13,4 +13,8 @@ enum class MessageId {
     companion object {
         fun from(str: String) = valueOf(str)
     }
+
+    override fun toString(): String {
+        return name
+    }
 }
