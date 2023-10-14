@@ -19,6 +19,7 @@ buildscript {
         hikariCpVersion = '5.0.1'
         flywayVersion = '9.19.4'
         lettuceVersion = '6.2.6.RELEASE'
+        logbackEncoderVersion = '7.4'
     }
 }
 
@@ -69,6 +70,7 @@ dependencies {
     implementation "org.springframework.security:spring-security-cas:${springSecurityVersion}"
     implementation "org.webjars:popper.js:2.9.3"
     implementation "io.lettuce:lettuce-core:${lettuceVersion}"
+    implementation "net.logstash.logback:logstash-logback-encoder:${logbackEncoderVersion}"
 
     runtimeOnly 'org.jetbrains.kotlin:kotlin-reflect:1.8.22'
 

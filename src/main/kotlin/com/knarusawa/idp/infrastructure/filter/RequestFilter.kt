@@ -3,11 +3,16 @@ package com.knarusawa.idp.infrastructure.filter
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
+import org.slf4j.MDC
+import org.springframework.core.Ordered
+import org.springframework.core.annotation.Order
 import org.springframework.stereotype.Component
 import org.springframework.web.filter.OncePerRequestFilter
+import java.util.*
 
 
 @Component
+@Order(Ordered.HIGHEST_PRECEDENCE)
 class RequestFilter : OncePerRequestFilter() {
     companion object {
         val excludeUrlRegexList = listOf(
@@ -22,14 +27,18 @@ class RequestFilter : OncePerRequestFilter() {
             response: HttpServletResponse,
             filterChain: FilterChain
     ) {
-        logger.info("リクエスト受信 リクエストID:[${request.requestId}], メソッド:[${request.method}], URI:[${request.requestURI}]")
+        val requestId = UUID.randomUUID().toString()
+        MDC.put("requestId", requestId)
+
+        logger.info("リクエスト受信 メソッド:[${request.method}], URI:[${request.requestURI}]")
 
         val start = System.currentTimeMillis()
         try {
             filterChain.doFilter(request, response)
         } finally {
             val end = System.currentTimeMillis()
-            logger.info("レスポンス返却 リクエストID:[${request.requestId}], メソッド:[${request.method}], URI:[${request.requestURI}], ステータス:[${response.status}], レスポンスタイム:[${end - start}ms]")
+            logger.info("レスポンス返却 メソッド:[${request.method}], URI:[${request.requestURI}], ステータス:[${response.status}], レスポンスタイム:[${end - start}ms]")
+            MDC.clear()
         }
     }
 

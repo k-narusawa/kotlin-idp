@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+  <springProfile name="local">
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+      <target>System.out</target>
+      <encoder>
+        <charset>UTF-8</charset>
+        <pattern>%d{yyyy/MM/dd HH:mm:ss} %-5level [%X{requestId}] - %msg%n</pattern>
+      </encoder>
+    </appender>
+  </springProfile>
+
+  <springProfile name="dev">
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+      <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+        <providers>
+          <timestamp>
+            <timeZone>UTC</timeZone>
+          </timestamp>
+          <pattern>
+            <pattern>
+              {
+              "level": "%level",
+              "thread": "%thread",
+              "logger": "%logger",
+              "class": "%class",
+              "method": "%method",
+              "requestId": "%X{requestId}",
+              "message": "%message"
+              }
+            </pattern>
+          </pattern>
+        </providers>
+      </encoder>
+    </appender>
+  </springProfile>
+  <root level="INFO">
+    <appender-ref ref="STDOUT"/>
+  </root>
+</configuration>

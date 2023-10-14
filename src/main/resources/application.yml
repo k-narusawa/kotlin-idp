@@ -12,6 +12,7 @@ logging:
       springframework:
         jdbc:
           core: info
+  config: classpath:logback-spring.xml
 
 spring:
   profiles:
