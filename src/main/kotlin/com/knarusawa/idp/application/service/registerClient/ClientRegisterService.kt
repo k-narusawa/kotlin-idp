@@ -11,7 +11,6 @@ class ClientRegisterService(
 ) {
     @Transactional
     fun execute(input: ClientRegisterInputData) {
-        println(input)
         val client = Client.of(
                 clientId = input.clientId,
                 clientSecret = input.clientSecret,
