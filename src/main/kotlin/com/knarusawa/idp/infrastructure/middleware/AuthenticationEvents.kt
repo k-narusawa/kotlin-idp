@@ -6,6 +6,7 @@ import com.knarusawa.idp.domain.repository.UserRepository
 import com.knarusawa.idp.domain.value.ActivityData
 import com.knarusawa.idp.domain.value.ActivityType
 import org.springframework.context.event.EventListener
+import org.springframework.security.authentication.AbstractAuthenticationToken
 import org.springframework.security.authentication.event.AbstractAuthenticationFailureEvent
 import org.springframework.security.authentication.event.AuthenticationSuccessEvent
 import org.springframework.stereotype.Component
@@ -19,6 +20,12 @@ class AuthenticationEvents(
 
     @EventListener
     fun onSuccess(success: AuthenticationSuccessEvent?) {
+        if (success?.source is AbstractAuthenticationToken) {
+            val token = success.source as? AbstractAuthenticationToken
+            log.info("トークンリクエスト ClientID: ${token?.name}")
+            return
+        }
+
         val user = success?.authentication?.principal as? com.knarusawa.idp.domain.model.User
                 ?: throw RuntimeException("ログインイベントからユーザーの取得に失敗しました")
 
