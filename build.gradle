@@ -108,6 +108,7 @@ jib {
 }
 
 test {
+    systemProperty("spring.profiles.active", "test")
     finalizedBy jacocoTestReport // report is always generated after tests run
 }
 
