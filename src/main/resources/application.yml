@@ -17,11 +17,6 @@ logging:
 spring:
   profiles:
     active: local
-  datasource:
-    url: jdbc:mysql://127.0.0.1:3306/user_db
-    username: root
-    password: root
-    driver-class-name: com.mysql.jdbc.Driver
   flyway:
     baseline-version: 0
     enabled: true
